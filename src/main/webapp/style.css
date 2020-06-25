@@ -27,24 +27,53 @@ a{
 .home_container{
     margin-top:100px; 
     max-width:1000px; 
+    max-height:80vh;
     padding-bottom:50px;
     background-color: #ffebd9;
-    border-radius: 10%;
     box-shadow: 5px 10px 8px #888888;
 }
 
-#container {
-            margin-left: auto;
-            margin-right: auto;
-            width: 1500px;
+.logo{
+    width:150px;
 }
 
+.card{
+    background-color:transparent;
+    font-family: 'PT Mono', monospace;
+}
+
+/* -- INDEX.HTML -- */
 .body-logo{
+    padding-top:20px;
     padding-bottom:100px;
     width:500px;
     margin: auto;
     display: block;
 }
-.logo{
-    width:150px;
+
+/* --JOIN.HTML-- */
+
+#join_game{
+    background-color: #ffebd9;
+    font-family: 'PT Mono', monospace;
+    width: 500px;
+    margin-top:200px;
+}
+#game-id{
+    background-color:#d4c3b4;
+    border-bottom:0;
+    border-right:0;
+}
+
+/* --GAME.HTML-- */
+#container {
+            margin-left: auto;
+            margin-right: auto;
+            width: 80vw;
+            background-color: #ffebd9;
+            min-height:100%;
+}
+
+#leaderboard-container{
+    width:70vw;
 }
