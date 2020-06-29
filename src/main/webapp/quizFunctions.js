@@ -1,6 +1,5 @@
 // This js file is to implement the quiz functions
 // Music: https://www.bensound.com
-
 let status_of_music = "pause";
 if(document.getElementById("sound").onclick = function() {
     if(status_of_music=="pause"){
