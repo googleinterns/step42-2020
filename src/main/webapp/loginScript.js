@@ -1,6 +1,7 @@
 function onSignIn(googleUser) {
   var profile = googleUser.getBasicProfile();
   localStorage.setItem("username",profile.getName()); //sends player's names into local storage
+  localStorage.setItem("ID", profile.getId()); //sends player's id into local storage
   window.location = "index.html";
 }
 
