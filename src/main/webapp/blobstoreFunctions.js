@@ -12,8 +12,7 @@ function fetchBlobstoreUrl() {
         return response.text();
       })
       .then((imageUploadUrl) => {
-        const messageForm = document.getElementById('plant-pic-form');
-        messageForm.action = imageUploadUrl;
+        document.getElementById('plant-pic-form').action = imageUploadUrl;
       });
 }
 
@@ -30,7 +29,6 @@ function createListElement(pic) {
   body.className = "card-body";
 
   let photo = document.createElement("img");
-  photo.style.width = "100%";
   photo.src = pic;
 
   body.append(photo);
