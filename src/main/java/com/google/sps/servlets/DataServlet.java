@@ -92,6 +92,6 @@ public class DataServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(plantImageEntity);
     
-    response.sendRedirect("/blobPractice.html"); // TODO: send this somewhere else
+    response.sendRedirect("/pictureUpload.html"); // TODO: send this somewhere else
   }
 }
