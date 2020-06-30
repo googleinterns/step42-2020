@@ -20,6 +20,7 @@ function signOut() {
     }).then(function(auth2){
         auth2.signOut();
         localStorage.removeItem("username");
+        localStorage.removeItem("ID");
         window.location = "login.html";
     });
   });
