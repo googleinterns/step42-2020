@@ -23,18 +23,15 @@ function fetchBlobstoreUrl() {
 */
 function createListElement(pic) {
   let card = document.createElement("div");
-  card.className = "card m-1";
-
   let body = document.createElement("div");
-  body.className = "card-body";
-
   let photo = document.createElement("img");
+
+  card.className = "card m-1";
+  body.className = "card-body";
   photo.src = pic;
 
   body.append(photo);
-
   card.append(body);
-
   document.getElementById('posts').append(card);
 }
 
