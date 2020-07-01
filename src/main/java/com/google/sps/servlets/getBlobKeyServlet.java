@@ -35,31 +35,29 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.datastore.FetchOptions;
 
 /** Stores and retrieves posts from Datastore */
-@WebServlet("/data")
-public class DataServlet extends HttpServlet {
+@WebServlet("/get-blob-key")
+public class getBlobKeyServlet extends HttpServlet {
 
   @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    
-    // TODO: usernames
-    // String username = request.getParameter("username");
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-    BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
-    ImmutableMap<String, List<BlobKey>> blobs = ImmutableMap.copyOf(blobstoreService.getUploads(request));
-    ImmutableList<BlobKey> blobKeys = ImmutableList.copyOf(blobs.get("image"));
-    String blobKey = blobKeys.get(0).getKeyString();
-
-    // TODO: might need a loop in here to check if that username already has a
-    // photo and replace it
-
-    Entity plantImageEntity = new Entity("plantImage");
-    plantImageEntity.setProperty("timestamp", System.currentTimeMillis());
-    // plantImageEntity.setProperty("username", username); 
-    plantImageEntity.setProperty("blobKey", blobKey);
-
+    Query query = new Query("plantImage").addSort("timestamp", SortDirection.DESCENDING);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(plantImageEntity);
-    
-    response.sendRedirect("/pictureUpload.html"); // TODO: send this somewhere else
+    PreparedQuery results = datastore.prepare(query);
+
+    // TODO: at the moment, this just gets a random picture from the database, we'll
+    // have to attach usernames 
+    List<Entity> resultsList = results.asList(FetchOptions.Builder.withLimit(1));
+    String blobKey = "no deal"; // TODO: find a better method for fixing this bug if it's still an issue
+    if(resultsList.size() != 0){
+      Entity entity = resultsList.get(0);
+      blobKey = (String) entity.getProperty("blobKey");
+    }
+
+    Gson gson = new Gson();
+
+    // Send JSON as the response
+    response.setContentType("application/json;");
+    response.getWriter().println(gson.toJson(blobKey));
   }
 }

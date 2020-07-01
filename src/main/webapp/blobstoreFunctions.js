@@ -39,7 +39,7 @@ function createListElement(pic) {
   * Populates the list element with JSON fetched from the /data servlet.
 */
 function populatePosts() {
-  fetch('/data').then(response => response.json()).then((blobKey) => {
+  fetch('/get-blob-key').then(response => response.json()).then((blobKey) => {
     const postHolder = document.getElementById('posts');
     postHolder.innerHTML = "";
     fetch('/get-image?blobKey=' + blobKey).then((pic) => {
