@@ -1,12 +1,13 @@
 //This is the js file for gameBoard.html
 
 
-// function getQuizStatus() {
-//     fetch("/getQuizStatus").then(response => response.json()).then((tasks) => {
-//         console.log("here");
-//         console.log(tasks);
-//     });
-// }
+function getQuizStatus() {
+    fetch("/getQuizStatus").then(response => response.json()).then((tasks) => {
+        console.log("here");
+        console.log(tasks);
+    });
+}
+
 // let date = new Date();
 // if(date.getMinutes() > 30){
 //     setCookie("quiz", "A Quiz is Ready");
