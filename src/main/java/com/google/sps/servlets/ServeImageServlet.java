@@ -24,9 +24,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * When the user submits the form, Blobstore processes the file upload and then forwards the request
- * to this servlet. This servlet then returns the image fetched from Blobstore.
- */
+ * Serves the blob by passing the blob key to blobstore service 
+ * replaces the getServingUrl method
+*/ 
 @WebServlet("/get-image")
 public class ServeImageServlet extends HttpServlet {
 
@@ -36,5 +36,4 @@ public class ServeImageServlet extends HttpServlet {
     BlobKey blobKey = new BlobKey(request.getParameter("blobKey"));
     blobstoreService.serve(blobKey, response);
   }
-  
 }
