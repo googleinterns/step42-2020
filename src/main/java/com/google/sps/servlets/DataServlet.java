@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Stores and retrieves posts from Datastore */
+/** Stores blob keys for plant images in Datastore */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
