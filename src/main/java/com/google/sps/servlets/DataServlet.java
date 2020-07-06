@@ -48,7 +48,6 @@ public class DataServlet extends HttpServlet {
     // photo and replace it
  
     Entity plantImageEntity = new Entity("plantImage");
-    plantImageEntity.setProperty("timestamp", System.currentTimeMillis());
     // plantImageEntity.setProperty("username", username); 
     plantImageEntity.setProperty("blobKey", blobKey);
  
