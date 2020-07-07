@@ -29,14 +29,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
  
-/** Blobstore upload handler: stores blob keys for plant images in Datastore */
-@WebServlet("/blobstore-image-upload-handler")
-public class DataServlet extends HttpServlet {
+/** Blobstore upload handler: gets blobkey for an uploaded image and stores it in datastore
+    (see https://cloud.google.com/appengine/docs/standard/java/blobstore#3_implement_upload_handler
+    for documentation of an upload handler)
+ */
+@WebServlet("/image-upload-handler-blobstore")
+public class UploadHandlerServlet extends HttpServlet {
 
   BlobstoreService blobstoreService;
   DatastoreService datastore;
 
-  public DataServlet(){
+  public UploadHandlerServlet(){
     blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
     datastore = DatastoreServiceFactory.getDatastoreService();
   }
@@ -61,6 +64,6 @@ public class DataServlet extends HttpServlet {
 
     datastore.put(plantImageEntity);
     
-    response.sendRedirect("/pictureUpload.html"); // TODO: send this somewhere else
+    response.sendRedirect("/imageUpload.html"); // TODO: send this somewhere else
   }
 }
