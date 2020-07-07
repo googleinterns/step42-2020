@@ -40,7 +40,8 @@ public class DataServlet extends HttpServlet {
     blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
     datastore = DatastoreServiceFactory.getDatastoreService();
   }
- 
+
+  // TODO: Limit this so it can only be used as a blobstore upload handler; cut off end-user access
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     
