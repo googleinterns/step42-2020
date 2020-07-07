@@ -32,6 +32,14 @@ import javax.servlet.http.HttpServletResponse;
 /** Stores blob keys for plant images in Datastore */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
+
+  BlobstoreService blobstoreService;
+  DatastoreService datastore;
+  
+  public DataServlet(){
+    blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+    datastore = DatastoreServiceFactory.getDatastoreService();
+  }
  
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -39,7 +47,6 @@ public class DataServlet extends HttpServlet {
     // TODO: usernames
     // String username = request.getParameter("username");
  
-    BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
     ImmutableMap<String, List<BlobKey>> blobs = ImmutableMap.copyOf(blobstoreService.getUploads(request));
     ImmutableList<BlobKey> blobKeys = ImmutableList.copyOf(blobs.get("image"));
     String blobKey = blobKeys.get(0).getKeyString();
@@ -50,8 +57,7 @@ public class DataServlet extends HttpServlet {
     Entity plantImageEntity = new Entity("plantImage");
     // plantImageEntity.setProperty("username", username); 
     plantImageEntity.setProperty("blobKey", blobKey);
- 
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
     datastore.put(plantImageEntity);
     
     response.sendRedirect("/pictureUpload.html"); // TODO: send this somewhere else
