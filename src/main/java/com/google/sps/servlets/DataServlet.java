@@ -29,13 +29,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
  
-/** Stores blob keys for plant images in Datastore */
-@WebServlet("/data")
+/** Blobstore upload handler: stores blob keys for plant images in Datastore */
+@WebServlet("/blobstore-image-upload-handler")
 public class DataServlet extends HttpServlet {
 
   BlobstoreService blobstoreService;
   DatastoreService datastore;
-  
+
   public DataServlet(){
     blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
     datastore = DatastoreServiceFactory.getDatastoreService();
