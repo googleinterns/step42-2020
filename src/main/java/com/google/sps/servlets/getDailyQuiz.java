@@ -37,6 +37,7 @@ public class getDailyQuiz extends HttpServlet {
             time = entity.getProperty("timestamp");
         }
 
+        System.out.println(time);
         FetchOptions fetchOptions = FetchOptions.Builder.withLimit(1);        
         List<Entity> quizEntities = pq.asQueryResultList(fetchOptions);
 
