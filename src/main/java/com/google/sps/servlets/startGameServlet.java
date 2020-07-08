@@ -39,15 +39,18 @@ public class startGameServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
       String gameName = request.getParameter("game-name");
- 
-      ArrayList<String> userNames = new ArrayList<>();
+
       // TODO: get username and add it to the list
+      ArrayList<String> userNames = new ArrayList<>();
+      // TODO: add list of scores to game object 
+      // ArrayList<scores> scores = new ArrayList<>()
  
       // create entity
       Entity gameEntity = new Entity("Game");
       gameEntity.setProperty("gameName", gameName);
       gameEntity.setProperty("userNames", userNames);
- 
+      // gameEntity.setProperty("scores", scores);
+    
       // TODO: update user entity 
       // Query query = new Query("User");
       // PreparedQuery results = datastore.prepare(query);
