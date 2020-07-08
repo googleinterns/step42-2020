@@ -47,7 +47,6 @@ DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
      Query query = new Query("user");
      query.setFilter(getCorrectUser);
 
-
      PreparedQuery results = datastore.prepare(query);
       
       List<Entity> limitedResults = results.asList(FetchOptions.Builder.withLimit(1)); //should never be more than 1, no 2 user IDs are ever the same
