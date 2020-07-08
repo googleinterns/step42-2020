@@ -6,11 +6,6 @@ package com.google.sps.servlets;
 public class GameScores{
     String gameKey;
     int score;
-    
-    public GameScores(){
-        this.gameKey = "";
-        this.score = 0;
-    }
 
     public GameScores(String gameKey, int score){
         this.gameKey = gameKey;
