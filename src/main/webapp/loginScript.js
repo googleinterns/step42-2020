@@ -1,8 +1,19 @@
 function onSignIn(googleUser) {
   var profile = googleUser.getBasicProfile();
-  localStorage.setItem("username",profile.getName()); //sends player's names into local storage
-  localStorage.setItem("ID", profile.getId()); //sends player's id into local storage
+  var name = profile.getName();
+  var id = profile.getId();
+  localStorage.setItem("username",name); //sends player's names into local storage
+  localStorage.setItem("ID", id); //sends player's id into local storage
+  updateUserEntity(name,id);
   window.location = "index.html";
+}
+
+//create/update user entity
+function updateUserEntity(name, id){
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "/user", false);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send("name=" +name+ "&id=" +id);
 }
 
 //adds username to each page
@@ -13,6 +24,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
 });
 
+//signs out of the page
 function signOut() {
   gapi.load('auth2', function() {
        gapi.auth2.init({
@@ -26,6 +38,7 @@ function signOut() {
   });
 }
 
+//current method to check sign in
 function checkSignIn(){
   gapi.load('auth2', function() {
        gapi.auth2.init({
