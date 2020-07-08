@@ -32,14 +32,8 @@ public class getDailyQuiz extends HttpServlet {
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         PreparedQuery pq = datastore.prepare(query);
 
-        Object time = null;
-        for(Entity entity : pq.asIterable()) {
-            time = entity.getProperty("timestamp");
-        }
-
-        System.out.println(time);
-        FetchOptions fetchOptions = FetchOptions.Builder.withLimit(1);        
-        List<Entity> quizEntities = pq.asQueryResultList(fetchOptions);
+        Entity quiz = pq.asList(FetchOptions.Builder.withLimit(1)).get(0);
+        Object time = quiz.getProperty("timestamp");     
 
         String quiz_date = DateFormat.getDateInstance().format(time);
         String today_date = DateFormat.getDateInstance().format(new Date());
@@ -47,14 +41,12 @@ public class getDailyQuiz extends HttpServlet {
         Gson gson = new Gson();
         response.setContentType("application/json;");
         if(today_date.compareTo(quiz_date) > 0) {
-            for(Entity entity : quizEntities){
-                Key key_of_entity = entity.getKey();
-                datastore.delete(key_of_entity);
-                Entity quiz = new Entity(key_of_entity);
-                quiz.setProperty("timestamp", System.currentTimeMillis());
-                datastore.put(quiz);
-            }
-            response.getWriter().println(gson.toJson(quizEntities));
+            Key key_of_entity = quiz.getKey();
+            datastore.delete(key_of_entity);
+            Entity updated_quiz = new Entity(key_of_entity);
+            updated_quiz.setProperty("timestamp", System.currentTimeMillis());
+            datastore.put(updated_quiz);
+            response.getWriter().println(gson.toJson(quiz));
         } else {
             response.getWriter().println(gson.toJson("NoNewButton"));
         }
