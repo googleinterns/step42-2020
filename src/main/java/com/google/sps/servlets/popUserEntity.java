@@ -67,7 +67,6 @@ DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
      Filter getCorrectUser = new FilterPredicate("userID", FilterOperator.EQUAL, userID);
      Query query = new Query("user");
      query.setFilter(getCorrectUser);
-
      PreparedQuery results = datastore.prepare(query);
      
      //this should always work, as long as doPost is always called upon login
