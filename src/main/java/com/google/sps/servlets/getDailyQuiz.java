@@ -19,7 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.QueryResultList;
-import com.google.appengine.api.datastore.Cursor;
+import java.text.DateFormat;
+import java.util.Date;
+import com.google.appengine.api.datastore.Key;
 
 @WebServlet("/getQuizStatus")
 public class getDailyQuiz extends HttpServlet {
@@ -30,10 +32,30 @@ public class getDailyQuiz extends HttpServlet {
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         PreparedQuery pq = datastore.prepare(query);
 
+        Object time = null;
+        for(Entity entity : pq.asIterable()) {
+            time = entity.getProperty("timestamp");
+        }
+
+        FetchOptions fetchOptions = FetchOptions.Builder.withLimit(1);        
+        List<Entity> quizEntities = pq.asQueryResultList(fetchOptions);
+
+        String quiz_date = DateFormat.getDateInstance().format(time);
+        String today_date = DateFormat.getDateInstance().format(new Date());
+
         Gson gson = new Gson();
-
         response.setContentType("application/json;");
-        response.getWriter().println(gson.toJson(pq));
-
+        if(today_date.compareTo(quiz_date) > 0) {
+            for(Entity entity : quizEntities){
+                Key key_of_entity = entity.getKey();
+                datastore.delete(key_of_entity);
+                Entity quiz = new Entity(key_of_entity);
+                quiz.setProperty("timestamp", System.currentTimeMillis());
+                datastore.put(quiz);
+            }
+            response.getWriter().println(gson.toJson(quizEntities));
+        } else {
+            response.getWriter().println(gson.toJson("NoNewButton"));
+        }
     }
 }

@@ -93,8 +93,8 @@ a{
 }
 
 #headings{
-    font-size: 4vh;
-    text-align: center;
+    font-size:4vh;
+    margin-left: 32vw;
     font-family: 'PT Mono', monospace;
     color: #235952;
 }
@@ -120,7 +120,7 @@ a{
 
 #button{
     margin-left: 35vw;
-    background-color: #235952;
+    border-color: #235952;
 }
 
 /* Quiz Page */
@@ -137,4 +137,11 @@ a{
     height: 25vh;
     width: 25vh;
     margin-left: 45vh;
+}
+
+#start_quiz {
+    margin-left: 32vw;
+    border-color: #235952;
+    height: 7vh;
+    width: 25vh;
 }
