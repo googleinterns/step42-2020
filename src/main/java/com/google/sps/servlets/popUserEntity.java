@@ -40,7 +40,7 @@ DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
       String username = request.getParameter("name");
       String userID = request.getParameter("id");
-      ArrayList<GameScores> userScoresArrayList = new ArrayList<GameScores>(); //this gets populated when the user joins a game.
+      Map<String, int> gameIDScoreMap = new HashMap<String, int>(); 
 
     //check if user entity is already in system
      Filter getCorrectUser = new FilterPredicate("userID", FilterOperator.EQUAL, userID);
@@ -55,7 +55,7 @@ DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         Entity userEntity = new Entity("user");
         userEntity.setProperty("username",username);
         userEntity.setProperty("userID",userID);
-        userEntity.setProperty("gameScores",userScoresArrayList);
+        userEntity.setProperty("gameScores",gameIDScoreMap);
         datastore.put(userEntity);
       }
   }
