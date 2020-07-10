@@ -3,13 +3,12 @@ function onSignIn(googleUser) {
   var name = profile.getName();
   var id = profile.getId();
   localStorage.setItem("username",name); //sends player's names into local storage
-  localStorage.setItem("ID", id); //sends player's id into local storage
-  updateUserEntity(name,id);
+  createUserEntity(name,id);
   window.location = "index.html";
 }
 
 //create/update user entity
-function updateUserEntity(name, id){
+function createUserEntity(name, id){
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "/user", false);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -32,7 +31,6 @@ function signOut() {
     }).then(function(auth2){
         auth2.signOut();
         localStorage.removeItem("username");
-        localStorage.removeItem("ID");
         window.location = "login.html";
     });
   });

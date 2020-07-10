@@ -39,14 +39,13 @@ DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
       String username = request.getParameter("name");
       String userID = request.getParameter("id");
-      ArrayList<GameScores> userScoresArrayList = new ArrayList<GameScores>(); //this gets populated when the user joins a game.
       long initialTime = 0L;
+      Map<String, int> gameIDScoreMap = new HashMap<String, int>(); 
 
     //check if user entity is already in system
      Filter getCorrectUser = new FilterPredicate("userID", FilterOperator.EQUAL, userID);
      Query query = new Query("user");
      query.setFilter(getCorrectUser);
-
 
      PreparedQuery results = datastore.prepare(query);
       
@@ -57,7 +56,7 @@ DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         userEntity.setProperty("username",username);
         userEntity.setProperty("userID",userID);
         userEntity.setProperty("timeQuizTaken",initialTime);
-        userEntity.setProperty("gameScores",userScoresArrayList);
+        userEntity.setProperty("gameScores",gameIDScoreMap);
         datastore.put(userEntity);
       }
   }
@@ -68,7 +67,6 @@ DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
      Filter getCorrectUser = new FilterPredicate("userID", FilterOperator.EQUAL, userID);
      Query query = new Query("user");
      query.setFilter(getCorrectUser);
-
      PreparedQuery results = datastore.prepare(query);
      
      //this should always work, as long as doPost is always called upon login
