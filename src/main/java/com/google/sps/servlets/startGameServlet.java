@@ -45,11 +45,12 @@ public class startGameServlet extends HttpServlet {
       long quizTime = 0;
 
       // TODO: check if game name is valid (needs user entity and GameUtils merged)
-      // Query query = new Query("User");
+      // Filter getCorrectUser = new FilterPredicate("userID", FilterOperator.EQUAL, givenUser);
+      // Query query = new Query("Game").setFilter(getCorrectUser);
       // PreparedQuery results = datastore.prepare(query);
       // List<Entity> resultsList = results.asList();
       // GameUtils gameUtils = new GameUtils();
-      // if(!gameUtils.isValidGameName(gameName, resultsList, givenUser)){
+      // if(!gameUtils.isValidGameName(gameName, resultsList)){
       //     // return error message 
       //    response.sendRedirect("/start.html");
       // }
