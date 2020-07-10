@@ -10,7 +10,6 @@ import javax.servlet.http.*;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
-import com.google.cloud.datastore.EntityQuery;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.PreparedQuery.TooManyResultsException;
 import com.google.appengine.api.datastore.Query;
@@ -41,6 +40,7 @@ DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       String username = request.getParameter("name");
       String userID = request.getParameter("id");
       ArrayList<GameScores> userScoresArrayList = new ArrayList<GameScores>(); //this gets populated when the user joins a game.
+      long initialTime = 0L;
 
     //check if user entity is already in system
      Filter getCorrectUser = new FilterPredicate("userID", FilterOperator.EQUAL, userID);
@@ -56,6 +56,7 @@ DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         Entity userEntity = new Entity("user");
         userEntity.setProperty("username",username);
         userEntity.setProperty("userID",userID);
+        userEntity.setProperty("timeQuizTaken",initialTime);
         userEntity.setProperty("gameScores",userScoresArrayList);
         datastore.put(userEntity);
       }
