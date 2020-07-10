@@ -17,6 +17,7 @@ package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.sps.GameUtils;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -38,7 +39,20 @@ public class startGameServlet extends HttpServlet {
  
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
       String gameName = request.getParameter("game-name");
+      String quizQuestion = "hardCodedTemp";
+      Long quizTime = 0;
+
+      // TODO: check if game name is valid (needs user entity and GameUtils merged)
+      // Query query = new Query("User");
+      // PreparedQuery results = datastore.prepare(query);
+      // List<Entity> resultsList = results.asList();
+      // GameUtils gameUtils = new GameUtils();
+      // if(!gameUtils.isValidGameName(gameName, resultsList, givenUser)){
+      //     // return error message 
+      //    response.sendRedirect("/start.html");
+      // }
 
       // TODO: get username and add it to the list
       ArrayList<String> userNames = new ArrayList<>();
@@ -49,11 +63,11 @@ public class startGameServlet extends HttpServlet {
       Entity gameEntity = new Entity("Game");
       gameEntity.setProperty("gameName", gameName);
       gameEntity.setProperty("userNames", userNames);
+      gameEntity.setProperty("quizQuestion", gameName); // string
+      gameEntity.setProperty("quizTime", userNames); // long
       // gameEntity.setProperty("scores", scores);
     
       // TODO: update user entity 
-      // Query query = new Query("User");
-      // PreparedQuery results = datastore.prepare(query);
       // TODO: add game to user entity 
  
       // store entity
