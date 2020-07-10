@@ -42,7 +42,7 @@ public class startGameServlet extends HttpServlet {
 
       String gameName = request.getParameter("game-name");
       String quizQuestion = "hardCodedTemp";
-      Long quizTime = 0;
+      long quizTime = 0;
 
       // TODO: check if game name is valid (needs user entity and GameUtils merged)
       // Query query = new Query("User");
