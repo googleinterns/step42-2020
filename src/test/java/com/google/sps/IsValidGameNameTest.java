@@ -25,7 +25,7 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import com.google.sps.GameUtils;
+import com.google.sps.utils.GameUtils;
 
 /** tests the IsValidGameName function */
 @RunWith(JUnit4.class)
