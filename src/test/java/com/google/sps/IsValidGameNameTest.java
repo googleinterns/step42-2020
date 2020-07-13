@@ -31,7 +31,7 @@ import com.google.sps.GameUtils;
 @RunWith(JUnit4.class)
 public final class IsValidGameNameTest {
   
-  private GameUtils query;
+  private GameUtils gameUtils;
 
   private static String userID1 = "1";
   private static String userID2 = "2";
@@ -43,7 +43,7 @@ public final class IsValidGameNameTest {
   @Before
   public void setUp() {
     helper.setUp();
-    query = new GameUtils();
+    gameUtils = new GameUtils();
   }
 
   @After
@@ -67,7 +67,7 @@ public final class IsValidGameNameTest {
 
     userList.add(userEntity2);
 
-    boolean actual = query.IsValidGameName("game1", userEntity2);
+    boolean actual = gameUtils.IsValidGameName("game1", userEntity2);
     boolean expected = true;
 
     Assert.assertEquals(expected, actual);
@@ -93,7 +93,7 @@ public final class IsValidGameNameTest {
 
     userList.add(userEntity1);
 
-    boolean actual = query.IsValidGameName("game1", userEntity1);
+    boolean actual = gameUtils.IsValidGameName("game1", userEntity1);
     boolean expected = false;
 
     Assert.assertEquals(expected, actual);
@@ -119,7 +119,7 @@ public final class IsValidGameNameTest {
 
     userList.add(userEntity1);
 
-    boolean actual = query.IsValidGameName("game4", userEntity1);
+    boolean actual = gameUtils.IsValidGameName("game4", userEntity1);
     boolean expected = true;
 
     Assert.assertEquals(expected, actual);
@@ -145,7 +145,7 @@ public final class IsValidGameNameTest {
 
     userList.add(userEntity1);
 
-    boolean actual = query.IsValidGameName("Game1", userEntity1);
+    boolean actual = gameUtils.IsValidGameName("Game1", userEntity1);
     boolean expected = true;
 
     Assert.assertEquals(expected, actual);
@@ -171,7 +171,7 @@ public final class IsValidGameNameTest {
 
     userList.add(userEntity1);
 
-    boolean actual = query.IsValidGameName("", userEntity1);
+    boolean actual = gameUtils.IsValidGameName("", userEntity1);
     boolean expected = false;
 
     Assert.assertEquals(expected, actual);
@@ -181,7 +181,7 @@ public final class IsValidGameNameTest {
   @Test
   public void nullUserEntity() {
 
-    boolean actual = query.IsValidGameName("game1", null);
+    boolean actual = gameUtils.IsValidGameName("game1", null);
     boolean expected = false;
 
     Assert.assertEquals(expected, actual);
