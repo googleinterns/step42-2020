@@ -62,9 +62,8 @@ public final class IsValidGameNameTest {
     userEntity2.setProperty("userID",userID2);
 
     boolean actual = gameUtils.IsValidGameName("game1", userEntity2);
-    boolean expected = true;
 
-    Assert.assertEquals(expected, actual);
+    Assert.assertEquals(true, actual);
   }
 
   // given a game name the user already has, the function should return false 
@@ -81,9 +80,8 @@ public final class IsValidGameNameTest {
     userEntity1.setProperty("userID",userID1);
 
     boolean actual = gameUtils.IsValidGameName("game1", userEntity1);
-    boolean expected = false;
 
-    Assert.assertEquals(expected, actual);
+    Assert.assertEquals(false, actual);
   }
 
   // when the user has games, but the given game name is new, the function should return true
@@ -100,9 +98,8 @@ public final class IsValidGameNameTest {
     userEntity1.setProperty("userID",userID1);
 
     boolean actual = gameUtils.IsValidGameName("game4", userEntity1);
-    boolean expected = true;
 
-    Assert.assertEquals(expected, actual);
+    Assert.assertEquals(true, actual);
   }
 
   // when the user has games, and the given name is a duplicate name with different capitalization, the function should return true
@@ -119,9 +116,8 @@ public final class IsValidGameNameTest {
     userEntity1.setProperty("userID",userID1);
 
     boolean actual = gameUtils.IsValidGameName("Game1", userEntity1);
-    boolean expected = true;
 
-    Assert.assertEquals(expected, actual);
+    Assert.assertEquals(true, actual);
   }
 
   // given a blank game name, function should return false 
@@ -138,9 +134,8 @@ public final class IsValidGameNameTest {
     userEntity1.setProperty("userID",userID1);
 
     boolean actual = gameUtils.IsValidGameName("", userEntity1);
-    boolean expected = false;
 
-    Assert.assertEquals(expected, actual);
+    Assert.assertEquals(false, actual);
   }
 
   // given a null user entity, function should return false 
@@ -148,8 +143,7 @@ public final class IsValidGameNameTest {
   public void nullUserEntity() {
 
     boolean actual = gameUtils.IsValidGameName("game1", null);
-    boolean expected = false;
 
-    Assert.assertEquals(expected, actual);
+    Assert.assertEquals(false, actual);
   }
 }

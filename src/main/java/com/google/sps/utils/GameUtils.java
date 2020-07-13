@@ -15,12 +15,22 @@
 package com.google.sps;
 
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.KeyFactory;
 import java.util.ArrayList;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import java.util.List;
+import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
+
 
 public final class GameUtils {
 
   /**
-  * When a user creates or joins a game, checks to see whether the user already has a game by that name, and returns false if so
+  * Checks to see whether the user already has a game by the given name, and returns false if so
   */
   public boolean IsValidGameName(String gameName, Entity userEntity) {
     
@@ -39,5 +49,4 @@ public final class GameUtils {
     }
     return true;
   }
-  
 }
