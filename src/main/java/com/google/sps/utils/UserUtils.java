@@ -30,11 +30,20 @@ public final class UserUtils {
   * Queries a user entity of a given specific user Id from datastore
   */
   public Entity QueryByUserId(String givenUser, DatastoreService datastore) {
+
+    if(givenUser == "" || datastore == null){
+        return null;
+    }
+
     Filter getCorrectUser = new FilterPredicate("userID", FilterOperator.EQUAL, givenUser);
     Query query = new Query("Game").setFilter(getCorrectUser);
     PreparedQuery results = datastore.prepare(query);
     
     List<Entity> resultsList = results.asList(FetchOptions.Builder.withLimit(1));
+    if(resultsList.size() == 0){
+        return null;
+    }
+
     Entity entity = resultsList.get(0);
     return entity;
   }
