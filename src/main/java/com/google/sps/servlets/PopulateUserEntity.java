@@ -32,15 +32,26 @@ import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
 
 @WebServlet("/user")
-public class popUserEntity extends HttpServlet {
+public class PopulateUserEntity extends HttpServlet {
 DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
+     /**
+    * Populates the datastore with "user" entities. 
+    * Every time someone logs in, this doPost is called
+    * and creates an entity that contains user's full name, user id,
+    * the timestamp of the last quiz they took, and a mapping of the game scores. 
+    *
+    * If a user with the ID passed in already exists, this function does nothing. 
+    *<p>
+    *@param  name  the name of the user.
+    *@param  id    the user's user ID (from Google Users API)
+    */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
       String username = request.getParameter("name");
       String userID = request.getParameter("id");
       long initialTime = 0L;
-      Map<String, int> gameIDScoreMap = new HashMap<String, int>(); 
+      ArrayList<GameScores> gameIDScoreMap = new Arraylist<GameScores>(); 
 
     //check if user entity is already in system
      Filter getCorrectUser = new FilterPredicate("userID", FilterOperator.EQUAL, userID);
@@ -59,21 +70,5 @@ DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         userEntity.setProperty("gameScores",gameIDScoreMap);
         datastore.put(userEntity);
       }
-  }
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      //check the logged in user and get the photo of the logged in user.
-    String userID = request.getParameter("id");
-
-     Filter getCorrectUser = new FilterPredicate("userID", FilterOperator.EQUAL, userID);
-     Query query = new Query("user");
-     query.setFilter(getCorrectUser);
-     PreparedQuery results = datastore.prepare(query);
-     
-     //this should always work, as long as doPost is always called upon login
-     try{
-         Entity userEntity = results.asList(FetchOptions.Builder.withLimit(1)).get(0);
-     } catch (Exception e){
-         System.err.println("user entity uninitialized. cannot return information.");
-     }
   }
 }
