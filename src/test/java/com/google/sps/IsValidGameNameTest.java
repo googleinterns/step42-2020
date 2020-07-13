@@ -55,17 +55,11 @@ public final class IsValidGameNameTest {
   @Test
   public void noGames() {
 
-    Entity userEntity2;
-    ArrayList<String> gameNames2;
-
-    List<Entity> userList = new ArrayList<Entity>();
-    userEntity2 = new Entity("user");
-    gameNames2 = new ArrayList<>();
+    Entity userEntity2 = new Entity("user");
+    ArrayList<String> gameNames2 = new ArrayList<>();
 
     userEntity2.setProperty("gameNames",gameNames2);
     userEntity2.setProperty("userID",userID2);
-
-    userList.add(userEntity2);
 
     boolean actual = gameUtils.IsValidGameName("game1", userEntity2);
     boolean expected = true;
@@ -77,21 +71,14 @@ public final class IsValidGameNameTest {
   @Test
   public void duplicateGameName() {
 
-    Entity userEntity1;
-    ArrayList<String> gameNames1;
+    Entity userEntity1 = new Entity("user");
+    ArrayList<String> gameNames1 = new ArrayList<>();
 
-    List<Entity> userList = new ArrayList<Entity>();
-    userEntity1 = new Entity("user");
-    gameNames1 = new ArrayList<>();
-
-    
     gameNames1.add("game1");
     gameNames1.add("game2");
     gameNames1.add("Game3");
     userEntity1.setProperty("gameNames",gameNames1);
     userEntity1.setProperty("userID",userID1);
-
-    userList.add(userEntity1);
 
     boolean actual = gameUtils.IsValidGameName("game1", userEntity1);
     boolean expected = false;
@@ -103,21 +90,14 @@ public final class IsValidGameNameTest {
   @Test
   public void newGameName() {
 
-    Entity userEntity1;
-    ArrayList<String> gameNames1;
-
-    List<Entity> userList = new ArrayList<Entity>();
-    userEntity1 = new Entity("user");
-    gameNames1 = new ArrayList<>();
-
+    Entity userEntity1 = new Entity("user");
+    ArrayList<String> gameNames1 = new ArrayList<>();
     
     gameNames1.add("game1");
     gameNames1.add("game2");
     gameNames1.add("Game3");
     userEntity1.setProperty("gameNames",gameNames1);
     userEntity1.setProperty("userID",userID1);
-
-    userList.add(userEntity1);
 
     boolean actual = gameUtils.IsValidGameName("game4", userEntity1);
     boolean expected = true;
@@ -129,21 +109,14 @@ public final class IsValidGameNameTest {
   @Test
   public void sameNameDifferentCapitalization() {
 
-    Entity userEntity1;
-    ArrayList<String> gameNames1;
-
-    List<Entity> userList = new ArrayList<Entity>();
-    userEntity1 = new Entity("user");
-    gameNames1 = new ArrayList<>();
-
+    Entity userEntity1 = new Entity("user");
+    ArrayList<String> gameNames1 = new ArrayList<>();
     
     gameNames1.add("game1");
     gameNames1.add("game2");
     gameNames1.add("Game3");
     userEntity1.setProperty("gameNames",gameNames1);
     userEntity1.setProperty("userID",userID1);
-
-    userList.add(userEntity1);
 
     boolean actual = gameUtils.IsValidGameName("Game1", userEntity1);
     boolean expected = true;
@@ -155,21 +128,14 @@ public final class IsValidGameNameTest {
   @Test
   public void emptyGameName() {
 
-    Entity userEntity1;
-    ArrayList<String> gameNames1;
-
-    List<Entity> userList = new ArrayList<Entity>();
-    userEntity1 = new Entity("user");
-    gameNames1 = new ArrayList<>();
-
+    Entity userEntity1 = new Entity("user");
+    ArrayList<String> gameNames1 = new ArrayList<>();
     
     gameNames1.add("game1");
     gameNames1.add("game2");
     gameNames1.add("Game3");
     userEntity1.setProperty("gameNames",gameNames1);
     userEntity1.setProperty("userID",userID1);
-
-    userList.add(userEntity1);
 
     boolean actual = gameUtils.IsValidGameName("", userEntity1);
     boolean expected = false;
