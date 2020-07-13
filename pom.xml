@@ -30,7 +30,6 @@
       <version>2.8.6</version>
     </dependency>
 
-
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -48,6 +47,20 @@
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>11.0.2</version>
+    </dependency>
+
+    <dependency>
+        <groupId>com.google.appengine</groupId>
+        <artifactId>appengine-testing</artifactId>
+        <version>1.9.64</version>
+        <scope>test</scope>
+    </dependency>
+
+    <dependency>
+        <groupId>com.google.appengine</groupId>
+        <artifactId>appengine-api-stubs</artifactId>
+        <version>1.9.60</version>
+        <scope>test</scope>
     </dependency>
 
   </dependencies>
