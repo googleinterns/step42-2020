@@ -15,16 +15,7 @@
 package com.google.sps.utils;
 
 import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.KeyFactory;
 import java.util.ArrayList;
-import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.Query;
-import java.util.List;
-import com.google.appengine.api.datastore.FetchOptions;
-import com.google.appengine.api.datastore.Query.Filter;
-import com.google.appengine.api.datastore.Query.FilterOperator;
-import com.google.appengine.api.datastore.Query.FilterPredicate;
 
 
 public final class GameUtils {
