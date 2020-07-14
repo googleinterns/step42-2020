@@ -14,50 +14,17 @@ if(document.getElementById("sound").onclick = function() {
     }
 });
 
-const quizQuestions = [
-    "Which plant has the most food growing from it?",
-    "Which plant has the prettiest colors?",
-    "Which plant is likely to grow the fastest?",
-    "Which plant is likely to require the most maintenance to take care of?",
-    "Which plant is most likely to be poisonous?",
-    "Which plant is most likely to survive really dry weather?",
-    "Which plant is the largest?",
-    "Which plant looks edible?",
-    "Which plant looks the healthiest?",
-    "Which plant looks the most serene?",
-    "Which plant needs the most sunlight?",
-    "Which plant needs the most water?",
-    "Which plant represents you?",
-    "Which plant represents your best friend?",
-    "Which plant will most likely impress your friends and family?",
-    "Which plant would look the best inside as a houseplant?",
-    "Which plant would look the best outside in a garden?",
-    "Which plant would you give as a gift?"
-];
-let question_to_be_answered = document.createElement('h5');
-
-function generateQuizQuestions() {
-    let question =  quizQuestions[Math.floor(Math.random() * quizQuestions.length)];
-    question_to_be_answered.innerText = question;
-    question_to_be_answered.id = "questions";
-    document.getElementById('quiz_question').appendChild(question_to_be_answered);
-}
-
 document.getElementById("start_quiz").onclick = function() {
-    document.getElementById("quiz_time").style.display = "block";
-    document.getElementById("start_quiz").style.display = "none";
-    generateQuizQuestions();
-}
-
-// TODO: Store numbe of questions in cookies or in datastore so that the user doesn't get more questions just by reloading the page
-let clickedCount = 0;
-document.getElementById("button").onclick = function() {
-    if(clickedCount!=7) {
-        document.getElementById('quiz_question').removeChild(question_to_be_answered);
-        generateQuizQuestions();
-    } else {
-        document.getElementById("button").disabled = true;
-    }
-    clickedCount+=1;
+    fetch("/user-quiz-status-servlet").then(response => response.json()).then((tasks) => {
+        if(tasks == true){
+            console.log("You already took this quiz!");
+        } else {
+            fetch("/game-quiz-status-servlet").then(response => response.json()).then((tasks) => {
+                document.getElementById("questions").innerText = tasks;
+                document.getElementById("quiz_time").style.display = "block";
+                document.getElementById("start_quiz").style.display = "none";
+            });
+        }
+    });
 }
 
