@@ -53,13 +53,11 @@ public final class GameUtils {
  
     Entity gameEntity = new Entity("Game");
     ArrayList<String> userIds = new ArrayList<String>();
-    ArrayList<String> scoreIds = new ArrayList<String>();
     String quizQuestion = "";
     long quiz_timestamp = 0;
  
     gameEntity.setProperty("gameName", gameName);
     gameEntity.setProperty("userIds", userIds);
-    gameEntity.setProperty("scoreIds", scoreIds);
     gameEntity.setProperty("quizQuestion", quizQuestion);
     gameEntity.setProperty("quiz_timestamp", quiz_timestamp);
  
