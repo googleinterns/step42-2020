@@ -78,29 +78,47 @@ public final class QuizTimingPropertiesUtils {
         return false;
     }
 
+    //This function checks to see if the quiz is outdated
      public Boolean newDayNewQuiz(Object current_quiz_time) {
-        String quiz_date = DateFormat.getDateInstance().format(current_quiz_time);
-        String today_date = DateFormat.getDateInstance().format(new Date());
- 
-        if(today_date.compareTo(quiz_date) > 0) {
-            return true;
+        try {
+            String quiz_date = DateFormat.getDateInstance().format(current_quiz_time);
+            String today_date = DateFormat.getDateInstance().format(new Date());
+    
+            if(today_date.compareTo(quiz_date) > 0) {
+                return true;
+            }
+            return false;
+        } catch(IllegalArgumentException e) {
+            return null;
         }
-        return false;
     }
- 
+    
+    //This function gets a new quiz question if the quiz is outdated
     public Object getNewQuestion(Entity game_entity, DatastoreService datastore) {
-        Random rand = new Random();
-        int rand_number = rand.nextInt(quiz_questions.size());
- 
-        Key game_entity_key = game_entity.getKey();
-        datastore.delete(game_entity_key);
-        
-        Entity update_game_entity = new Entity(game_entity_key);
-        update_game_entity.setProperty("quiz_timestamp", System.currentTimeMillis());
-        update_game_entity.setProperty("quizQuestion", quiz_questions.get(rand_number));
-        datastore.put(update_game_entity);
+        try {
+            Random rand = new Random();
+            int rand_number = rand.nextInt(quiz_questions.size());
+    
+            Key game_entity_key = game_entity.getKey();
+            datastore.delete(game_entity_key);
+            
+            Entity update_game_entity = new Entity(game_entity_key);
+            update_game_entity.setProperty("quiz_timestamp", System.currentTimeMillis());
+            update_game_entity.setProperty("quizQuestion", quiz_questions.get(rand_number));
+            datastore.put(update_game_entity);
 
-        return update_game_entity.getProperty("quizQuestion");
+            return update_game_entity.getProperty("quizQuestion");
+        } catch(NullPointerException e) {
+            return null;
+        } 
+    }
+
+    // Break ----------
+
+    public giveUserPoints(Boolean userQuizStatus) {
+        if(userQuizStatus) {
+            //Updates points
+        }
     }
 
 }

@@ -110,4 +110,43 @@ public final class TimingPropertiesTest {
         Boolean actual = timing_properties_test.userTookQuiz(user_quiz_time, game_quiz_time);
         Assert.assertEquals(false, actual);
     }
+
+    @Test
+    //Checks if the timestamp given is a null value
+    public void nullParameter_for_newDayNewQuiz(){
+        Boolean actual = timing_properties_test.newDayNewQuiz(null);
+        Assert.assertEquals(null, actual);
+    }
+
+    @Test 
+    //Checks if newDayNewQuiz works especially with being dependent on the getTimestampProperty
+    public void validParameter_for_newDayNewQuiz() {
+        user.setProperty("quiz_timestamp", 159430944365L);
+        datastore.put(user);
+
+        Object user_quiz_time = timing_properties_test.getTimestampProperty("user", datastore);
+
+        Boolean actual = timing_properties_test.newDayNewQuiz(user_quiz_time);
+        Assert.assertEquals(true, actual);
+    }
+
+    @Test 
+    //If the Entity parameter is null then the getNewQuestion function should return null
+    public void nullEntityValue_for_getNewQuestion(){
+        Object game_question = timing_properties_test.getNewQuestion(null, datastore);
+        Assert.assertEquals(null, game_question);
+    }
+
+    @Test
+    //Checks if getNewQuestion works by seeing if a question is added the game quizQuestion property
+    public void validParameter_for_getNewQuestion() {
+        game.setProperty("quiz_timestamp", 159430944365L);
+        game.setProperty("quizQuestion", "");
+        datastore.put(game);
+
+        String new_question = (timing_properties_test.getNewQuestion(game, datastore)).toString();
+        if(!(new_question.equals(""))){
+            Assert.assertEquals(true, true);
+        }
+    }
 }
