@@ -75,6 +75,13 @@ public final class TimingPropertiesTest {
         Assert.assertEquals(null, actual);
     }
 
+    @Test
+    //If the entity doesn't "timestamp" property then null should be returned
+    public void noTimeStampProperty() {
+        Object actual = timing_properties_test.getTimestampProperty("user", datastore);
+        Assert.assertEquals(null, actual);
+    }
+
     @Test 
     //Checks if getTimestampProperty function is working
     public void validParameters_for_getTimestampProperty() {
