@@ -17,7 +17,9 @@ package com.google.sps.utils;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.DatastoreService;
 import java.util.ArrayList;
-
+import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.Key;
 
 public final class GameUtils {
 
@@ -50,7 +52,8 @@ public final class GameUtils {
     if(gameName == "" || datastore == null){
         return false;
     }
- 
+    
+    // intializing game property values
     Entity gameEntity = new Entity("Game");
     ArrayList<String> userIds = new ArrayList<String>();
     String quizQuestion = "";
@@ -60,8 +63,20 @@ public final class GameUtils {
     gameEntity.setProperty("userIds", userIds);
     gameEntity.setProperty("quizQuestion", quizQuestion);
     gameEntity.setProperty("quiz_timestamp", quiz_timestamp);
+    Key gameKey = gameEntity.getKey();
  
     datastore.put(gameEntity);
+
+    // getting the game id for the game id property
+    Entity entity = null;
+    try{
+      entity = datastore.get(gameKey);
+    }catch(EntityNotFoundException e){
+      return false;
+    }
+    String key = KeyFactory.keyToString((entity.getKey()));
+    entity.setProperty("gameId", key);
+    datastore.put(entity);
  
     return true;
   }
