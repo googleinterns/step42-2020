@@ -26,20 +26,31 @@ import com.google.appengine.api.datastore.Query.FilterPredicate;
 
 public final class UserUtils {
 
-  /**
-  * Queries a user entity of a given specific user Id from datastore
-  */
-  public Entity QueryByUserId(String givenUser, DatastoreService datastore) {
+    /**
+    * Returns a single Entity object that can then be used in a servlet. 
+    * The entityPropertyTitle and entityPropertyValue
+    * arguments are relative to the entityName argument. 
+    * <p>
+    * This method always returns immediately, whether or not the 
+    * datastore object exists. If the object does not exist, the entity 
+    * returned is null.
+    * 
+    * @param  entityName           the name of an entity class in the datastore (ex.user, game)
+    * @param  entityPropertyTitle  the name of a specific property that the entity class has (usually sessionID or userID)
+    * @param  entityPropertyValue  the value of the property that is filtered for
+    * @return                      a single entity that has the same value for the property in the parameter 
+    */
+  public Entity FilteredQuery(String entityName, String entityPropertyTitle, String entityPropertyValue, DatastoreService datastore) {
 
-    if(givenUser == "" || datastore == null){
+    if(entityPropertyValue == "" || entityName == "" || entityPropertyTitle == "" || datastore == null){
         return null;
     }
 
-    Filter getCorrectUser = new FilterPredicate("userID", FilterOperator.EQUAL, givenUser);
-    Query query = new Query("Game").setFilter(getCorrectUser);
-    PreparedQuery results = datastore.prepare(query);
-    
-    List<Entity> resultsList = results.asList(FetchOptions.Builder.withLimit(1));
+    Filter getCorrectUser = new FilterPredicate(entityPropertyTitle, FilterOperator.EQUAL, entityPropertyValue);
+    Query query = new Query(entityName).setFilter(getCorrectUser);
+     PreparedQuery results = datastore.prepare(query);
+     List<Entity> resultsList = results.asList(FetchOptions.Builder.withLimit(1));
+
     if(resultsList.size() == 0){
         return null;
     }
