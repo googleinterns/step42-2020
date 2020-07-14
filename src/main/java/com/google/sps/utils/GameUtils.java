@@ -71,12 +71,13 @@ public final class GameUtils {
     Entity entity = null;
     try{
       entity = datastore.get(gameKey);
+
+      String key = KeyFactory.keyToString(gameKey);
+      entity.setProperty("gameId", key);
+      datastore.put(entity);
     }catch(EntityNotFoundException e){
       return false;
     }
-    String key = KeyFactory.keyToString((entity.getKey()));
-    entity.setProperty("gameId", key);
-    datastore.put(entity);
  
     return true;
   }
