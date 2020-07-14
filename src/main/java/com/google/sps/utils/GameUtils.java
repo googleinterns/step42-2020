@@ -15,7 +15,9 @@
 package com.google.sps.utils;
 
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.DatastoreService;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public final class GameUtils {
@@ -38,6 +40,30 @@ public final class GameUtils {
             return false;
         }
     }
+    return true;
+  }
+
+  /**
+  * Creates a game entity 
+  */
+  public boolean createGameEntity(String gameName, DatastoreService datastore) {
+    
+    if(gameName == "" || datastore == null){
+        return false;
+    }
+ 
+    Entity gameEntity = new Entity("Game");
+    ArrayList<String> userIds = new ArrayList<>();
+    String quizQuestion = "";
+    long quiz_timestamp = 0;
+ 
+    gameEntity.setProperty("gameName", gameName);
+    gameEntity.setProperty("userIds", userIds);
+    gameEntity.setProperty("quizQuestion", quizQuestion);
+    gameEntity.setProperty("quiz_timestamp", quiz_timestamp);
+ 
+    datastore.put(gameEntity);
+ 
     return true;
   }
 }
