@@ -26,6 +26,7 @@ import com.google.appengine.api.datastore.Query.FilterPredicate;
  
 public final class QuizTimingPropertiesUtils {
  
+    //This function gets the the "quiz_timestamp" property of the entity that is fed into the function
     public Object getTimestampProperty(String entity, DatastoreService datastore) {
         try {
             Query query = new Query(entity);
@@ -43,6 +44,7 @@ public final class QuizTimingPropertiesUtils {
         }
     }
  
+    //This function checks if the user has taken the quiz yet by comparing their timestamp with the quiz's timestamp
     public Boolean userTookQuiz(String usersQuizTime, String CurrentQuizTime) {
         if(usersQuizTime.compareTo(CurrentQuizTime) > 0) {
             return true;

@@ -52,6 +52,7 @@ public final class TimingPropertiesTest {
     }
  
     @Test
+    //If the user's time is a null value then the getTimestampProperty function should return null
     public void nullUserTimeStamp() {
         user.setProperty("quiz_timestamp", null);
         datastore.put(user);
@@ -60,24 +61,53 @@ public final class TimingPropertiesTest {
         Assert.assertEquals(null, actual);
     }
  
-    @Test 
+    @Test
+    //If the getTimestampProperty function gets fed an empty string, the function should return null
     public void emptyEntityString() {
         Object actual = timing_properties_test.getTimestampProperty("", datastore);
         Assert.assertEquals(null, actual);
     }
  
     @Test
+    //If the getTimeStampProperty function is fed a null value of datastore then the return should be null
     public void noDatastore() {
         Object actual = timing_properties_test.getTimestampProperty("user", null);
         Assert.assertEquals(null, actual);
     }
+
+    @Test 
+    //Checks if getTimestampProperty function is working
+    public void validParameters_for_getTimestampProperty() {
+        user.setProperty("quiz_timestamp", 1594309443653L);
+        datastore.put(user);
+
+        Object actual = timing_properties_test.getTimestampProperty("user", datastore);
+        Assert.assertEquals(1594309443653L, actual);
+    }
  
     @Test
+    //If the userTookQuiz function is fed two empty strings then the function should return false
     public void emptyStrings() {
         String user_quiz_time = "";
         String current_quiz_time = "";
         
         Boolean actual = timing_properties_test.userTookQuiz(user_quiz_time, current_quiz_time);
+        Assert.assertEquals(false, actual);
+    }
+
+    @Test
+    //Checks if userTookQuiz works especially with being dependent on the getTimestampProperty
+    public void validParameters_for_userTookQuiz() {
+        user.setProperty("quiz_timestamp", 1594309443653L);
+        datastore.put(user);
+
+        game.setProperty("quiz_timestamp", 1594309443660L);
+        datastore.put(game);
+
+        String user_quiz_time = (timing_properties_test.getTimestampProperty("user", datastore)).toString();
+        String game_quiz_time = (timing_properties_test.getTimestampProperty("game", datastore)).toString();
+
+        Boolean actual = timing_properties_test.userTookQuiz(user_quiz_time, game_quiz_time);
         Assert.assertEquals(false, actual);
     }
  
