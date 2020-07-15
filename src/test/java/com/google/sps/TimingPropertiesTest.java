@@ -111,6 +111,8 @@ public final class TimingPropertiesTest {
         Assert.assertEquals(false, actual);
     }
 
+    //Break for PR
+
     @Test
     //Checks if the timestamp given is a null value
     public void nullParameter_for_newDayNewQuiz(){
@@ -149,4 +151,6 @@ public final class TimingPropertiesTest {
             Assert.assertEquals(true, true);
         }
     }
+
+    //Break for PR
 }

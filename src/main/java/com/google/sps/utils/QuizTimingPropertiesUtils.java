@@ -78,19 +78,22 @@ public final class QuizTimingPropertiesUtils {
         return false;
     }
 
+    //Break
+
     //This function checks to see if the quiz is outdated
      public Boolean newDayNewQuiz(Object current_quiz_time) {
+        String quiz_date;
         try {
-            String quiz_date = DateFormat.getDateInstance().format(current_quiz_time);
-            String today_date = DateFormat.getDateInstance().format(new Date());
-    
-            if(today_date.compareTo(quiz_date) > 0) {
-                return true;
-            }
-            return false;
+            quiz_date = DateFormat.getDateInstance().format(current_quiz_time);
         } catch(IllegalArgumentException e) {
             return null;
         }
+
+        String today_date = DateFormat.getDateInstance().format(new Date());
+        if(today_date.compareTo(quiz_date) > 0) {
+            return true;
+        }
+        return false;
     }
     
     //This function gets a new quiz question if the quiz is outdated
@@ -115,10 +118,10 @@ public final class QuizTimingPropertiesUtils {
 
     // Break ----------
 
-    public giveUserPoints(Boolean userQuizStatus) {
-        if(userQuizStatus) {
-            //Updates points
-        }
-    }
+    // public giveUserPoints(Boolean userQuizStatus) {
+    //     if(userQuizStatus) {
+    //         //Updates points
+    //     }
+    // }
 
 }
