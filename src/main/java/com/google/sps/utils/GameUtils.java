@@ -26,7 +26,7 @@ public final class GameUtils {
   /**
   * Checks to see whether the user already has a game by the given name, and returns false if so
   */
-  public boolean IsValidGameName(String gameName, Entity userEntity) {
+  public static boolean IsValidGameName(String gameName, Entity userEntity) {
     
     if(userEntity == null || gameName == ""){
         return false;
@@ -45,11 +45,12 @@ public final class GameUtils {
   }
 
   /**
-  * Creates a game entity 
+  * Creates a game entity and returns true if successful
   */
-  public boolean createGameEntity(String gameName, DatastoreService datastore) {
+  public static boolean createGameEntity(String gameName, DatastoreService datastore) {
     
     if(gameName == "" || datastore == null){
+        System.out.println("Error: Null Datastore");
         return false;
     }
     
@@ -76,6 +77,7 @@ public final class GameUtils {
       entity.setProperty("gameId", key);
       datastore.put(entity);
     }catch(EntityNotFoundException e){
+      System.out.println("Error: Entity Not Found Exception");
       return false;
     }
  

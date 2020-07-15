@@ -29,8 +29,7 @@ import com.google.sps.utils.GameUtils;
 /** tests the createGameEntity function */
 @RunWith(JUnit4.class)
 public final class CreateGameTest {
-  
-  private GameUtils gameUtils;
+
   private DatastoreService datastore;
 
   // helper variable allows the use of datastore in testing 
@@ -40,7 +39,6 @@ public final class CreateGameTest {
   @Before
   public void setUp() {
     helper.setUp();
-    gameUtils = new GameUtils();
     datastore = DatastoreServiceFactory.getDatastoreService();
   }
 
@@ -51,18 +49,18 @@ public final class CreateGameTest {
 
   // Given an empty string for game name, the function should return false
   @Test
-  public void emptyGameName() {
+  public void emptyGameNameFails() {
 
-    boolean actual = gameUtils.createGameEntity("", datastore);
+    boolean actual = GameUtils.createGameEntity("", datastore);
 
     Assert.assertEquals(false, actual);
   }
 
   // Given a null for datastore instance, the function should return false
   @Test
-  public void nullDatastore() {
+  public void nullDatastoreFails() {
 
-    boolean actual = gameUtils.createGameEntity("game", null);
+    boolean actual = GameUtils.createGameEntity("game", null);
 
     Assert.assertEquals(false, actual);
   }
@@ -71,7 +69,7 @@ public final class CreateGameTest {
   @Test
   public void createValidGame() {
 
-    boolean actual = gameUtils.createGameEntity("game", datastore);
+    boolean actual = GameUtils.createGameEntity("game", datastore);
 
     Assert.assertEquals(true, actual);
   }
