@@ -79,12 +79,11 @@ public final class UserUtils {
     * @return            a single entity that has the cookie name/value pair as a property
     */
  
-  public Entity getUserFromCookie(Cookie cookies[], DatastoreService datastore){
+  public static Entity getUserFromCookie(Cookie cookies[], DatastoreService datastore){
       if(datastore == null){
           return null;
       }
       String sessionIDName = "SessionID";
-      CookieUtils cookieUtils = new CookieUtils();
       Cookie cookie = cookieUtils.getCookieGivenName(cookies, sessionIDName); //returns null if it doesn't exist
       if(cookie == null){ 
           return null;
