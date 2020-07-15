@@ -48,7 +48,7 @@ public final class GameUtils {
   }
 
   /**
-  * Creates a game entity and returns true if successful
+  * Creates a game entity and returns the entity if successful
   */
   public static Entity createGameEntity(String gameName, DatastoreService datastore) {
     
