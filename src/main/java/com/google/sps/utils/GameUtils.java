@@ -20,8 +20,11 @@ import java.util.ArrayList;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Key;
+import java.util.logging.Logger;
 
 public final class GameUtils {
+
+  private static final Logger log = Logger.getLogger(GameUtils.class.getName());
 
   /**
   * Checks to see whether the user already has a game by the given name, and returns false if so
@@ -53,7 +56,7 @@ public final class GameUtils {
         return null;
     }
     if(datastore == null){
-        System.out.println("Error: Null Datastore");
+        log.severe("null datastore");
         return null;
     }
     
@@ -80,7 +83,7 @@ public final class GameUtils {
       entity.setProperty("gameId", key);
       datastore.put(entity);
     }catch(EntityNotFoundException e){
-      System.out.println("Error: Entity Not Found Exception");
+      log.severe("EntityNotFoundException");
       return null;
     }
  
