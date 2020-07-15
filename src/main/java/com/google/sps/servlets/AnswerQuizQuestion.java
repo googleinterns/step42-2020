@@ -22,7 +22,8 @@ public class AnswerQuizQuestion extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
+        
+        //First calls Hannah's helper function to get the specific user, will return user entity
         
 
     }

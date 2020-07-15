@@ -28,9 +28,12 @@ import com.google.appengine.api.datastore.Key;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Random;
+import java.util.logging.Logger;
  
 public final class QuizTimingPropertiesUtils {
  
+    private static final Logger log = Logger.getLogger(QuizTimingPropertiesUtils.class.getName());
+
     List<String> quiz_questions = new ArrayList<String>(List.of(
         "Which plant has the most food growing from it?",
         "Which plant has the prettiest colors?",
@@ -59,12 +62,14 @@ public final class QuizTimingPropertiesUtils {
         try {
             pq = datastore.prepare(query);
         } catch(NullPointerException e) {
+            log.severe("Null datastore");
             return null;
         }
         if(pq.asList(FetchOptions.Builder.withLimit(1)).size() > 0) {
             Entity fetched_item = pq.asList(FetchOptions.Builder.withLimit(1)).get(0);
             return fetched_item.getProperty("quiz_timestamp");
         } 
+        log.severe("Zero Items Quered");
         return null;
     }
  
@@ -84,6 +89,7 @@ public final class QuizTimingPropertiesUtils {
         try {
             quiz_date = DateFormat.getDateInstance().format(current_quiz_time);
         } catch(IllegalArgumentException e) {
+            log.severe("Given a null Parameter");
             return null;
         }
 
@@ -96,29 +102,33 @@ public final class QuizTimingPropertiesUtils {
     
     //This function gets a new quiz question if the quiz is outdated
     public Object getNewQuestion(Entity game_entity, DatastoreService datastore) {
-        try {
-            Random rand = new Random();
-            int rand_number = rand.nextInt(quiz_questions.size());
-    
-            Key game_entity_key = game_entity.getKey();
-            datastore.delete(game_entity_key);
-            
-            Entity update_game_entity = new Entity(game_entity_key);
-            update_game_entity.setProperty("quiz_timestamp", System.currentTimeMillis());
-            update_game_entity.setProperty("quizQuestion", quiz_questions.get(rand_number));
-            datastore.put(update_game_entity);
+        Random rand = new Random();
+        int rand_number = rand.nextInt(quiz_questions.size());
+        Key game_entity_key;
 
-            return update_game_entity.getProperty("quizQuestion");
+        try {
+            game_entity_key = game_entity.getKey();
         } catch(NullPointerException e) {
+            log.severe("Null value given instead of Entity");
             return null;
         } 
+
+        datastore.delete(game_entity_key);
+            
+        Entity update_game_entity = new Entity(game_entity_key);
+        update_game_entity.setProperty("quiz_timestamp", System.currentTimeMillis());
+        update_game_entity.setProperty("quizQuestion", quiz_questions.get(rand_number));
+        datastore.put(update_game_entity);
+        return update_game_entity.getProperty("quizQuestion");
     }
 
     // Break ----------
 
-    // public giveUserPoints(Boolean userQuizStatus) {
+    // public giveUserPoints(Boolean userQuizStatus, DatastoreService datastore) {
     //     if(userQuizStatus) {
-    //         //Updates points
+    //         Query query = new Query("Score");
+    //         PreparedQuery pq = datastore.prepare(query);
+
     //     }
     // }
 

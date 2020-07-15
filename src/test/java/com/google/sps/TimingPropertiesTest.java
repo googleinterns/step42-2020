@@ -144,6 +144,8 @@ public final class TimingPropertiesTest {
     @Test
     //Checks if the timestamp given is a null value
     public void nullParameter_for_newDayNewQuiz(){
+        QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
+
         Boolean actual = timing_properties_test.newDayNewQuiz(null);
         Assert.assertEquals(null, actual);
     }
@@ -151,6 +153,10 @@ public final class TimingPropertiesTest {
     @Test 
     //Checks if newDayNewQuiz works especially with being dependent on the getTimestampProperty
     public void validParameter_for_newDayNewQuiz() {
+        QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        Entity user = new Entity("user");
+
         user.setProperty("quiz_timestamp", 159430944365L);
         datastore.put(user);
 
@@ -163,6 +169,8 @@ public final class TimingPropertiesTest {
     @Test 
     //If the Entity parameter is null then the getNewQuestion function should return null
     public void nullEntityValue_for_getNewQuestion(){
+        QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         Object game_question = timing_properties_test.getNewQuestion(null, datastore);
         Assert.assertEquals(null, game_question);
     }
@@ -170,6 +178,10 @@ public final class TimingPropertiesTest {
     @Test
     //Checks if getNewQuestion works by seeing if a question is added the game quizQuestion property
     public void validParameter_for_getNewQuestion() {
+        QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        Entity game = new Entity("game");
+
         game.setProperty("quiz_timestamp", 159430944365L);
         game.setProperty("quizQuestion", "");
         datastore.put(game);
