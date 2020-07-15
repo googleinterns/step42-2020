@@ -43,7 +43,7 @@ public final class TimingPropertiesTest {
     }
  
     @Test
-    //If the user's time is a null value then the getTimestampProperty function should return null
+    //Test where user has null timestamp
     public void nullUserTimeStamp() {
         QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
 
@@ -58,7 +58,7 @@ public final class TimingPropertiesTest {
     }
  
     @Test
-    //If the getTimestampProperty function gets fed an empty string, the function should return null
+    //Test where String parameter is empty
     public void emptyEntityString() {
         QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
 
@@ -69,7 +69,7 @@ public final class TimingPropertiesTest {
     }
  
     @Test
-    //If the getTimeStampProperty function is fed a null value of datastore then the return should be null
+    //Test where datastore object is null
     public void noDatastore() {
         QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
 
@@ -79,7 +79,7 @@ public final class TimingPropertiesTest {
     }
 
     @Test
-    //If the entity doesn't have a "timestamp" property then null should be returned
+    //Test for if user entity does not have a timestamp property
     public void noTimeStampProperty() {
         QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
 
@@ -91,7 +91,7 @@ public final class TimingPropertiesTest {
     }
 
     @Test 
-    //Checks if getTimestampProperty function is working
+    //Tests if a valid timestamp object is returned
     public void validParameters_for_getTimestampProperty() {
         QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
 
@@ -106,7 +106,7 @@ public final class TimingPropertiesTest {
     }
  
     @Test
-    //If the userTookQuiz function is fed two empty strings then the function should return false
+    //Tests for paramters being empty strings
     public void emptyStrings() {
         QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
         String user_quiz_time = "";
@@ -117,7 +117,7 @@ public final class TimingPropertiesTest {
     }
 
     @Test
-    //Checks if userTookQuiz works especially with being dependent on the getTimestampProperty
+    //Tests valid string, timestamp paramters 
     public void validParameters_for_userTookQuiz() {
         QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
         
@@ -140,7 +140,7 @@ public final class TimingPropertiesTest {
     }
 
     @Test
-    //Checks if the timestamp given is a null value
+    //Tests if Object parameter is null
     public void nullParameter_for_newDayNewQuiz(){
         QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
  
@@ -149,7 +149,7 @@ public final class TimingPropertiesTest {
     }
  
     @Test 
-    //Checks if newDayNewQuiz works especially with being dependent on the getTimestampProperty
+    //Tests if quiz timestamp gets updated on a new day
     public void validParameter_for_newDayNewQuiz() {
         QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -165,7 +165,7 @@ public final class TimingPropertiesTest {
     }
  
     @Test 
-    //If the Entity parameter is null then the getNewQuestion function should return null
+    //Tests where the entity parameter is null
     public void nullEntityValue_for_getNewQuestion(){
         QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -174,7 +174,7 @@ public final class TimingPropertiesTest {
     }
  
     @Test
-    //Checks if getNewQuestion works by seeing if a question is added the game quizQuestion property
+    //Checks if a new question is generated for a new day
     public void validParameter_for_getNewQuestion() {
         QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();

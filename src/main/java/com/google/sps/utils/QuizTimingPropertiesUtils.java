@@ -27,7 +27,6 @@ import java.text.DateFormat;
 import java.util.Random;
 import java.util.logging.Logger;
 
- 
 public final class QuizTimingPropertiesUtils {
 
     private static final Logger log = Logger.getLogger(QuizTimingPropertiesUtils.class.getName());
