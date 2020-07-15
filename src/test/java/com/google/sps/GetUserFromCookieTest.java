@@ -45,7 +45,6 @@ public final class GetUserFromCookieTest{
 //Test given a list of entities, and a list of cookies
   @Test
   public void findEntityByCookie(){
-      UserUtils userUtils = new UserUtils();
       Entity user1 = new Entity("user");
       user1.setProperty("SessionID", "value1");
       datastore.put(user1);
@@ -72,7 +71,6 @@ public final class GetUserFromCookieTest{
   //Test given a cookie with a name that doesn't match an entity
   @Test
   public void wrongCookieName(){
-      UserUtils userUtils = new UserUtils();
       Entity user1 = new Entity("user");
       user1.setProperty("SessionID", "value1");
       datastore.put(user1);
@@ -97,7 +95,6 @@ public final class GetUserFromCookieTest{
   //Test where a cookie's value doesn't match any entities values
   @Test
   public void wrongCookieValue(){
-      UserUtils userUtils = new UserUtils();
       Entity user1 = new Entity("user");
       user1.setProperty("SessionID", "value1");
       datastore.put(user1);
@@ -122,7 +119,6 @@ public final class GetUserFromCookieTest{
   //Test given a single cookie and a single entity
   @Test
   public void oneUserOneCookie(){
-    UserUtils userUtils = new UserUtils();
     Entity user1 = new Entity("user");
     user1.setProperty("SessionID", "value1");
     datastore.put(user1);
@@ -139,7 +135,6 @@ public final class GetUserFromCookieTest{
   //Test where the datastore is not passed into the function
   @Test
   public void noDatastore(){
-    UserUtils userUtils = new UserUtils();
     Entity user1 = new Entity("user");
     user1.setProperty("SessionID", "value1");
     datastore.put(user1);
@@ -156,7 +151,6 @@ public final class GetUserFromCookieTest{
   //Test where there are no entities in the datastore
   @Test
   public void noEntities(){
-    UserUtils userUtils = new UserUtils();
     Cookie cookie1 = new Cookie("SessionID", "value1");
     Cookie cookies[] = new Cookie[]{cookie1};
 
@@ -169,7 +163,6 @@ public final class GetUserFromCookieTest{
  //Test where no cookies are passed into the function
   @Test
   public void noCookies(){
-    UserUtils userUtils = new UserUtils();
     Entity user1 = new Entity("user");
     user1.setProperty("SessionID", "value1");
     datastore.put(user1);
