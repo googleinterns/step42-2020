@@ -32,8 +32,6 @@ public final class TimingPropertiesTest {
   
     private DatastoreService datastore;
     private QuizTimingPropertiesUtils timing_properties_test;
-    public Entity user;
-    public Entity game;
  
     private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
  
@@ -42,8 +40,6 @@ public final class TimingPropertiesTest {
         helper.setUp();
         timing_properties_test = new QuizTimingPropertiesUtils();
         datastore = DatastoreServiceFactory.getDatastoreService();
-        user = new Entity("user");
-        game = new Entity("game");
     }
  
     @After
@@ -54,6 +50,7 @@ public final class TimingPropertiesTest {
     @Test
     //If the user's time is a null value then the getTimestampProperty function should return null
     public void nullUserTimeStamp() {
+        Entity user = new Entity("user");
         user.setProperty("quiz_timestamp", null);
         datastore.put(user);
  
@@ -71,6 +68,7 @@ public final class TimingPropertiesTest {
     @Test
     //If the getTimeStampProperty function is fed a null value of datastore then the return should be null
     public void noDatastore() {
+        Entity user = new Entity("user");
         Object actual = timing_properties_test.getTimestampProperty("user", null);
         Assert.assertEquals(null, actual);
     }
@@ -78,6 +76,7 @@ public final class TimingPropertiesTest {
     @Test
     //If the entity doesn't "timestamp" property then null should be returned
     public void noTimeStampProperty() {
+        Entity user = new Entity("user");
         Object actual = timing_properties_test.getTimestampProperty("user", datastore);
         Assert.assertEquals(null, actual);
     }
@@ -85,6 +84,7 @@ public final class TimingPropertiesTest {
     @Test 
     //Checks if getTimestampProperty function is working
     public void validParameters_for_getTimestampProperty() {
+        Entity user = new Entity("user");
         user.setProperty("quiz_timestamp", 1594309443653L);
         datastore.put(user);
 
@@ -105,6 +105,9 @@ public final class TimingPropertiesTest {
     @Test
     //Checks if userTookQuiz works especially with being dependent on the getTimestampProperty
     public void validParameters_for_userTookQuiz() {
+        Entity user = new Entity("user");
+        Entity game = new Entity("game");
+        
         user.setProperty("quiz_timestamp", 1594309443653L);
         datastore.put(user);
 
