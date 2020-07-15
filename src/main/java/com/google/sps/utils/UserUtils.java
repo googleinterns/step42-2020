@@ -14,6 +14,13 @@
 
 package com.google.sps;
 
+
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.PreparedQuery;
@@ -40,14 +47,14 @@ public final class UserUtils {
     * @param  entityPropertyValue  the value of the property that is filtered for
     * @return                      a single entity that has the same value for the property in the parameter 
     */
-  public Entity FilteredQuery(String entityName, String entityPropertyTitle, String entityPropertyValue, DatastoreService datastore) {
+  public Entity getEntityFromDatastore(String entityName, String entityPropertyTitle, String entityPropertyValue, DatastoreService datastore) {
 
     if(entityPropertyValue == "" || entityName == "" || entityPropertyTitle == "" || datastore == null){
         return null;
     }
 
-    Filter getCorrectUser = new FilterPredicate(entityPropertyTitle, FilterOperator.EQUAL, entityPropertyValue);
-    Query query = new Query(entityName).setFilter(getCorrectUser);
+    Filter queryFilter = new FilterPredicate(entityPropertyTitle, FilterOperator.EQUAL, entityPropertyValue);
+    Query query = new Query(entityName).setFilter(queryFilter);
      PreparedQuery results = datastore.prepare(query);
      List<Entity> resultsList = results.asList(FetchOptions.Builder.withLimit(1));
 
