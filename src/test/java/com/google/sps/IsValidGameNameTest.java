@@ -30,8 +30,6 @@ import com.google.sps.utils.GameUtils;
 /** tests the IsValidGameName function */
 @RunWith(JUnit4.class)
 public final class IsValidGameNameTest {
-  
-  private GameUtils gameUtils;
 
   private static String userID1 = "1";
   private static String userID2 = "2";
@@ -43,7 +41,6 @@ public final class IsValidGameNameTest {
   @Before
   public void setUp() {
     helper.setUp();
-    gameUtils = new GameUtils();
   }
 
   @After
@@ -61,7 +58,7 @@ public final class IsValidGameNameTest {
     userEntity2.setProperty("gameNames",gameNames2);
     userEntity2.setProperty("userID",userID2);
 
-    boolean actual = gameUtils.IsValidGameName("game1", userEntity2);
+    boolean actual = GameUtils.IsValidGameName("game1", userEntity2);
 
     Assert.assertEquals(true, actual);
   }
@@ -79,7 +76,7 @@ public final class IsValidGameNameTest {
     userEntity1.setProperty("gameNames",gameNames1);
     userEntity1.setProperty("userID",userID1);
 
-    boolean actual = gameUtils.IsValidGameName("game1", userEntity1);
+    boolean actual = GameUtils.IsValidGameName("game1", userEntity1);
 
     Assert.assertEquals(false, actual);
   }
@@ -97,7 +94,7 @@ public final class IsValidGameNameTest {
     userEntity1.setProperty("gameNames",gameNames1);
     userEntity1.setProperty("userID",userID1);
 
-    boolean actual = gameUtils.IsValidGameName("game4", userEntity1);
+    boolean actual = GameUtils.IsValidGameName("game4", userEntity1);
 
     Assert.assertEquals(true, actual);
   }
@@ -115,7 +112,7 @@ public final class IsValidGameNameTest {
     userEntity1.setProperty("gameNames",gameNames1);
     userEntity1.setProperty("userID",userID1);
 
-    boolean actual = gameUtils.IsValidGameName("Game1", userEntity1);
+    boolean actual = GameUtils.IsValidGameName("Game1", userEntity1);
 
     Assert.assertEquals(true, actual);
   }
@@ -133,7 +130,7 @@ public final class IsValidGameNameTest {
     userEntity1.setProperty("gameNames",gameNames1);
     userEntity1.setProperty("userID",userID1);
 
-    boolean actual = gameUtils.IsValidGameName("", userEntity1);
+    boolean actual = GameUtils.IsValidGameName("", userEntity1);
 
     Assert.assertEquals(false, actual);
   }
@@ -142,7 +139,7 @@ public final class IsValidGameNameTest {
   @Test
   public void nullUserEntity() {
 
-    boolean actual = gameUtils.IsValidGameName("game1", null);
+    boolean actual = GameUtils.IsValidGameName("game1", null);
 
     Assert.assertEquals(false, actual);
   }
