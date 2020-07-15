@@ -29,10 +29,9 @@ import com.google.sps.UserUtils;
 
 /** tests the IsValidGameName function */
 @RunWith(JUnit4.class)
-public final class QueryByUserIdTest {
+public final class GetEntityFromDatastoreTest {
   
   private DatastoreService datastore;
-  private UserUtils userUtils;
 
   // helper variable allows the use of entities in testing 
   private final LocalServiceTestHelper helper =
@@ -41,7 +40,6 @@ public final class QueryByUserIdTest {
   @Before
   public void setUp() {
     helper.setUp();
-    userUtils = new UserUtils();
     datastore = DatastoreServiceFactory.getDatastoreService();
   }
 
@@ -53,7 +51,8 @@ public final class QueryByUserIdTest {
   // given a user id and a datastore instance, the function should return the entity for the given user
   @Test
   public void findEntityByUserId() {
-
+    UserUtils userUtils = new UserUtils();
+ 
     Entity userEntity = new Entity("Game");
     userEntity.setProperty("userID", "123");
     datastore.put(userEntity);
@@ -66,7 +65,7 @@ public final class QueryByUserIdTest {
     userEntity3.setProperty("userID", "789");
     datastore.put(userEntity3);
 
-    Entity actual = userUtils.QueryByUserId("123", datastore);
+    Entity actual = userUtils.getEntityFromDatastore("Game","userID","123", datastore);
     Entity expected = userEntity;
 
     Assert.assertEquals(expected, actual);
@@ -75,8 +74,9 @@ public final class QueryByUserIdTest {
   // given a user id and an empty datastore instance, the function should return null
   @Test
   public void findEntityWithEmptyDatastore() {
-
-    Entity actual = userUtils.QueryByUserId("123", datastore);
+    UserUtils userUtils = new UserUtils();
+    
+    Entity actual = userUtils.getEntityFromDatastore("Game","userID","123", datastore);
     Entity expected = null;
 
     Assert.assertEquals(expected, actual);
@@ -85,7 +85,8 @@ public final class QueryByUserIdTest {
   // given a user id that isn't in datastore and a datastore instance, the function should return null
   @Test
   public void UserIdNotInDatastore() {
-
+    UserUtils userUtils = new UserUtils();
+    
     Entity userEntity = new Entity("Game");
     userEntity.setProperty("userID", "123");
     datastore.put(userEntity);
@@ -98,7 +99,7 @@ public final class QueryByUserIdTest {
     userEntity3.setProperty("userID", "789");
     datastore.put(userEntity3);
 
-    Entity actual = userUtils.QueryByUserId("000", datastore);
+    Entity actual = userUtils.getEntityFromDatastore("Game","userID","000", datastore);
     Entity expected = null;
 
     Assert.assertEquals(expected, actual);
@@ -107,7 +108,8 @@ public final class QueryByUserIdTest {
   // given an empty string and a datastore instance, the function should return null
   @Test
   public void EmptyStringUserId() {
-
+    UserUtils userUtils = new UserUtils();
+    
     Entity userEntity = new Entity("Game");
     userEntity.setProperty("userID", "123");
     datastore.put(userEntity);
@@ -120,19 +122,41 @@ public final class QueryByUserIdTest {
     userEntity3.setProperty("userID", "789");
     datastore.put(userEntity3);
 
-    Entity actual = userUtils.QueryByUserId("", datastore);
+    Entity actual = userUtils.getEntityFromDatastore("Game","userID","", datastore);
     Entity expected = null;
 
     Assert.assertEquals(expected, actual);
   }
 
-  // given a user id and null instead of datastore, the function should return null
+  // given null instead of datastore, the function should return null
   @Test
   public void nullDatastore() {
-
-    Entity actual = userUtils.QueryByUserId("123", null);
+    UserUtils userUtils = new UserUtils();
+    
+    Entity actual = userUtils.getEntityFromDatastore("Game","userID","123", null);
     Entity expected = null;
 
     Assert.assertEquals(expected, actual);
   }
+  
+  //without given a entity class, the function should return null
+  @Test
+  public void nullUserEntity(){
+      UserUtils userUtils = new UserUtils();
+    
+      Entity actual = userUtils.getEntityFromDatastore("","userID","123", datastore);
+      Entity expected = null;
+      Assert.assertEquals(expected, actual);
+  }
+
+  //without given a entity title, the function should return null
+  @Test
+  public void nullUserEntityTitle(){
+      UserUtils userUtils = new UserUtils();
+    
+      Entity actual = userUtils.getEntityFromDatastore("Game","","123", datastore);
+      Entity expected = null;
+      Assert.assertEquals(expected, actual);
+  }
+
 }
