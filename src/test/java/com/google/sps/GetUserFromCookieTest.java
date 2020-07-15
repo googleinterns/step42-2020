@@ -26,7 +26,6 @@ import com.google.sps.UserUtils;
 @RunWith(JUnit4.class)
 public final class GetUserFromCookieTest{
     private DatastoreService datastore;
-    private UserUtils userUtils;
 
     // helper variable allows the use of entities in testing 
   private final LocalServiceTestHelper helper =
@@ -35,7 +34,6 @@ public final class GetUserFromCookieTest{
   @Before
   public void setUp() {
     helper.setUp();
-    userUtils = new UserUtils();
     datastore = DatastoreServiceFactory.getDatastoreService();
   }
 
@@ -44,24 +42,25 @@ public final class GetUserFromCookieTest{
     helper.tearDown();
   }
 
-//given a list of entities and a few cookies, can return the right entity
+//Test given a list of entities, and a list of cookies
   @Test
   public void findEntityByCookie(){
+      UserUtils userUtils = new UserUtils();
       Entity user1 = new Entity("user");
-      user1.setProperty("SessionID", "hell yea");
+      user1.setProperty("SessionID", "value1");
       datastore.put(user1);
 
       Entity user2 = new Entity("user");
-      user2.setProperty("SessionID", "hell no");
+      user2.setProperty("SessionID", "value2");
       datastore.put(user2);
 
       Entity user3 = new Entity("user");
-      user3.setProperty("SessionID", "hell maybe");
+      user3.setProperty("SessionID", "value3");
       datastore.put(user3);
       
-      Cookie cookie1 = new Cookie("SessionID", "hell yea");
-      Cookie cookie2 = new Cookie("hello", "olleh");
-      Cookie cookie3 = new Cookie("salam", "malas");
+      Cookie cookie1 = new Cookie("SessionID", "value1");
+      Cookie cookie2 = new Cookie("name2", "value2");
+      Cookie cookie3 = new Cookie("name3", "value3");
       Cookie cookies[] = new Cookie[]{cookie1, cookie2, cookie3};
 
       Entity actual = userUtils.getUserFromCookie(cookies, datastore);
@@ -70,22 +69,23 @@ public final class GetUserFromCookieTest{
       Assert.assertEquals(expected, actual); 
   }
 
-  //given a cookie with the wrong name, returns null
+  //Test given a cookie with a name that doesn't match an entity
   @Test
   public void wrongCookieName(){
+      UserUtils userUtils = new UserUtils();
       Entity user1 = new Entity("user");
-      user1.setProperty("SessionID", "hellyea");
+      user1.setProperty("SessionID", "value1");
       datastore.put(user1);
 
       Entity user2 = new Entity("user");
-      user2.setProperty("SessionID", "hell no");
+      user2.setProperty("SessionID", "value2");
       datastore.put(user2);
 
       Entity user3 = new Entity("user");
-      user3.setProperty("SessionID", "hell maybe");
+      user3.setProperty("SessionID", "value3");
       datastore.put(user3);
 
-    Cookie cookie1 = new Cookie("hellyea", "aey lleh");
+    Cookie cookie1 = new Cookie("value1", "name1");
     Cookie cookies[] = new Cookie[]{cookie1};
 
     Entity actual = userUtils.getUserFromCookie(cookies, datastore);
@@ -94,22 +94,23 @@ public final class GetUserFromCookieTest{
     Assert.assertEquals(expected, actual); 
   }
 
-  //given a cookie w the wrong value, return null
+  //Test where a cookie's value doesn't match any entities values
   @Test
   public void wrongCookieValue(){
+      UserUtils userUtils = new UserUtils();
       Entity user1 = new Entity("user");
-      user1.setProperty("SessionID", "hell yea");
+      user1.setProperty("SessionID", "value1");
       datastore.put(user1);
 
       Entity user2 = new Entity("user");
-      user2.setProperty("SessionID", "hell no");
+      user2.setProperty("SessionID", "value2");
       datastore.put(user2);
 
       Entity user3 = new Entity("user");
-      user3.setProperty("SessionID", "hell maybe");
+      user3.setProperty("SessionID", "value3");
       datastore.put(user3);
 
-    Cookie cookie1 = new Cookie("SessionID", "aey lleh");
+    Cookie cookie1 = new Cookie("SessionID", "wrongvalue");
     Cookie cookies[] = new Cookie[]{cookie1};
 
     Entity actual = userUtils.getUserFromCookie(cookies, datastore);
@@ -118,14 +119,15 @@ public final class GetUserFromCookieTest{
     Assert.assertEquals(expected, actual); 
   }
 
-  //given one user and one cookie, returns correct
+  //Test given a single cookie and a single entity
   @Test
   public void oneUserOneCookie(){
+    UserUtils userUtils = new UserUtils();
     Entity user1 = new Entity("user");
-    user1.setProperty("SessionID", "hell yea");
+    user1.setProperty("SessionID", "value1");
     datastore.put(user1);
 
-    Cookie cookie1 = new Cookie("SessionID", "hell yea");
+    Cookie cookie1 = new Cookie("SessionID", "value1");
     Cookie cookies[] = new Cookie[]{cookie1};
 
     Entity actual = userUtils.getUserFromCookie(cookies,datastore);
@@ -134,14 +136,15 @@ public final class GetUserFromCookieTest{
     Assert.assertEquals(expected, actual);
   }
 
-  //everything else works, but no datastore passed in
+  //Test where the datastore is not passed into the function
   @Test
   public void noDatastore(){
+    UserUtils userUtils = new UserUtils();
     Entity user1 = new Entity("user");
-    user1.setProperty("SessionID", "hell yea");
+    user1.setProperty("SessionID", "value1");
     datastore.put(user1);
 
-    Cookie cookie1 = new Cookie("SessionID", "hell yea");
+    Cookie cookie1 = new Cookie("SessionID", "value1");
     Cookie cookies[] = new Cookie[]{cookie1};
 
     Entity actual = userUtils.getUserFromCookie(cookies, null);
@@ -150,10 +153,11 @@ public final class GetUserFromCookieTest{
     Assert.assertEquals(expected, actual);
   }
 
-  //no entries in the datastore, everything else is fine
+  //Test where there are no entities in the datastore
   @Test
   public void noEntities(){
-    Cookie cookie1 = new Cookie("SessionID", "hell yea");
+    UserUtils userUtils = new UserUtils();
+    Cookie cookie1 = new Cookie("SessionID", "value1");
     Cookie cookies[] = new Cookie[]{cookie1};
 
     Entity actual = userUtils.getUserFromCookie(cookies, datastore);
@@ -162,11 +166,12 @@ public final class GetUserFromCookieTest{
     Assert.assertEquals(expected, actual);
   }
 
- //everything else works, but no cookies passed in
+ //Test where no cookies are passed into the function
   @Test
   public void noCookies(){
+    UserUtils userUtils = new UserUtils();
     Entity user1 = new Entity("user");
-    user1.setProperty("SessionID", "hell yea");
+    user1.setProperty("SessionID", "value1");
     datastore.put(user1);
 
     Cookie cookies[] = new Cookie[0];
