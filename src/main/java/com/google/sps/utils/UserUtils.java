@@ -30,9 +30,10 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
+import java.util.logging.Logger;
 
 public final class UserUtils {
-
+    private static final Logger log = Logger.getLogger(UserUtils.class.getName());
     /**
     * Returns a single Entity object that can then be used in a servlet. 
     * The entityPropertyTitle and entityPropertyValue
@@ -81,6 +82,7 @@ public final class UserUtils {
  
   public static Entity getUserFromCookie(Cookie cookies[], DatastoreService datastore){
       if(datastore == null){
+          log.severe("null datastore");
           return null;
       }
       String sessionIDName = "SessionID";
