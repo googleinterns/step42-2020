@@ -49,10 +49,9 @@ public final class UserUtilTest {
     helper.tearDown();
   }
 
-  // given a user id and a datastore instance, the function should return the entity for the given user
+  // Test a working user id and a datastore instance
   @Test
   public void findEntityByUserId() {
-    UserUtils userUtils = new UserUtils();
  
     Entity userEntity = new Entity("Game");
     userEntity.setProperty("userID", "123");
@@ -66,27 +65,25 @@ public final class UserUtilTest {
     userEntity3.setProperty("userID", "789");
     datastore.put(userEntity3);
 
-    Entity actual = userUtils.getEntityFromDatastore("Game","userID","123", datastore);
+    Entity actual = UserUtils.getEntityFromDatastore("Game","userID","123", datastore);
     Entity expected = userEntity;
 
     Assert.assertEquals(expected, actual);
   }
 
-  // given a user id and an empty datastore instance, the function should return null
+  // Test id and an empty datastore instance
   @Test
   public void findEntityWithEmptyDatastore() {
-    UserUtils userUtils = new UserUtils();
     
-    Entity actual = userUtils.getEntityFromDatastore("Game","userID","123", datastore);
+    Entity actual = UserUtils.getEntityFromDatastore("Game","userID","123", datastore);
     Entity expected = null;
 
     Assert.assertEquals(expected, actual);
   }
 
-  // given a user id that isn't in datastore and a datastore instance, the function should return null
+  // Test a user id that isn't in datastore and a datastore instance
   @Test
   public void UserIdNotInDatastore() {
-    UserUtils userUtils = new UserUtils();
     
     Entity userEntity = new Entity("Game");
     userEntity.setProperty("userID", "123");
@@ -100,16 +97,15 @@ public final class UserUtilTest {
     userEntity3.setProperty("userID", "789");
     datastore.put(userEntity3);
 
-    Entity actual = userUtils.getEntityFromDatastore("Game","userID","000", datastore);
+    Entity actual = UserUtils.getEntityFromDatastore("Game","userID","000", datastore);
     Entity expected = null;
 
     Assert.assertEquals(expected, actual);
   }
 
-  // given an empty string and a datastore instance, the function should return null
+  // Test an empty string for EntityPropertyValue and a datastore instance
   @Test
   public void EmptyStringUserId() {
-    UserUtils userUtils = new UserUtils();
     
     Entity userEntity = new Entity("Game");
     userEntity.setProperty("userID", "123");
@@ -123,44 +119,41 @@ public final class UserUtilTest {
     userEntity3.setProperty("userID", "789");
     datastore.put(userEntity3);
 
-    Entity actual = userUtils.getEntityFromDatastore("Game","userID","", datastore);
+    Entity actual = UserUtils.getEntityFromDatastore("Game","userID","", datastore);
     Entity expected = null;
 
     Assert.assertEquals(expected, actual);
   }
 
-  // given null instead of datastore, the function should return null
+  // Test null instance of datastore
   @Test
   public void nullDatastore() {
-    UserUtils userUtils = new UserUtils();
     
-    Entity actual = userUtils.getEntityFromDatastore("Game","userID","123", null);
+    Entity actual = UserUtils.getEntityFromDatastore("Game","userID","123", null);
     Entity expected = null;
 
     Assert.assertEquals(expected, actual);
   }
   
-  //without given a entity class, the function should return null
+  // test without an entity class
   @Test
   public void nullUserEntity(){
-      UserUtils userUtils = new UserUtils();
     
-      Entity actual = userUtils.getEntityFromDatastore("","userID","123", datastore);
+      Entity actual = UserUtils.getEntityFromDatastore("","userID","123", datastore);
       Entity expected = null;
       Assert.assertEquals(expected, actual);
   }
 
-  //without given a entity title, the function should return null
+  // test without an entity title
   @Test
   public void nullUserEntityTitle(){
-      UserUtils userUtils = new UserUtils();
     
-      Entity actual = userUtils.getEntityFromDatastore("Game","","123", datastore);
+      Entity actual = UserUtils.getEntityFromDatastore("Game","","123", datastore);
       Entity expected = null;
       Assert.assertEquals(expected, actual);
   }
 
-    // Given an empty string for game id, addGameToUser should return false
+  // test an empty string for game id
   @Test
   public void emptyGameIdFails() {
 
@@ -173,7 +166,7 @@ public final class UserUtilTest {
     Assert.assertEquals(false, actual);
   }
 
-  // Given a null for datastore instance, addGameToUser should return false
+  // test a null for datastore instance
   @Test
   public void nullDatastoreFails() {
 
@@ -186,7 +179,7 @@ public final class UserUtilTest {
     Assert.assertEquals(false, actual);
   }
 
-  // Given a null for user entity, addGameToUser should return false
+  // test a null for user entity
   @Test
   public void nullUserEntityFails() {
 
@@ -195,7 +188,7 @@ public final class UserUtilTest {
     Assert.assertEquals(false, actual);
   }
 
-  // Given an user entity without a gameid list, addGameToUser should return false
+  // test an user entity without a gameid list
   @Test
   public void invalidUserFails() {
 
@@ -207,7 +200,7 @@ public final class UserUtilTest {
     Assert.assertEquals(false, actual);
   }
  
-  // given all valid parameters, addGameToUser adds game to user entity and returns true
+  // test given all correct valid parameters
   @Test
   public void addGameToUserSuccess() {
 
@@ -220,7 +213,7 @@ public final class UserUtilTest {
     Assert.assertEquals(true, actual);
   }
 
-    // Given an empty string for blob key, addBlobKey should return false
+  // test an empty string for blob key
   @Test
   public void emptyBlobKeyFails() {
 
@@ -231,7 +224,7 @@ public final class UserUtilTest {
     Assert.assertEquals(false, actual);
   }
 
-  // Given a null for datastore instance, addBlobKey should return false
+  // test null for datastore instance
   @Test
   public void blobKeyNullDatastoreFails() {
 
@@ -242,7 +235,7 @@ public final class UserUtilTest {
     Assert.assertEquals(false, actual);
   }
 
-  // Given a null for user entity, addBlobKey should return false
+  // test null for user entity
   @Test
   public void blobKeyNullUserEntityFails() {
 
@@ -251,11 +244,11 @@ public final class UserUtilTest {
     Assert.assertEquals(false, actual);
   }
  
-  // given a valid blobkey, datastore and user entity, addBlobKey adds the blobkey to the user and returns true
+  // test a valid blobkey, datastore and user entity
   @Test
   public void addBlobKeySucess() {
 
-    Entity userEntity = new Entity("User");
+    Entity userEntity = new Entity("user");
 
     boolean actual = UserUtils.addBlobKey("blobkey", userEntity, datastore);
 

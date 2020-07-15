@@ -48,7 +48,7 @@ public final class UserUtils {
     * @param  entityPropertyValue  the value of the property that is filtered for
     * @return                      a single entity that has the same value for the property in the parameter 
     */
-  public Entity getEntityFromDatastore(String entityName, String entityPropertyTitle, String entityPropertyValue, DatastoreService datastore) {
+  public static Entity getEntityFromDatastore(String entityName, String entityPropertyTitle, String entityPropertyValue, DatastoreService datastore) {
 
     if(entityPropertyValue == "" || entityName == "" || entityPropertyTitle == "" || datastore == null){
         return null;
@@ -73,6 +73,7 @@ public final class UserUtils {
   public static boolean addGameToUser(Entity userEntity, DatastoreService datastore, String gameId) {
  
     if(gameId == ""){
+        log.severe("no gameId");
         return false;
     }
 
@@ -84,6 +85,7 @@ public final class UserUtils {
     ArrayList<String> games = (ArrayList<String>) userEntity.getProperty("games");
  
     if(games == null){
+        log.severe("no game list");
         return false;
     }
  
@@ -99,7 +101,13 @@ public final class UserUtils {
   */
   public static boolean addBlobKey(String blobKey, Entity userEntity, DatastoreService datastore) {
     
-    if(blobKey == "" || userEntity == null || datastore == null){
+    if(blobKey == ""){
+        log.severe("no blobkey");
+        return false;
+    }
+
+    if(userEntity == null || datastore == null){
+        log.severe("null datastore or user entity");
         return false;
     }
     
