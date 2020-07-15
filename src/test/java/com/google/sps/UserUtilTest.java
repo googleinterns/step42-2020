@@ -19,17 +19,18 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
+import java.util.ArrayList;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import com.google.sps.UserUtils;
+import com.google.sps.utils.UserUtils;
 
 /** tests the IsValidGameName function */
 @RunWith(JUnit4.class)
-public final class GetEntityFromDatastoreTest {
+public final class UserUtilTest {
   
   private DatastoreService datastore;
 
@@ -159,4 +160,105 @@ public final class GetEntityFromDatastoreTest {
       Assert.assertEquals(expected, actual);
   }
 
+    // Given an empty string for game id, addGameToUser should return false
+  @Test
+  public void emptyGameIdFails() {
+
+    Entity userEntity = new Entity("User");
+    ArrayList<String> gameIds = new ArrayList<>();
+    userEntity.setProperty("games", gameIds);
+
+    boolean actual = UserUtils.addGameToUser(userEntity, datastore, "");
+
+    Assert.assertEquals(false, actual);
+  }
+
+  // Given a null for datastore instance, addGameToUser should return false
+  @Test
+  public void nullDatastoreFails() {
+
+    Entity userEntity = new Entity("User");
+    ArrayList<String> gameIds = new ArrayList<>();
+    userEntity.setProperty("games", gameIds);
+
+    boolean actual = UserUtils.addGameToUser(userEntity, null, "gameId");
+
+    Assert.assertEquals(false, actual);
+  }
+
+  // Given a null for user entity, addGameToUser should return false
+  @Test
+  public void nullUserEntityFails() {
+
+    boolean actual = UserUtils.addGameToUser(null, datastore, "gameId");
+
+    Assert.assertEquals(false, actual);
+  }
+
+  // Given an user entity without a gameid list, addGameToUser should return false
+  @Test
+  public void invalidUserFails() {
+
+    Entity userEntity = new Entity("User");
+    userEntity.setProperty("userName", "user1");
+
+    boolean actual = UserUtils.addGameToUser(userEntity, datastore, "gameId");
+
+    Assert.assertEquals(false, actual);
+  }
+ 
+  // given all valid parameters, addGameToUser adds game to user entity and returns true
+  @Test
+  public void addGameToUserSuccess() {
+
+    Entity userEntity = new Entity("User");
+    ArrayList<String> gameIds = new ArrayList<>();
+    userEntity.setProperty("games", gameIds);
+
+    boolean actual = UserUtils.addGameToUser(userEntity, datastore, "gameId");
+
+    Assert.assertEquals(true, actual);
+  }
+
+    // Given an empty string for blob key, addBlobKey should return false
+  @Test
+  public void emptyBlobKeyFails() {
+
+    Entity userEntity = new Entity("User");
+
+    boolean actual = UserUtils.addBlobKey("", userEntity, datastore);
+
+    Assert.assertEquals(false, actual);
+  }
+
+  // Given a null for datastore instance, addBlobKey should return false
+  @Test
+  public void blobKeyNullDatastoreFails() {
+
+    Entity userEntity = new Entity("User");
+
+    boolean actual = UserUtils.addBlobKey("blobkey", userEntity, null);
+
+    Assert.assertEquals(false, actual);
+  }
+
+  // Given a null for user entity, addBlobKey should return false
+  @Test
+  public void blobKeyNullUserEntityFails() {
+
+    boolean actual = UserUtils.addBlobKey("blobkey", null, datastore);
+
+    Assert.assertEquals(false, actual);
+  }
+ 
+  // given a valid blobkey, datastore and user entity, addBlobKey adds the blobkey to the user and returns true
+  @Test
+  public void addBlobKeySucess() {
+
+    Entity userEntity = new Entity("User");
+
+    boolean actual = UserUtils.addBlobKey("blobkey", userEntity, datastore);
+
+    Assert.assertEquals(true, actual);
+  }
 }
