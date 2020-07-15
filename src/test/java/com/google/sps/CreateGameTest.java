@@ -16,6 +16,7 @@ package com.google.sps;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import org.junit.Assert;
@@ -47,30 +48,34 @@ public final class CreateGameTest {
     helper.tearDown();
   }
 
-  // Given an empty string for game name, the function should return false
+  // Given an empty string for game name, the function should return a null entity
   @Test
   public void emptyGameNameFails() {
 
-    boolean actual = GameUtils.createGameEntity("", datastore);
+    Entity actual = GameUtils.createGameEntity("", datastore);
 
-    Assert.assertEquals(false, actual);
+    Assert.assertEquals(null, actual);
   }
 
-  // Given a null for datastore instance, the function should return false
+  // Given a null for datastore instance, the function should return a null entity
   @Test
   public void nullDatastoreFails() {
 
-    boolean actual = GameUtils.createGameEntity("game", null);
+    Entity actual = GameUtils.createGameEntity("game", null);
 
-    Assert.assertEquals(false, actual);
+    Assert.assertEquals(null, actual);
   }
 
-  // Given valid datastore and gamename, the function should create a game entity, add it to datastore and return true
+  // Given valid datastore and gamename, the function should create a game entity, add it to datastore and return the entity
   @Test
   public void createValidGame() {
 
-    boolean actual = GameUtils.createGameEntity("game", datastore);
+    Entity actual = GameUtils.createGameEntity("game", datastore);
 
-    Assert.assertEquals(true, actual);
+    long timestamp = 0;
+
+    Assert.assertEquals("game", actual.getProperty("gameName"));
+    Assert.assertEquals("", actual.getProperty("quizQuestion"));
+    Assert.assertEquals(timestamp, actual.getProperty("quiz_timestamp"));
   }
 }

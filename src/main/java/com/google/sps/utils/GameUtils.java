@@ -47,11 +47,14 @@ public final class GameUtils {
   /**
   * Creates a game entity and returns true if successful
   */
-  public static boolean createGameEntity(String gameName, DatastoreService datastore) {
+  public static Entity createGameEntity(String gameName, DatastoreService datastore) {
     
-    if(gameName == "" || datastore == null){
+    if(gameName == ""){
+        return null;
+    }
+    if(datastore == null){
         System.out.println("Error: Null Datastore");
-        return false;
+        return null;
     }
     
     // intializing game property values
@@ -78,9 +81,9 @@ public final class GameUtils {
       datastore.put(entity);
     }catch(EntityNotFoundException e){
       System.out.println("Error: Entity Not Found Exception");
-      return false;
+      return null;
     }
  
-    return true;
+    return entity;
   }
 }
