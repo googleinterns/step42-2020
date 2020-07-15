@@ -30,9 +30,8 @@ public final class CookieUtilsTest {
         Cookie cookieArray[] = new Cookie[]{cookie1,cookie2,cookie3};
 
         Cookie actual = CookieUtils.getCookieGivenName(cookieArray, "name1");
-        Cookie expected = cookie1;
 
-        Assert.assertEquals(expected, actual);     
+        Assert.assertEquals(cookie1, actual);     
   }
 
 //Test when no cookie with given name exists
@@ -60,7 +59,7 @@ public final class CookieUtilsTest {
         Cookie actual = CookieUtils.getCookieGivenName(cookieArray, "name1");
         Cookie expected = cookie1;
 
-        Assert.assertEquals(expected, actual);     
+        Assert.assertEquals(cookie1, actual);     
   }
 
 //Test with a single cookie, where the value is searched for instead of the name
