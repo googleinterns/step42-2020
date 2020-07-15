@@ -63,6 +63,7 @@ public final class UserUtils {
     Entity entity = resultsList.get(0);
     return entity;
   }
+  
      /**
     * This function takes in a list of cookies and matches a sessionID cookie
     * with a specific name/value pair to a user entity with the same name/value

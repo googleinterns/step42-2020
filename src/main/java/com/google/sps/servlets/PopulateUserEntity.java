@@ -31,14 +31,14 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
 
-@WebServlet("/user")
+@WebServlet("/populate-user-entity")
 public class PopulateUserEntity extends HttpServlet {
 DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
      /**
     * Populates the datastore with "user" entities. 
-    * Every time someone logs in, this doPost is called
-    * and creates an entity that contains user's full name, user id,
+    * This doPost must be called at least once for every new user.
+    * It creates an entity that contains user's full name, user id,
     * the timestamp of the last quiz they took, and a mapping of the game scores. 
     *
     * If a user with the ID passed in already exists, this function does nothing. 
