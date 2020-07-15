@@ -93,9 +93,9 @@ public final class GameUtils {
   /**
   * add user to user list in game entity, and creates a score entity for the given user and game
   */
-  public static boolean addUserToGame(String userId, String userName, Entity gameEntity, DatastoreService datastore) {
+  public static boolean addUserToGame(String userId, Entity gameEntity, DatastoreService datastore) {
  
-    if(userId == "" || userName == ""){
+    if(userId == ""){
       return false;
     }
 
@@ -114,7 +114,6 @@ public final class GameUtils {
     int score = 0;
     Entity scoreEntity = new Entity("Score");
     scoreEntity.setProperty("userId", userId);
-    scoreEntity.setProperty("userName", userName);
     scoreEntity.setProperty("score", score);
     String gameId = (String) gameEntity.getProperty("gameId");
     scoreEntity.setProperty("gameId", gameId);
@@ -127,5 +126,4 @@ public final class GameUtils {
     
     return true;
   }
-
 }

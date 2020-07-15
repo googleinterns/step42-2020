@@ -57,20 +57,7 @@ public final class AddUserToGameTest {
     ArrayList<String> userIds = new ArrayList<>();
     gameEntity.setProperty("userIds", userIds);
 
-    boolean actual = GameUtils.addUserToGame("", "1", gameEntity, datastore);
-
-    Assert.assertEquals(false, actual);
-  }
-
-  // Given an empty string for username, the function should return false
-  @Test
-  public void emptyUserNameFails() {
-
-    Entity gameEntity = new Entity("Game");
-    ArrayList<String> userIds = new ArrayList<>();
-    gameEntity.setProperty("userIds", userIds);
-
-    boolean actual = GameUtils.addUserToGame("user1", "", gameEntity, datastore);
+    boolean actual = GameUtils.addUserToGame("", gameEntity, datastore);
 
     Assert.assertEquals(false, actual);
   }
@@ -83,7 +70,7 @@ public final class AddUserToGameTest {
     ArrayList<String> userIds = new ArrayList<>();
     gameEntity.setProperty("userIds", userIds);
 
-    boolean actual = GameUtils.addUserToGame("user1", "1", gameEntity, null);
+    boolean actual = GameUtils.addUserToGame("user1", gameEntity, null);
 
     Assert.assertEquals(false, actual);
   }
@@ -92,7 +79,7 @@ public final class AddUserToGameTest {
   @Test
   public void nullGameEntityFails() {
 
-    boolean actual = GameUtils.addUserToGame("user1", "1", null, datastore);
+    boolean actual = GameUtils.addUserToGame("user1", null, datastore);
 
     Assert.assertEquals(false, actual);
   }
@@ -104,7 +91,7 @@ public final class AddUserToGameTest {
     Entity gameEntity = new Entity("Game");
     gameEntity.setProperty("gameName", "game1");
 
-    boolean actual = GameUtils.addUserToGame("user1", "1", gameEntity, datastore);
+    boolean actual = GameUtils.addUserToGame("user1", gameEntity, datastore);
 
     Assert.assertEquals(false, actual);
   }
@@ -117,7 +104,7 @@ public final class AddUserToGameTest {
     ArrayList<String> userIds = new ArrayList<>();
     gameEntity.setProperty("userIds", userIds);
 
-    boolean actual = GameUtils.addUserToGame("user1", "1", gameEntity, datastore);
+    boolean actual = GameUtils.addUserToGame("user1", gameEntity, datastore);
 
     Assert.assertEquals(true, actual);
   }
