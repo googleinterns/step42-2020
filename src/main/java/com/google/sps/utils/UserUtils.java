@@ -68,12 +68,11 @@ public final class UserUtils {
 
    
    /**
-    * Returns a single Entity object that can then be used in a servlet. 
-    * The Entity is retrieved from matching an entity property w a cookie on the server. 
+    * This function takes in a list of cookies and matches a sessionID cookie
+    * with a specific name/value pair to a user entity with the same name/value
+    * pair as one of its properties. This user entity is then returned. 
+    * 
     * <p>
-    * This method always returns immediately, whether or not the 
-    * datastore object exists. If the object does not exist, the entity 
-    * returned is null.
     * 
     * @param  cookies    an array of cookies (usually all cookies on front end)
     * @param  datastore  the database where entities are stored
