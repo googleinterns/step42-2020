@@ -27,17 +27,18 @@ public class quizTiming extends HttpServlet {
 
     Entity score = new Entity("Score");
     score.setProperty("userID", 12345);
-    score.setProperty("gameID", 67890)
-    score.setProperty("score", 0)
+    score.setProperty("gameID", 67890);
+    score.setProperty("score", 0);
 
     Entity user = new Entity("user");
     user.setProperty("quiz_timestamp", System.currentTimeMillis());
-    user.
+    user.setProperty("userID", 12345);
     
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(quiz);
     datastore.put(fake_game);
     datastore.put(score);
+    datastore.put(user);
  
     response.sendRedirect("/gameBoard.html");      
  

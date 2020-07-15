@@ -25,6 +25,5 @@ public class AnswerQuizQuestion extends HttpServlet {
         
         //First calls Hannah's helper function to get the specific user, will return user entity
         
-
     }
 }
