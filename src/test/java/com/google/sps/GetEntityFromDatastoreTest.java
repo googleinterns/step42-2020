@@ -32,7 +32,6 @@ import com.google.sps.UserUtils;
 public final class GetEntityFromDatastoreTest {
   
   private DatastoreService datastore;
-  private UserUtils userUtils;
 
   // helper variable allows the use of entities in testing 
   private final LocalServiceTestHelper helper =
@@ -41,7 +40,6 @@ public final class GetEntityFromDatastoreTest {
   @Before
   public void setUp() {
     helper.setUp();
-    userUtils = new UserUtils();
     datastore = DatastoreServiceFactory.getDatastoreService();
   }
 
@@ -53,7 +51,8 @@ public final class GetEntityFromDatastoreTest {
   // given a user id and a datastore instance, the function should return the entity for the given user
   @Test
   public void findEntityByUserId() {
-
+    UserUtils userUtils = new UserUtils();
+ 
     Entity userEntity = new Entity("Game");
     userEntity.setProperty("userID", "123");
     datastore.put(userEntity);
@@ -75,7 +74,8 @@ public final class GetEntityFromDatastoreTest {
   // given a user id and an empty datastore instance, the function should return null
   @Test
   public void findEntityWithEmptyDatastore() {
-
+    UserUtils userUtils = new UserUtils();
+    
     Entity actual = userUtils.getEntityFromDatastore("Game","userID","123", datastore);
     Entity expected = null;
 
@@ -85,7 +85,8 @@ public final class GetEntityFromDatastoreTest {
   // given a user id that isn't in datastore and a datastore instance, the function should return null
   @Test
   public void UserIdNotInDatastore() {
-
+    UserUtils userUtils = new UserUtils();
+    
     Entity userEntity = new Entity("Game");
     userEntity.setProperty("userID", "123");
     datastore.put(userEntity);
@@ -107,7 +108,8 @@ public final class GetEntityFromDatastoreTest {
   // given an empty string and a datastore instance, the function should return null
   @Test
   public void EmptyStringUserId() {
-
+    UserUtils userUtils = new UserUtils();
+    
     Entity userEntity = new Entity("Game");
     userEntity.setProperty("userID", "123");
     datastore.put(userEntity);
@@ -129,7 +131,8 @@ public final class GetEntityFromDatastoreTest {
   // given null instead of datastore, the function should return null
   @Test
   public void nullDatastore() {
-
+    UserUtils userUtils = new UserUtils();
+    
     Entity actual = userUtils.getEntityFromDatastore("Game","userID","123", null);
     Entity expected = null;
 
@@ -139,6 +142,8 @@ public final class GetEntityFromDatastoreTest {
   //without given a entity class, the function should return null
   @Test
   public void nullUserEntity(){
+      UserUtils userUtils = new UserUtils();
+    
       Entity actual = userUtils.getEntityFromDatastore("","userID","123", datastore);
       Entity expected = null;
       Assert.assertEquals(expected, actual);
@@ -147,6 +152,8 @@ public final class GetEntityFromDatastoreTest {
   //without given a entity title, the function should return null
   @Test
   public void nullUserEntityTitle(){
+      UserUtils userUtils = new UserUtils();
+    
       Entity actual = userUtils.getEntityFromDatastore("Game","","123", datastore);
       Entity expected = null;
       Assert.assertEquals(expected, actual);
