@@ -23,7 +23,6 @@ public final class GetCookieGivenNameTest {
   //given a list of cookies, it should find the one with the mentioned name.
   @Test
   public void findCookieByName() {
-        CookieUtils cookieUtils = new CookieUtils();
         Cookie cookie1 = new Cookie("name1", "value1");
         Cookie cookie2 = new Cookie("name2", "value2");
         Cookie cookie3 = new Cookie("name3", "value3");
@@ -39,7 +38,6 @@ public final class GetCookieGivenNameTest {
 //Test when no cookie with given name exists
   @Test
   public void cookiesWithWrongName() {
-        CookieUtils cookieUtils = new CookieUtils();
         Cookie cookie1 = new Cookie("name1", "value1");
         Cookie cookie2 = new Cookie("name2", "value2");
         Cookie cookie3 = new Cookie("name3", "value3");
@@ -55,7 +53,6 @@ public final class GetCookieGivenNameTest {
 //Test with a single cookie and value pair
   @Test
   public void oneCookieAndName() {
-        CookieUtils cookieUtils = new CookieUtils();
         Cookie cookie1 = new Cookie("name1", "value1");
 
         Cookie cookieArray[] = new Cookie[]{cookie1};
@@ -69,7 +66,6 @@ public final class GetCookieGivenNameTest {
 //Test with a single cookie, where the value is searched for instead of the name
   @Test
   public void valueInsteadOfName() {
-        CookieUtils cookieUtils = new CookieUtils();
         Cookie cookie1 = new Cookie("name1", "value1");
 
         Cookie cookieArray[] = new Cookie[]{cookie1};
@@ -83,7 +79,6 @@ public final class GetCookieGivenNameTest {
 //Test where no cookies are given in the array
   @Test
   public void noCookiesWithName() {
-        CookieUtils cookieUtils = new CookieUtils();
         Cookie cookieArray[] = new Cookie[0];
 
         Cookie actual = cookieUtils.getCookieGivenName(cookieArray, "name1");
@@ -95,7 +90,6 @@ public final class GetCookieGivenNameTest {
 //Test where a list of cookies are given and an empty string
 @Test
   public void cookiesWithoutName(){
-        CookieUtils cookieUtils = new CookieUtils();
         Cookie cookie1 = new Cookie("name1", "value1");
         Cookie cookie2 = new Cookie("name2", "value2");
         Cookie cookie3 = new Cookie("name3", "value3");
