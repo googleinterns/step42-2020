@@ -18,7 +18,7 @@ import javax.servlet.http.*;
 import com.google.sps.CookieUtils; 
 
 @RunWith(JUnit4.class)
-public final class GetCookieGivenNameTest {
+public final class CookieUtilsTest {
 
   //given a list of cookies, it should find the one with the mentioned name.
   @Test
