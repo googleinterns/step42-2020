@@ -15,104 +15,97 @@ import org.junit.runners.JUnit4;
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import com.google.sps.CookieUtils; 
 
 @RunWith(JUnit4.class)
 public final class GetCookieGivenNameTest {
-    private CookieUtils cookieUtils;
-
-  @Before
-  public void setUp() {
-    cookieUtils = new CookieUtils();
-  }
-
-   @After
-  public void tearDown() {
-  }
 
   //given a list of cookies, it should find the one with the mentioned name.
   @Test
   public void findCookieByName() {
-        Cookie cookie1 = new Cookie("hello", "got it");
-        Cookie cookie2 = new Cookie("hi", "not this one");
-        Cookie cookie3 = new Cookie("heyyy", "not this one either");
+        CookieUtils cookieUtils = new CookieUtils();
+        Cookie cookie1 = new Cookie("name1", "value1");
+        Cookie cookie2 = new Cookie("name2", "value2");
+        Cookie cookie3 = new Cookie("name3", "value3");
 
         Cookie cookieArray[] = new Cookie[]{cookie1,cookie2,cookie3};
 
-        Cookie actual = cookieUtils.getCookieGivenName(cookieArray, "hello");
+        Cookie actual = cookieUtils.getCookieGivenName(cookieArray, "name1");
         Cookie expected = cookie1;
 
-         Assert.assertEquals(expected, actual);     
+        Assert.assertEquals(expected, actual);     
   }
 
-//given a list of cookies and a name that isn't in the list, returns null
+//Test when no cookie with given name exists
   @Test
   public void cookiesWithWrongName() {
-        Cookie cookie1 = new Cookie("hello", "got it");
-        Cookie cookie2 = new Cookie("hi", "not this one");
-        Cookie cookie3 = new Cookie("heyyy", "not this one either");
+        CookieUtils cookieUtils = new CookieUtils();
+        Cookie cookie1 = new Cookie("name1", "value1");
+        Cookie cookie2 = new Cookie("name2", "value2");
+        Cookie cookie3 = new Cookie("name3", "value3");
 
         Cookie cookieArray[] = new Cookie[]{cookie1,cookie2,cookie3};
 
-        Cookie actual = cookieUtils.getCookieGivenName(cookieArray, "salam");
+        Cookie actual = cookieUtils.getCookieGivenName(cookieArray, "noname");
         Cookie expected = null;
 
-         Assert.assertEquals(expected, actual);     
+        Assert.assertEquals(expected, actual);     
   }
 
-//given a list with 1 cookie and the correct name, return the cookie
+//Test with a single cookie and value pair
   @Test
   public void oneCookieAndName() {
-        Cookie cookie1 = new Cookie("hello", "this is it");
+        CookieUtils cookieUtils = new CookieUtils();
+        Cookie cookie1 = new Cookie("name1", "value1");
 
         Cookie cookieArray[] = new Cookie[]{cookie1};
 
-        Cookie actual = cookieUtils.getCookieGivenName(cookieArray, "hello");
+        Cookie actual = cookieUtils.getCookieGivenName(cookieArray, "name1");
         Cookie expected = cookie1;
 
-         Assert.assertEquals(expected, actual);     
+        Assert.assertEquals(expected, actual);     
   }
 
-//given a cookie and the value instead of the name, return null
+//Test with a single cookie, where the value is searched for instead of the name
   @Test
   public void valueInsteadOfName() {
-        Cookie cookie1 = new Cookie("hello", "salam");
+        CookieUtils cookieUtils = new CookieUtils();
+        Cookie cookie1 = new Cookie("name1", "value1");
 
         Cookie cookieArray[] = new Cookie[]{cookie1};
 
-        Cookie actual = cookieUtils.getCookieGivenName(cookieArray, "salam");
+        Cookie actual = cookieUtils.getCookieGivenName(cookieArray, "value1");
         Cookie expected = null;
 
          Assert.assertEquals(expected, actual);     
   }
 
-//given no cookies and a name, return null
+//Test where no cookies are given in the array
   @Test
   public void noCookiesWithName() {
+        CookieUtils cookieUtils = new CookieUtils();
         Cookie cookieArray[] = new Cookie[0];
 
-        Cookie actual = cookieUtils.getCookieGivenName(cookieArray, "salam");
+        Cookie actual = cookieUtils.getCookieGivenName(cookieArray, "name1");
         Cookie expected = null;
 
-         Assert.assertEquals(expected, actual);     
+        Assert.assertEquals(expected, actual);     
   }
 
-//given a list of cookies, but no name, returns null
+//Test where a list of cookies are given and an empty string
 @Test
   public void cookiesWithoutName(){
-        Cookie cookie1 = new Cookie("hello", "got it");
-        Cookie cookie2 = new Cookie("hi", "not this one");
-        Cookie cookie3 = new Cookie("heyyy", "not this one either");
+        CookieUtils cookieUtils = new CookieUtils();
+        Cookie cookie1 = new Cookie("name1", "value1");
+        Cookie cookie2 = new Cookie("name2", "value2");
+        Cookie cookie3 = new Cookie("name3", "value3");
 
-        Cookie cookieArray[] = new Cookie[]{cookie1,cookie2,cookie3};
+        Cookie cookieArray[] = new Cookie[]{cookie1, cookie2, cookie3};
 
         Cookie actual = cookieUtils.getCookieGivenName(cookieArray, "");
         Cookie expected = null;
 
-         Assert.assertEquals(expected, actual);  
+        Assert.assertEquals(expected, actual);  
   }
   
 }
