@@ -18,9 +18,6 @@ package com.google.sps;
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.PreparedQuery;
@@ -66,9 +63,7 @@ public final class UserUtils {
     Entity entity = resultsList.get(0);
     return entity;
   }
-
-   
-   /**
+     /**
     * This function takes in a list of cookies and matches a sessionID cookie
     * with a specific name/value pair to a user entity with the same name/value
     * pair as one of its properties. This user entity is then returned. 
@@ -79,19 +74,10 @@ public final class UserUtils {
     * @param  datastore  the database where entities are stored
     * @return            a single entity that has the cookie name/value pair as a property
     */
- 
+
   public static Entity getUserFromCookie(Cookie cookies[], DatastoreService datastore){
       if(datastore == null){
           log.severe("null datastore");
           return null;
-      }
-      String sessionIDName = "SessionID";
-      Cookie cookie = cookieUtils.getCookieGivenName(cookies, sessionIDName); //returns null if it doesn't exist
-      if(cookie == null){ 
-          return null;
-      }
-      return getEntityFromDatastore("user", sessionIDName, cookie.getValue(), datastore); //returns null if it doesn't exist
-  }
-
 
 }
