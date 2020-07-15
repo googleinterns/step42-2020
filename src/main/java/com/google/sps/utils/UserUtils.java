@@ -65,4 +65,33 @@ public final class UserUtils {
     Entity entity = resultsList.get(0);
     return entity;
   }
+
+   
+   /**
+    * Returns a single Entity object that can then be used in a servlet. 
+    * The Entity is retrieved from matching an entity property w a cookie on the server. 
+    * <p>
+    * This method always returns immediately, whether or not the 
+    * datastore object exists. If the object does not exist, the entity 
+    * returned is null.
+    * 
+    * @param  cookies    an array of cookies (usually all cookies on front end)
+    * @param  datastore  the database where entities are stored
+    * @return            a single entity that has the cookie name/value pair as a property
+    */
+ 
+  public Entity getUserFromCookie(Cookie cookies[], DatastoreService datastore){
+      if(datastore == null){
+          return null;
+      }
+      String sessionIDName = "SessionID";
+      CookieUtils cookieUtils = new CookieUtils();
+      Cookie cookie = cookieUtils.getCookieGivenName(cookies, sessionIDName); //returns null if it doesn't exist
+      if(cookie == null){ 
+          return null;
+      }
+      return getEntityFromDatastore("user", sessionIDName, cookie.getValue(), datastore); //returns null if it doesn't exist
+  }
+
+
 }
