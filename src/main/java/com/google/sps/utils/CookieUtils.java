@@ -29,16 +29,13 @@ public final class CookieUtils {
     * The name arguement must be the name of a cookie active
     * on the front-end for a Cookie to be retrieved.
     * <p>
-    * This method always returns immediately, whether or not the 
-    * datastore object exists. If the object does not exist, the cookie 
-    * returned is null.
     * 
     * @param  cookies  an array of cookies (usually all of the cookies on the front end)
     * @param  name     the name of a specific cookie
     * @return          the cookie w the name passed in as a parameter
     */
 
-    public Cookie getCookieGivenName(Cookie cookies[], String name){
+    public Cookie getCookieFromName(Cookie cookies[], String name){
         if(name == "" || cookies.length == 0){
             return null;
         }
