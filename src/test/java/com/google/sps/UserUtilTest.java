@@ -157,7 +157,7 @@ public final class UserUtilTest {
   @Test
   public void emptyGameIdFails() {
 
-    Entity userEntity = new Entity("User");
+    Entity userEntity = new Entity("user");
     ArrayList<String> gameIds = new ArrayList<>();
     userEntity.setProperty("games", gameIds);
 
@@ -170,7 +170,7 @@ public final class UserUtilTest {
   @Test
   public void nullDatastoreFails() {
 
-    Entity userEntity = new Entity("User");
+    Entity userEntity = new Entity("user");
     ArrayList<String> gameIds = new ArrayList<>();
     userEntity.setProperty("games", gameIds);
 
@@ -192,7 +192,7 @@ public final class UserUtilTest {
   @Test
   public void invalidUserFails() {
 
-    Entity userEntity = new Entity("User");
+    Entity userEntity = new Entity("user");
     userEntity.setProperty("userName", "user1");
 
     boolean actual = UserUtils.addGameToUser(userEntity, datastore, "gameId");
@@ -204,7 +204,7 @@ public final class UserUtilTest {
   @Test
   public void addGameToUserSuccess() {
 
-    Entity userEntity = new Entity("User");
+    Entity userEntity = new Entity("user");
     ArrayList<String> gameIds = new ArrayList<>();
     userEntity.setProperty("games", gameIds);
 
@@ -217,7 +217,7 @@ public final class UserUtilTest {
   @Test
   public void emptyBlobKeyFails() {
 
-    Entity userEntity = new Entity("User");
+    Entity userEntity = new Entity("user");
 
     boolean actual = UserUtils.addBlobKey("", userEntity, datastore);
 
@@ -228,7 +228,7 @@ public final class UserUtilTest {
   @Test
   public void blobKeyNullDatastoreFails() {
 
-    Entity userEntity = new Entity("User");
+    Entity userEntity = new Entity("user");
 
     boolean actual = UserUtils.addBlobKey("blobkey", userEntity, null);
 
