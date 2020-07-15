@@ -35,7 +35,7 @@ public final class CookieUtils {
     * @return          the cookie w the name passed in as a parameter
     */
 
-    public Cookie getCookieFromName(Cookie cookies[], String name){
+    public static Cookie getCookieFromName(Cookie cookies[], String name){
         if(name == "" || cookies.length == 0){
             return null;
         }
