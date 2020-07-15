@@ -20,10 +20,10 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import java.util.logging.Logger;
 
 public final class CookieUtils {
-
+     private static final Logger log = Logger.getLogger(UserUtils.class.getName());
         /**
     * Returns a single Cookie object that can then be used in a servlet. 
     * The name arguement must be the name of a cookie active
@@ -37,6 +37,7 @@ public final class CookieUtils {
 
     public static Cookie getCookieFromName(Cookie cookies[], String name){
         if(name == "" || cookies.length == 0){
+            log.severe("bad inputs");
             return null;
         }
         for(int i = 0; i < cookies.length; i++){
