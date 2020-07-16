@@ -51,7 +51,6 @@ public final class QuizTimingPropertiesUtils {
         "Which plant would look the best outside in a garden?",
         "Which plant would you give as a gift?"
     ));
-
  
     //This function gets the the "quiz_timestamp" property of the entity that is fed into the function
     public Object getTimestampProperty(String entity, DatastoreService datastore) {
@@ -67,20 +66,18 @@ public final class QuizTimingPropertiesUtils {
             Entity fetched_item = pq.asList(FetchOptions.Builder.withLimit(1)).get(0);
             return fetched_item.getProperty("quiz_timestamp");
         } 
-        log.severe("Zero Items Quered");
+        //log.severe("Zero Items Quered");
+        //log.log(Level.SEVERE, "No results for query {0}", entity);
         return null;
     }
  
     //This function checks if the user has taken the quiz yet by comparing their timestamp with the quiz's timestamp
     public Boolean userTookQuiz(String usersQuizTime, String currentQuizTime) {
-        if(usersQuizTime.compareTo(currentQuizTime) > 0) {
-            return true;
-        } 
-        return false;
+        return (usersQuizTime.compareTo(currentQuizTime) > 0);
     }
 
     //This function checks to see if the quiz is outdated
-     public Boolean newDayNewQuiz(Object current_quiz_time) {
+     public Boolean isQuizOutdated(Object current_quiz_time) {
         String quiz_date;
         try {
             quiz_date = DateFormat.getDateInstance().format(current_quiz_time);
