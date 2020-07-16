@@ -26,6 +26,7 @@ public class UserQuizStatusServlet extends HttpServlet {
         
         QuizTimingPropertiesUtils timing_utils = new QuizTimingPropertiesUtils();
         String current_quiz_time = (timing_utils.getTimestampProperty("Game", datastore)).toString();
+        //String current_quiz_time = String.valueOf(timing_utils.getTimestampProperty("Game", datastore));
         //String user_quiz_status = (timing_utils.getTimestampProperty("user", datastore)).toString();
  
         Gson gson = new Gson();

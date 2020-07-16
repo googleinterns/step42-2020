@@ -53,7 +53,7 @@ public final class TimingPropertiesTest {
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         datastore.put(user);
  
-        Object actual = timing_properties_test.getTimestampProperty("user", datastore); 
+        Long actual = timing_properties_test.getTimestampProperty("user", datastore); 
         Assert.assertEquals(null, actual);
     }
  
@@ -64,7 +64,7 @@ public final class TimingPropertiesTest {
 
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-        Object actual = timing_properties_test.getTimestampProperty("", datastore);
+        Long actual = timing_properties_test.getTimestampProperty("", datastore);
         Assert.assertEquals(null, actual);
     }
  
@@ -74,7 +74,7 @@ public final class TimingPropertiesTest {
         QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
 
         Entity user = new Entity("user");
-        Object actual = timing_properties_test.getTimestampProperty("user", null);
+        Long actual = timing_properties_test.getTimestampProperty("user", null);
         Assert.assertEquals(null, actual);
     }
 
@@ -86,7 +86,7 @@ public final class TimingPropertiesTest {
         Entity user = new Entity("user");
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-        Object actual = timing_properties_test.getTimestampProperty("user", datastore);
+        Long actual = timing_properties_test.getTimestampProperty("user", datastore);
         Assert.assertEquals(null, actual);
     }
 
@@ -101,7 +101,7 @@ public final class TimingPropertiesTest {
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         datastore.put(user);
 
-        Object actual = timing_properties_test.getTimestampProperty("user", datastore);
+        long actual = timing_properties_test.getTimestampProperty("user", datastore);
         Assert.assertEquals(1594309443653L, actual);
     }
  

@@ -30,6 +30,7 @@ public class GameQuizStatusServlet extends HttpServlet {
  
         Entity game_entity = pq.asList(FetchOptions.Builder.withLimit(1)).get(0);
         //May have to check to make sure we query the right game and not the whole entity
+        //System.out.println((timing_properties.getTimestampProperty("Game", datastore)).getClass().getName());
         Object current_quiz_stamp = timing_properties.getTimestampProperty("Game", datastore);
 
         Gson gson = new Gson();

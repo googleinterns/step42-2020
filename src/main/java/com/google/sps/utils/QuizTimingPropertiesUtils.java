@@ -61,7 +61,7 @@ public final class QuizTimingPropertiesUtils {
     ));
 
     //This function gets the the "quiz_timestamp" property of the entity that is fed into the function
-    public Object getTimestampProperty(String entity, DatastoreService datastore) {
+    public Long getTimestampProperty(String entity, DatastoreService datastore) {
         Query query = new Query(entity);
         PreparedQuery pq;
         try {
@@ -72,7 +72,7 @@ public final class QuizTimingPropertiesUtils {
         }
         if(pq.asList(FetchOptions.Builder.withLimit(1)).size() > 0) {
             Entity fetched_item = pq.asList(FetchOptions.Builder.withLimit(1)).get(0);
-            return fetched_item.getProperty("quiz_timestamp");
+            return (Long) fetched_item.getProperty("quiz_timestamp");
         } 
         log.severe("Zero Items Quered");
         //log.severe("Zero Items Quered");
@@ -126,18 +126,19 @@ public final class QuizTimingPropertiesUtils {
 
     // Break ----------
 
-    // public Object giveUserPoints(Boolean userQuizStatus, Object userId, Object timeStamp, DatastoreService datastore) {
+    // public Boolean giveUserPoints(Boolean userQuizStatus, Object userId, Object timeStamp, DatastoreService datastore) {
     //     if(userQuizStatus) {
     //         Query query = new Query("Score");
     //         PreparedQuery pq = datastore.prepare(query);
     //         for(Entity score : pq.asIterable()) {
-    //             if((score.getProperty("userID")).compareTo(userId) == 0){
+    //             Object temp = score.getProperty("userID");
+    //             if(temp.compareTo(userId) == 0){
     //                 Key score_key = score.getKey();
     //                 datastore.delete(score_key);
     //                 Entity updated_score = new Entity(score_key);
     //                 updated_score.setProperty("score", 20);
     //                 datastore.put(updated_score);
-    //                 return null;
+    //                 return true;
     //             }
     //         }
     //     }
