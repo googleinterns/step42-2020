@@ -52,7 +52,7 @@ public final class GameUtilTest {
 
   //  Given a user has no games, any game name would be valid
   @Test
-  public void isValidGameUserHasNoGames() {
+  public void isValidGame_UserHasNoGames() {
 
     Entity userEntity2 = new Entity("user");
     ArrayList<String> gameNames2 = new ArrayList<>();
@@ -67,7 +67,7 @@ public final class GameUtilTest {
 
   // give IsValidGameName a game name the user already has 
   @Test
-  public void isValidGameUserHasDuplicateGameName() {
+  public void isValidGame_UserHasDuplicateGameName() {
 
     Entity userEntity1 = new Entity("user");
     ArrayList<String> gameNames1 = new ArrayList<>();
@@ -85,7 +85,7 @@ public final class GameUtilTest {
 
   // The user has games, but the given game name is new
   @Test
-  public void isValidGameNewGameName() {
+  public void isValidGame_NewGameName() {
 
     Entity userEntity1 = new Entity("user");
     ArrayList<String> gameNames1 = new ArrayList<>();
@@ -103,7 +103,7 @@ public final class GameUtilTest {
 
   // The user has games, and the given name is a duplicate name with different capitalization
   @Test
-  public void isValidGameUserHasSameNameDifferentCapitalization() {
+  public void isValidGame_SameNameDifferentCapitalization() {
 
     Entity userEntity1 = new Entity("user");
     ArrayList<String> gameNames1 = new ArrayList<>();
@@ -121,7 +121,7 @@ public final class GameUtilTest {
 
   // Give IsValidGameName a blank game name
   @Test
-  public void isValidGameEmptyGameName() {
+  public void isValidGame_EmptyGameName() {
 
     Entity userEntity1 = new Entity("user");
     ArrayList<String> gameNames1 = new ArrayList<>();
@@ -139,7 +139,7 @@ public final class GameUtilTest {
 
   // Give IsValidGameName a null user entity
   @Test
-  public void isValidGameNullUserEntity() {
+  public void isValidGame_NullUserEntity() {
 
     boolean actual = GameUtils.IsValidGameName("game1", null);
 
@@ -148,7 +148,7 @@ public final class GameUtilTest {
 
   // Give create game an empty string for game name
   @Test
-  public void createGameEmptyGameName() {
+  public void createGame_EmptyGameName() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
     Entity actual = GameUtils.createGameEntity("", datastore);
@@ -158,7 +158,7 @@ public final class GameUtilTest {
 
   // Give create game a null for datastore instance
   @Test
-  public void createGameNullDatastore() {
+  public void createGame_NullDatastore() {
 
     Entity actual = GameUtils.createGameEntity("game", null);
 
@@ -167,7 +167,7 @@ public final class GameUtilTest {
 
   // Give create game valid datastore and gamename
   @Test
-  public void createValidGame() {
+  public void createGame_AllValid() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
     Entity actual = GameUtils.createGameEntity("game", datastore);
@@ -181,7 +181,7 @@ public final class GameUtilTest {
 
   // Give addUserToGame an empty string for user id
   @Test
-  public void addUserToGameEmptyUserId() {
+  public void addUserToGame_EmptyUserId() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
     Entity gameEntity = new Entity("Game");
@@ -195,7 +195,7 @@ public final class GameUtilTest {
 
   // Give addUserToGame a null for datastore instance
   @Test
-  public void addUserToGameNullDatastore() {
+  public void addUserToGame_NullDatastore() {
 
     Entity gameEntity = new Entity("Game");
     ArrayList<String> userIds = new ArrayList<>();
@@ -208,7 +208,7 @@ public final class GameUtilTest {
 
   // Give addUserToGame a null for game entity
   @Test
-  public void addUserToGameNullGameEntity() {
+  public void addUserToGame_NullGameEntity() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
     boolean actual = GameUtils.addUserToGame("user1", null, datastore);
@@ -218,7 +218,7 @@ public final class GameUtilTest {
 
   // Give addUserToGame an game entity without an initialized username list
   @Test
-  public void addUserToGameInvalidGame() {
+  public void addUserToGame_InvalidGame() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
     Entity gameEntity = new Entity("Game");
@@ -231,7 +231,7 @@ public final class GameUtilTest {
  
   // Give addUserToGame valid parameters
   @Test
-  public void addUserToGameSuccess() {
+  public void addUserToGame_Success() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
     Entity gameEntity = new Entity("Game");

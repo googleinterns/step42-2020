@@ -87,7 +87,7 @@ public final class GameUtils {
       entity.setProperty("gameId", key);
       datastore.put(entity);
     }catch(EntityNotFoundException e){
-      log.severe("EntityNotFoundException; game entity not found when creating game entity");
+      log.severe("EntityNotFoundException; game entity not found when adding game id in create game");
       return null;
     }
  
