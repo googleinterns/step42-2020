@@ -1,0 +1,245 @@
+// Copyright 2019 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package com.google.sps;
+
+import java.util.ArrayList;
+import java.util.List;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
+import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.After;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
+import com.google.sps.utils.GameUtils;
+
+/** tests the game util functions */
+@RunWith(JUnit4.class)
+public final class GameUtilTest {
+
+  private static String userID1 = "1";
+  private static String userID2 = "2";
+
+  // helper variable allows the use of entities in testing 
+  private final LocalServiceTestHelper helper =
+    new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
+
+  @Before
+  public void setUp() {
+    helper.setUp();
+  }
+
+  @After
+  public void tearDown() {
+    helper.tearDown();
+  }
+
+  //  Given a user has no games, any game name would be valid
+  @Test
+  public void isValidGameUserHasNoGames() {
+
+    Entity userEntity2 = new Entity("user");
+    ArrayList<String> gameNames2 = new ArrayList<>();
+
+    userEntity2.setProperty("gameNames",gameNames2);
+    userEntity2.setProperty("userID",userID2);
+
+    boolean actual = GameUtils.IsValidGameName("game1", userEntity2);
+
+    Assert.assertEquals(true, actual);
+  }
+
+  // give IsValidGameName a game name the user already has 
+  @Test
+  public void isValidGameUserHasDuplicateGameName() {
+
+    Entity userEntity1 = new Entity("user");
+    ArrayList<String> gameNames1 = new ArrayList<>();
+
+    gameNames1.add("game1");
+    gameNames1.add("game2");
+    gameNames1.add("Game3");
+    userEntity1.setProperty("gameNames",gameNames1);
+    userEntity1.setProperty("userID",userID1);
+
+    boolean actual = GameUtils.IsValidGameName("game1", userEntity1);
+
+    Assert.assertEquals(false, actual);
+  }
+
+  // The user has games, but the given game name is new
+  @Test
+  public void isValidGameNewGameName() {
+
+    Entity userEntity1 = new Entity("user");
+    ArrayList<String> gameNames1 = new ArrayList<>();
+    
+    gameNames1.add("game1");
+    gameNames1.add("game2");
+    gameNames1.add("Game3");
+    userEntity1.setProperty("gameNames",gameNames1);
+    userEntity1.setProperty("userID",userID1);
+
+    boolean actual = GameUtils.IsValidGameName("game4", userEntity1);
+
+    Assert.assertEquals(true, actual);
+  }
+
+  // The user has games, and the given name is a duplicate name with different capitalization
+  @Test
+  public void isValidGameUserHasSameNameDifferentCapitalization() {
+
+    Entity userEntity1 = new Entity("user");
+    ArrayList<String> gameNames1 = new ArrayList<>();
+    
+    gameNames1.add("game1");
+    gameNames1.add("game2");
+    gameNames1.add("Game3");
+    userEntity1.setProperty("gameNames",gameNames1);
+    userEntity1.setProperty("userID",userID1);
+
+    boolean actual = GameUtils.IsValidGameName("Game1", userEntity1);
+
+    Assert.assertEquals(true, actual);
+  }
+
+  // Give IsValidGameName a blank game name
+  @Test
+  public void isValidGameEmptyGameName() {
+
+    Entity userEntity1 = new Entity("user");
+    ArrayList<String> gameNames1 = new ArrayList<>();
+    
+    gameNames1.add("game1");
+    gameNames1.add("game2");
+    gameNames1.add("Game3");
+    userEntity1.setProperty("gameNames",gameNames1);
+    userEntity1.setProperty("userID",userID1);
+
+    boolean actual = GameUtils.IsValidGameName("", userEntity1);
+
+    Assert.assertEquals(false, actual);
+  }
+
+  // Give IsValidGameName a null user entity
+  @Test
+  public void isValidGameNullUserEntity() {
+
+    boolean actual = GameUtils.IsValidGameName("game1", null);
+
+    Assert.assertEquals(false, actual);
+  }
+
+  // Give create game an empty string for game name
+  @Test
+  public void createGameEmptyGameName() {
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+    Entity actual = GameUtils.createGameEntity("", datastore);
+
+    Assert.assertEquals(null, actual);
+  }
+
+  // Give create game a null for datastore instance
+  @Test
+  public void createGameNullDatastore() {
+
+    Entity actual = GameUtils.createGameEntity("game", null);
+
+    Assert.assertEquals(null, actual);
+  }
+
+  // Give create game valid datastore and gamename
+  @Test
+  public void createValidGame() {
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+    Entity actual = GameUtils.createGameEntity("game", datastore);
+
+    long timestamp = 0;
+
+    Assert.assertEquals("game", actual.getProperty("gameName"));
+    Assert.assertEquals("", actual.getProperty("quizQuestion"));
+    Assert.assertEquals(timestamp, actual.getProperty("quiz_timestamp"));
+  }
+
+  // Give addUserToGame an empty string for user id
+  @Test
+  public void addUserToGameEmptyUserId() {
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+    Entity gameEntity = new Entity("Game");
+    ArrayList<String> userIds = new ArrayList<>();
+    gameEntity.setProperty("userIds", userIds);
+
+    boolean actual = GameUtils.addUserToGame("", gameEntity, datastore);
+
+    Assert.assertEquals(false, actual);
+  }
+
+  // Give addUserToGame a null for datastore instance
+  @Test
+  public void addUserToGameNullDatastore() {
+
+    Entity gameEntity = new Entity("Game");
+    ArrayList<String> userIds = new ArrayList<>();
+    gameEntity.setProperty("userIds", userIds);
+
+    boolean actual = GameUtils.addUserToGame("user1", gameEntity, null);
+
+    Assert.assertEquals(false, actual);
+  }
+
+  // Give addUserToGame a null for game entity
+  @Test
+  public void addUserToGameNullGameEntity() {
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+    boolean actual = GameUtils.addUserToGame("user1", null, datastore);
+
+    Assert.assertEquals(false, actual);
+  }
+
+  // Give addUserToGame an game entity without an initialized username list
+  @Test
+  public void addUserToGameInvalidGame() {
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+    Entity gameEntity = new Entity("Game");
+    gameEntity.setProperty("gameName", "game1");
+
+    boolean actual = GameUtils.addUserToGame("user1", gameEntity, datastore);
+
+    Assert.assertEquals(false, actual);
+  }
+ 
+  // Give addUserToGame valid parameters
+  @Test
+  public void addUserToGameSuccess() {
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+    Entity gameEntity = new Entity("Game");
+    ArrayList<String> userIds = new ArrayList<>();
+    gameEntity.setProperty("userIds", userIds);
+
+    boolean actual = GameUtils.addUserToGame("user1", gameEntity, datastore);
+
+    Assert.assertEquals(true, actual);
+  }
+}

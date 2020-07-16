@@ -31,7 +31,11 @@ public final class GameUtils {
   */
   public static boolean IsValidGameName(String gameName, Entity userEntity) {
     
-    if(userEntity == null || gameName == ""){
+    if(userEntity == null){
+        log.severe("found null user entity when checking for valid game name");
+        return false;
+    }
+    if(gameName == ""){
         return false;
     }
     
@@ -56,7 +60,7 @@ public final class GameUtils {
         return null;
     }
     if(datastore == null){
-        log.severe("null datastore");
+        log.severe("found null datastore trying to create game " + gameName);
         return null;
     }
     
@@ -83,7 +87,7 @@ public final class GameUtils {
       entity.setProperty("gameId", key);
       datastore.put(entity);
     }catch(EntityNotFoundException e){
-      log.severe("EntityNotFoundException");
+      log.severe("EntityNotFoundException; game entity not found when creating game entity");
       return null;
     }
  
@@ -94,19 +98,21 @@ public final class GameUtils {
   * add user to user list in game entity, and creates a score entity for the given user and game
   */
   public static boolean addUserToGame(String userId, Entity gameEntity, DatastoreService datastore) {
- 
+
     if(userId == ""){
       return false;
     }
-
-    if(gameEntity == null || datastore == null){
-      log.severe("null entity or datastore"); 
-      return false;
+    if(gameEntity == null){
+        log.severe("found null game entity trying to user "+ userId +" to game");
+        return false;
+    }
+    if(datastore == null){
+        log.severe("found null datastore trying to game to user " + userId);
+        return false;
     }
  
     ArrayList<String> userIds = (ArrayList<String>) gameEntity.getProperty("userIds");
     if(userIds == null){
-      log.severe("empty user id list");
       return false;
     }
  
