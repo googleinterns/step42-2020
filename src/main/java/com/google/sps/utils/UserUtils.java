@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.sps;
+package com.google.sps.utils;
 
 
 import java.io.*;
@@ -23,12 +23,16 @@ import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import java.util.List;
+import java.util.ArrayList;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
+import java.util.logging.Logger;
 
 public final class UserUtils {
+
+    private static final Logger log = Logger.getLogger(GameUtils.class.getName());
 
     /**
     * Returns a single Entity object that can then be used in a servlet. 
@@ -44,7 +48,7 @@ public final class UserUtils {
     * @param  entityPropertyValue  the value of the property that is filtered for
     * @return                      a single entity that has the same value for the property in the parameter 
     */
-  public Entity getEntityFromDatastore(String entityName, String entityPropertyTitle, String entityPropertyValue, DatastoreService datastore) {
+  public static Entity getEntityFromDatastore(String entityName, String entityPropertyTitle, String entityPropertyValue, DatastoreService datastore) {
 
     if(entityPropertyValue == "" || entityName == "" || entityPropertyTitle == "" || datastore == null){
         return null;
@@ -61,5 +65,60 @@ public final class UserUtils {
 
     Entity entity = resultsList.get(0);
     return entity;
+  }
+
+  /**
+  * Adds a game id to a user's list of games
+  */
+  public static boolean addGameToUser(Entity userEntity, DatastoreService datastore, String gameId) {
+
+    if(userEntity == null){
+        log.severe("found null user entity trying to add game to user");
+        return false;
+    }
+    if(datastore == null){
+        log.severe("found null datastore trying to add game to user " + (String) userEntity.getProperty("userId"));
+        return false;
+    }
+    if(gameId == ""){
+        log.severe("found empty gameId trying to add game to user " + (String) userEntity.getProperty("userId"));
+        return false;
+    }
+ 
+    ArrayList<String> games = (ArrayList<String>) userEntity.getProperty("games");
+ 
+    if(games == null){
+        return false;
+    }
+ 
+    games.add(gameId);
+    userEntity.setProperty("games", games);
+    datastore.put(userEntity);
+ 
+    return true;
+  }
+
+  /**
+  * adds a photo to the user entity
+  */
+  public static boolean addBlobKey(String blobKey, Entity userEntity, DatastoreService datastore) {
+
+    if(userEntity == null){
+        log.severe("found null user entity trying to add blobkey to user");
+        return false;
+    }
+    if(datastore == null){
+        log.severe("found null datastore trying to add blobkey to user " + (String) userEntity.getProperty("userId"));
+        return false;
+    }
+    if(blobKey == ""){
+        log.severe("found empty blobkey trying to add blobkey to user " + (String) userEntity.getProperty("userId"));
+        return false;
+    }
+    
+    userEntity.setProperty("blobKey", blobKey);
+    datastore.put(userEntity);
+ 
+    return true; 
   }
 }
