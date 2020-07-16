@@ -77,11 +77,11 @@ public final class UserUtils {
         return false;
     }
     if(datastore == null){
-        log.severe("found null datastore trying to add game to user" + (String) userEntity.getProperty("userId"));
+        log.severe("found null datastore trying to add game to user " + (String) userEntity.getProperty("userId"));
         return false;
     }
     if(gameId == ""){
-        log.severe("found empty gameId trying to add game to user" + (String) userEntity.getProperty("userId"));
+        log.severe("found empty gameId trying to add game to user " + (String) userEntity.getProperty("userId"));
         return false;
     }
  
@@ -108,11 +108,11 @@ public final class UserUtils {
         return false;
     }
     if(datastore == null){
-        log.severe("found null datastore trying to add blobkey to user" + (String) userEntity.getProperty("userId"));
+        log.severe("found null datastore trying to add blobkey to user " + (String) userEntity.getProperty("userId"));
         return false;
     }
     if(blobKey == ""){
-        log.severe("found empty blobkey trying to add blobkey to user" + (String) userEntity.getProperty("userId"));
+        log.severe("found empty blobkey trying to add blobkey to user " + (String) userEntity.getProperty("userId"));
         return false;
     }
     
