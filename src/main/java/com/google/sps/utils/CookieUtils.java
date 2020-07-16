@@ -36,10 +36,15 @@ public final class CookieUtils {
     */
 
     public static Cookie getCookieFromName(Cookie cookies[], String name){
-        if(name == "" || cookies.length == 0){
-            log.severe("bad inputs");
+        if(name == ""){
+            log.severe("found null search parameter while trying to run function getCookieFromName");
             return null;
         }
+        if(cookies.length == 0){
+             log.severe("found no cookies while trying to run function getCookieFromName");
+             return null;
+        }
+         
         for(int i = 0; i < cookies.length; i++){
             Cookie cookie = cookies[i];
             if(cookie.getName() == name){
