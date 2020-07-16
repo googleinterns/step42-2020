@@ -53,7 +53,7 @@ public final class QuizTimingPropertiesUtils {
     ));
  
     //This function gets the the "quiz_timestamp" property of the entity that is fed into the function
-    public Object getTimestampProperty(String entity, DatastoreService datastore) {
+    public Long getTimestampProperty(String entity, DatastoreService datastore) {
         Query query = new Query(entity);
         PreparedQuery pq;
         try {
@@ -64,10 +64,9 @@ public final class QuizTimingPropertiesUtils {
         }
         if(pq.asList(FetchOptions.Builder.withLimit(1)).size() > 0) {
             Entity fetched_item = pq.asList(FetchOptions.Builder.withLimit(1)).get(0);
-            return fetched_item.getProperty("quiz_timestamp");
+            return (Long) fetched_item.getProperty("quiz_timestamp");
         } 
-        //log.severe("Zero Items Quered");
-        //log.log(Level.SEVERE, "No results for query {0}", entity);
+        log.severe("Zero Items Quered");
         return null;
     }
  
@@ -94,7 +93,7 @@ public final class QuizTimingPropertiesUtils {
     }
     
     //This function gets a new quiz question if the quiz is outdated
-    public Object getNewQuestion(Entity game_entity, DatastoreService datastore) {
+    public String getNewQuestion(Entity game_entity, DatastoreService datastore) {
         Random rand = new Random();
         int rand_number = rand.nextInt(quiz_questions.size());
         Key game_entity_key;
@@ -112,7 +111,7 @@ public final class QuizTimingPropertiesUtils {
         update_game_entity.setProperty("quiz_timestamp", System.currentTimeMillis());
         update_game_entity.setProperty("quizQuestion", quiz_questions.get(rand_number));
         datastore.put(update_game_entity);
-        return update_game_entity.getProperty("quizQuestion");
+        return (update_game_entity.getProperty("quizQuestion")).toString();
     }
 
 }
