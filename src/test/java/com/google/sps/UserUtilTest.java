@@ -31,8 +31,6 @@ import com.google.sps.utils.UserUtils;
 /** tests the IsValidGameName function */
 @RunWith(JUnit4.class)
 public final class UserUtilTest {
-  
-  private DatastoreService datastore;
 
   // helper variable allows the use of entities in testing 
   private final LocalServiceTestHelper helper =
@@ -41,7 +39,6 @@ public final class UserUtilTest {
   @Before
   public void setUp() {
     helper.setUp();
-    datastore = DatastoreServiceFactory.getDatastoreService();
   }
 
   @After
@@ -52,6 +49,7 @@ public final class UserUtilTest {
   // Test a working user id and a datastore instance
   @Test
   public void findEntityByUserId() {
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
  
     Entity userEntity = new Entity("Game");
     userEntity.setProperty("userID", "123");
@@ -74,6 +72,7 @@ public final class UserUtilTest {
   // Test id and an empty datastore instance
   @Test
   public void findEntityWithEmptyDatastore() {
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     
     Entity actual = UserUtils.getEntityFromDatastore("Game","userID","123", datastore);
     Entity expected = null;
@@ -84,6 +83,7 @@ public final class UserUtilTest {
   // Test a user id that isn't in datastore and a datastore instance
   @Test
   public void UserIdNotInDatastore() {
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     
     Entity userEntity = new Entity("Game");
     userEntity.setProperty("userID", "123");
@@ -106,6 +106,7 @@ public final class UserUtilTest {
   // Test an empty string for EntityPropertyValue and a datastore instance
   @Test
   public void EmptyStringUserId() {
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     
     Entity userEntity = new Entity("Game");
     userEntity.setProperty("userID", "123");
@@ -138,6 +139,7 @@ public final class UserUtilTest {
   // test without an entity class
   @Test
   public void nullUserEntity(){
+      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     
       Entity actual = UserUtils.getEntityFromDatastore("","userID","123", datastore);
       Entity expected = null;
@@ -147,6 +149,7 @@ public final class UserUtilTest {
   // test without an entity title
   @Test
   public void nullUserEntityTitle(){
+      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     
       Entity actual = UserUtils.getEntityFromDatastore("Game","","123", datastore);
       Entity expected = null;
@@ -156,6 +159,7 @@ public final class UserUtilTest {
   // test an empty string for game id
   @Test
   public void emptyGameIdFails() {
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
     Entity userEntity = new Entity("user");
     ArrayList<String> gameIds = new ArrayList<>();
@@ -182,6 +186,7 @@ public final class UserUtilTest {
   // test a null for user entity
   @Test
   public void nullUserEntityFails() {
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
     boolean actual = UserUtils.addGameToUser(null, datastore, "gameId");
 
@@ -191,6 +196,7 @@ public final class UserUtilTest {
   // test an user entity without a gameid list
   @Test
   public void invalidUserFails() {
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
     Entity userEntity = new Entity("user");
     userEntity.setProperty("userName", "user1");
@@ -203,6 +209,7 @@ public final class UserUtilTest {
   // test given all correct valid parameters
   @Test
   public void addGameToUserSuccess() {
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
     Entity userEntity = new Entity("user");
     ArrayList<String> gameIds = new ArrayList<>();
@@ -216,6 +223,7 @@ public final class UserUtilTest {
   // test an empty string for blob key
   @Test
   public void emptyBlobKeyFails() {
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
     Entity userEntity = new Entity("user");
 
@@ -238,6 +246,7 @@ public final class UserUtilTest {
   // test null for user entity
   @Test
   public void blobKeyNullUserEntityFails() {
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
     boolean actual = UserUtils.addBlobKey("blobkey", null, datastore);
 
@@ -247,6 +256,7 @@ public final class UserUtilTest {
   // test a valid blobkey, datastore and user entity
   @Test
   public void addBlobKeySucess() {
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
     Entity userEntity = new Entity("user");
 

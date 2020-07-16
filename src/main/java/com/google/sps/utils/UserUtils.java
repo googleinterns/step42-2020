@@ -71,21 +71,23 @@ public final class UserUtils {
   * Adds a game id to a user's list of games
   */
   public static boolean addGameToUser(Entity userEntity, DatastoreService datastore, String gameId) {
- 
-    if(gameId == ""){
-        log.severe("no gameId");
+
+    if(userEntity == null){
+        log.severe("null user entity");
         return false;
     }
-
-    if(userEntity == null || datastore == null){
-        log.severe("null datastore or user entity");
+    if(datastore == null){
+        log.severe("null datastore");
+        return false;
+    }
+    if(gameId == ""){
+        log.severe("found empty gameId trying to add game to user" + (String) userEntity.getProperty("userId"));
         return false;
     }
  
     ArrayList<String> games = (ArrayList<String>) userEntity.getProperty("games");
  
     if(games == null){
-        log.severe("no game list");
         return false;
     }
  
@@ -100,14 +102,17 @@ public final class UserUtils {
   * adds a photo to the user entity
   */
   public static boolean addBlobKey(String blobKey, Entity userEntity, DatastoreService datastore) {
-    
-    if(blobKey == ""){
-        log.severe("no blobkey");
+
+    if(userEntity == null){
+        log.severe("null user entity");
         return false;
     }
-
-    if(userEntity == null || datastore == null){
-        log.severe("null datastore or user entity");
+    if(datastore == null){
+        log.severe("null datastore");
+        return false;
+    }
+    if(blobKey == ""){
+        log.severe("found empty blobkey trying to add blobkey to user" + (String) userEntity.getProperty("userId"));
         return false;
     }
     
