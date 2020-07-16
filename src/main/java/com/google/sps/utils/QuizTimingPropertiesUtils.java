@@ -18,6 +18,7 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Key;
 import java.util.List;
 import java.util.ArrayList;
 import com.google.appengine.api.datastore.FetchOptions;
@@ -29,9 +30,13 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Random;
 import java.util.logging.Logger;
- 
+import java.util.Date;
+import java.text.DateFormat;
+import java.util.Random;
+import java.util.logging.Logger;
+
 public final class QuizTimingPropertiesUtils {
- 
+
     private static final Logger log = Logger.getLogger(QuizTimingPropertiesUtils.class.getName());
 
     List<String> quiz_questions = new ArrayList<String>(List.of(
@@ -70,21 +75,18 @@ public final class QuizTimingPropertiesUtils {
             return fetched_item.getProperty("quiz_timestamp");
         } 
         log.severe("Zero Items Quered");
+        //log.severe("Zero Items Quered");
+        //log.log(Level.SEVERE, "No results for query {0}", entity);
         return null;
     }
  
     //This function checks if the user has taken the quiz yet by comparing their timestamp with the quiz's timestamp
     public Boolean userTookQuiz(String usersQuizTime, String currentQuizTime) {
-        if(usersQuizTime.compareTo(currentQuizTime) > 0) {
-            return true;
-        } 
-        return false;
+        return (usersQuizTime.compareTo(currentQuizTime) > 0);
     }
 
-    //Break
-
     //This function checks to see if the quiz is outdated
-     public Boolean newDayNewQuiz(Object current_quiz_time) {
+     public Boolean isQuizOutdated(Object current_quiz_time) {
         String quiz_date;
         try {
             quiz_date = DateFormat.getDateInstance().format(current_quiz_time);
@@ -92,7 +94,7 @@ public final class QuizTimingPropertiesUtils {
             log.severe("Given a null Parameter");
             return null;
         }
-
+ 
         String today_date = DateFormat.getDateInstance().format(new Date());
         if(today_date.compareTo(quiz_date) > 0) {
             return true;
@@ -124,21 +126,21 @@ public final class QuizTimingPropertiesUtils {
 
     // Break ----------
 
-    public Object giveUserPoints(Boolean userQuizStatus, Object userId, Object timeStamp, DatastoreService datastore) {
-        if(userQuizStatus) {
-            Query query = new Query("Score");
-            PreparedQuery pq = datastore.prepare(query);
-            for(Entity score : pq.asIterable()) {
-                if((score.getProperty("userID")).compareTo(userId) == 0){
-                    Key score_key = score.getKey();
-                    datastore.delete(score_key);
-                    Entity updated_score = new Entity(score_key);
-                    updated_score.setProperty("score", 20);
-                    datastore.put(updated_score);
-                    return null;
-                }
-            }
-        }
-    //}
+    // public Object giveUserPoints(Boolean userQuizStatus, Object userId, Object timeStamp, DatastoreService datastore) {
+    //     if(userQuizStatus) {
+    //         Query query = new Query("Score");
+    //         PreparedQuery pq = datastore.prepare(query);
+    //         for(Entity score : pq.asIterable()) {
+    //             if((score.getProperty("userID")).compareTo(userId) == 0){
+    //                 Key score_key = score.getKey();
+    //                 datastore.delete(score_key);
+    //                 Entity updated_score = new Entity(score_key);
+    //                 updated_score.setProperty("score", 20);
+    //                 datastore.put(updated_score);
+    //                 return null;
+    //             }
+    //         }
+    //     }
+    // }
 
 }

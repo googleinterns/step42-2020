@@ -35,7 +35,7 @@ public class GameQuizStatusServlet extends HttpServlet {
         Gson gson = new Gson();
         response.setContentType("application/json;");
 
-        if(timing_properties.newDayNewQuiz(current_quiz_stamp)) {
+        if(timing_properties.isQuizOutdated(current_quiz_stamp)) {
             response.getWriter().println(gson.toJson(timing_properties.getNewQuestion(game_entity, datastore)));
         }
 

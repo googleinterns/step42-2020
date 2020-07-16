@@ -51,7 +51,7 @@ DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       String username = request.getParameter("name");
       String userID = request.getParameter("id");
       long initialTime = 0L;
-      ArrayList<GameScores> gameIDScoreMap = new Arraylist<GameScores>(); 
+      //ArrayList<GameScores> gameIDScoreMap = new Arraylist<GameScores>(); 
 
     //check if user entity is already in system
      Filter getCorrectUser = new FilterPredicate("userID", FilterOperator.EQUAL, userID);
@@ -67,7 +67,7 @@ DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         userEntity.setProperty("username",username);
         userEntity.setProperty("userID",userID);
         userEntity.setProperty("timeQuizTaken",initialTime);
-        userEntity.setProperty("gameScores",gameIDScoreMap);
+        //userEntity.setProperty("gameScores",gameIDScoreMap);
         datastore.put(userEntity);
       }
   }
