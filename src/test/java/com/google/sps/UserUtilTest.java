@@ -82,7 +82,7 @@ public final class UserUtilTest {
 
   // Test a user id that isn't in datastore and a datastore instance
   @Test
-  public void UserIdNotInDatastore() {
+  public void findEntityWithUserIdNotInDatastore() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     
     Entity userEntity = new Entity("Game");
@@ -105,7 +105,7 @@ public final class UserUtilTest {
 
   // Test an empty string for EntityPropertyValue and a datastore instance
   @Test
-  public void EmptyStringUserId() {
+  public void findEntityWithEmptyStringUserId() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     
     Entity userEntity = new Entity("Game");
@@ -128,7 +128,7 @@ public final class UserUtilTest {
 
   // Test null instance of datastore
   @Test
-  public void nullDatastore() {
+  public void findEntityWithNullDatastore() {
     
     Entity actual = UserUtils.getEntityFromDatastore("Game","userID","123", null);
     Entity expected = null;
@@ -138,7 +138,7 @@ public final class UserUtilTest {
   
   // test without an entity class
   @Test
-  public void nullUserEntity(){
+  public void findEntityWithNullUserEntity(){
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     
       Entity actual = UserUtils.getEntityFromDatastore("","userID","123", datastore);
@@ -148,7 +148,7 @@ public final class UserUtilTest {
 
   // test without an entity title
   @Test
-  public void nullUserEntityTitle(){
+  public void findEntityWithNullUserEntityTitle(){
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     
       Entity actual = UserUtils.getEntityFromDatastore("Game","","123", datastore);
@@ -158,7 +158,7 @@ public final class UserUtilTest {
 
   // test an empty string for game id
   @Test
-  public void emptyGameIdFails() {
+  public void addGameToUserEmptyGameId() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
     Entity userEntity = new Entity("user");
@@ -172,7 +172,7 @@ public final class UserUtilTest {
 
   // test a null for datastore instance
   @Test
-  public void nullDatastoreFails() {
+  public void addGameToUserNullDatastore() {
 
     Entity userEntity = new Entity("user");
     ArrayList<String> gameIds = new ArrayList<>();
@@ -185,7 +185,7 @@ public final class UserUtilTest {
 
   // test a null for user entity
   @Test
-  public void nullUserEntityFails() {
+  public void addGameToUserNullUserEntity() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
     boolean actual = UserUtils.addGameToUser(null, datastore, "gameId");
@@ -195,7 +195,7 @@ public final class UserUtilTest {
 
   // test an user entity without a gameid list
   @Test
-  public void invalidUserFails() {
+  public void addGameToUserInvalidUser() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
     Entity userEntity = new Entity("user");
