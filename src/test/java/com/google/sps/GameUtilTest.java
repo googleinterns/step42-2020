@@ -50,7 +50,7 @@ public final class GameUtilTest {
     helper.tearDown();
   }
 
-  //  Given a user has no games, any game name would be valid
+  //  Test where user has no games
   @Test
   public void isValidGame_UserHasNoGames() {
 
@@ -65,7 +65,7 @@ public final class GameUtilTest {
     Assert.assertEquals(true, actual);
   }
 
-  // give IsValidGameName a game name the user already has 
+  // Test a game name the user already has 
   @Test
   public void isValidGame_UserHasDuplicateGameName() {
 
@@ -119,7 +119,7 @@ public final class GameUtilTest {
     Assert.assertEquals(true, actual);
   }
 
-  // Give IsValidGameName a blank game name
+  // Test IsValidGameName with a blank game name
   @Test
   public void isValidGame_EmptyGameName() {
 
@@ -128,7 +128,7 @@ public final class GameUtilTest {
     
     gameNames1.add("game1");
     gameNames1.add("game2");
-    gameNames1.add("Game3");
+    gameNames1.add("game3");
     userEntity1.setProperty("gameNames",gameNames1);
     userEntity1.setProperty("userID",userID1);
 
@@ -137,7 +137,7 @@ public final class GameUtilTest {
     Assert.assertEquals(false, actual);
   }
 
-  // Give IsValidGameName a null user entity
+  // Test IsValidGameName with a null user entity
   @Test
   public void isValidGame_NullUserEntity() {
 
@@ -146,7 +146,7 @@ public final class GameUtilTest {
     Assert.assertEquals(false, actual);
   }
 
-  // Give create game an empty string for game name
+  // Test create game with an empty string for game name
   @Test
   public void createGame_EmptyGameName() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -156,7 +156,7 @@ public final class GameUtilTest {
     Assert.assertEquals(null, actual);
   }
 
-  // Give create game a null for datastore instance
+  // Test create game with null for datastore instance
   @Test
   public void createGame_NullDatastore() {
 
@@ -165,7 +165,7 @@ public final class GameUtilTest {
     Assert.assertEquals(null, actual);
   }
 
-  // Give create game valid datastore and gamename
+  // Test create game with valid datastore and gamename
   @Test
   public void createGame_AllValid() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -179,7 +179,7 @@ public final class GameUtilTest {
     Assert.assertEquals(timestamp, actual.getProperty("quiz_timestamp"));
   }
 
-  // Give addUserToGame an empty string for user id
+  // Test addUserToGame with an empty string for user id
   @Test
   public void addUserToGame_EmptyUserId() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -193,7 +193,7 @@ public final class GameUtilTest {
     Assert.assertEquals(false, actual);
   }
 
-  // Give addUserToGame a null for datastore instance
+  // Test addUserToGame with null for datastore instance
   @Test
   public void addUserToGame_NullDatastore() {
 
@@ -206,7 +206,7 @@ public final class GameUtilTest {
     Assert.assertEquals(false, actual);
   }
 
-  // Give addUserToGame a null for game entity
+  // Test addUserToGame with a null for game entity
   @Test
   public void addUserToGame_NullGameEntity() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -216,7 +216,7 @@ public final class GameUtilTest {
     Assert.assertEquals(false, actual);
   }
 
-  // Give addUserToGame an game entity without an initialized username list
+  // Test addUserToGame with a game entity without an initialized username list
   @Test
   public void addUserToGame_InvalidGame() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -229,7 +229,7 @@ public final class GameUtilTest {
     Assert.assertEquals(false, actual);
   }
  
-  // Give addUserToGame valid parameters
+  // Test addUserToGame with valid parameters
   @Test
   public void addUserToGame_Success() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
