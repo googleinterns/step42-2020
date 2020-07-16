@@ -75,8 +75,6 @@ public final class QuizTimingPropertiesUtils {
             return (Long) fetched_item.getProperty("quiz_timestamp");
         } 
         log.severe("Zero Items Quered");
-        //log.severe("Zero Items Quered");
-        //log.log(Level.SEVERE, "No results for query {0}", entity);
         return null;
     }
  
@@ -103,7 +101,7 @@ public final class QuizTimingPropertiesUtils {
     }
     
     //This function gets a new quiz question if the quiz is outdated
-    public Object getNewQuestion(Entity game_entity, DatastoreService datastore) {
+    public String getNewQuestion(Entity game_entity, DatastoreService datastore) {
         Random rand = new Random();
         int rand_number = rand.nextInt(quiz_questions.size());
         Key game_entity_key;
@@ -114,34 +112,47 @@ public final class QuizTimingPropertiesUtils {
             log.severe("Null value given instead of Entity");
             return null;
         } 
-
         datastore.delete(game_entity_key);
             
         Entity update_game_entity = new Entity(game_entity_key);
         update_game_entity.setProperty("quiz_timestamp", System.currentTimeMillis());
         update_game_entity.setProperty("quizQuestion", quiz_questions.get(rand_number));
+        //update_game_entity.setProperty("gameName", game_entity.getProperty("gameName));
+        //update_game_entity.setProperty("userIds", game_entity.getProperty("userIds");
+        //update_game_entity.setProperty("gameId", game_entity.getProperty("gameId"));
         datastore.put(update_game_entity);
-        return update_game_entity.getProperty("quizQuestion");
+        return (update_game_entity.getProperty("quizQuestion")).toString();
     }
 
     // Break ----------
 
-    // public Boolean giveUserPoints(Boolean userQuizStatus, Object userId, Object timeStamp, DatastoreService datastore) {
-    //     if(userQuizStatus) {
-    //         Query query = new Query("Score");
-    //         PreparedQuery pq = datastore.prepare(query);
-    //         for(Entity score : pq.asIterable()) {
-    //             Object temp = score.getProperty("userID");
-    //             if(temp.compareTo(userId) == 0){
-    //                 Key score_key = score.getKey();
-    //                 datastore.delete(score_key);
-    //                 Entity updated_score = new Entity(score_key);
-    //                 updated_score.setProperty("score", 20);
-    //                 datastore.put(updated_score);
-    //                 return true;
-    //             }
-    //         }
-    //     }
-    // }
+    public Boolean giveUserPoints(Boolean userQuizStatus, Entity currentUser, DatastoreService datastore) {
+        if(userQuizStatus) {
+            Query query = new Query("Score");
+            PreparedQuery pq = datastore.prepare(query);
+            for(Entity score : pq.asIterable()) {
+                if(((score.getProperty("userID")).toString()).compareTo((currentUser.getProperty("userID")).toString()) == 0){
+                    Key score_key = score.getKey();
+                    Key user_key = currentUser.getKey();
+                    datastore.delete(score_key);
+                    datastore.delete(user_key);
+                    Entity updated_score = new Entity(score_key);
+                    //Entity updated_user = new Entity(user_key);
+                    //change below from long to int
+                    updated_score.setProperty("score", ((Long) score.getProperty("score")) + 20);
+                    updated_score.setProperty("userID", score.getProperty("userID"));
+                    updated_score.setProperty("gameID", score.getProperty("gameID"));
+
+                    // updated_user.setProperty("quiz_timestamp", System.currentTimeMillis());
+                    // updated_user.setProperty("userID", currentUser.getProperty("userID"));
+
+                    // datastore.put(updated_user);
+                    datastore.put(updated_score);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
 }
