@@ -38,7 +38,6 @@ public final class UserUtilTest {
   // helper variable allows the use of entities in testing 
   private final LocalServiceTestHelper helper =
     new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
-  static final String sessionIdCookieName = "SessionID";
 
   @Before
   public void setUp() {
@@ -273,18 +272,18 @@ public final class UserUtilTest {
   public void findEntityByCookie(){
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       Entity user1 = new Entity("user");
-      user1.setProperty(sessionIdCookieName, "value1");
+      user1.setProperty(UserUtils.sessionIdCookieName, "value1");
       datastore.put(user1);
 
       Entity user2 = new Entity("user");
-      user2.setProperty(sessionIdCookieName, "value2");
+      user2.setProperty(UserUtils.sessionIdCookieName, "value2");
       datastore.put(user2);
 
       Entity user3 = new Entity("user");
-      user3.setProperty(sessionIdCookieName, "value3");
+      user3.setProperty(UserUtils.sessionIdCookieName, "value3");
       datastore.put(user3);
       
-      Cookie cookie1 = new Cookie(sessionIdCookieName, "value1");
+      Cookie cookie1 = new Cookie(UserUtils.sessionIdCookieName, "value1");
       Cookie cookie2 = new Cookie("name2", "value2");
       Cookie cookie3 = new Cookie("name3", "value3");
       Cookie cookies[] = new Cookie[]{cookie1, cookie2, cookie3};
@@ -299,15 +298,15 @@ public final class UserUtilTest {
   public void wrongCookieName(){
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       Entity user1 = new Entity("user");
-      user1.setProperty(sessionIdCookieName, "value1");
+      user1.setProperty(UserUtils.sessionIdCookieName, "value1");
       datastore.put(user1);
 
       Entity user2 = new Entity("user");
-      user2.setProperty(sessionIdCookieName, "value2");
+      user2.setProperty(UserUtils.sessionIdCookieName, "value2");
       datastore.put(user2);
 
       Entity user3 = new Entity("user");
-      user3.setProperty(sessionIdCookieName, "value3");
+      user3.setProperty(UserUtils.sessionIdCookieName, "value3");
       datastore.put(user3);
 
     Cookie cookie1 = new Cookie("value1", "name1");
@@ -324,18 +323,18 @@ public final class UserUtilTest {
   public void wrongCookieValue(){
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       Entity user1 = new Entity("user");
-      user1.setProperty(sessionIdCookieName, "value1");
+      user1.setProperty(UserUtils.sessionIdCookieName, "value1");
       datastore.put(user1);
 
       Entity user2 = new Entity("user");
-      user2.setProperty(sessionIdCookieName, "value2");
+      user2.setProperty(UserUtils.sessionIdCookieName, "value2");
       datastore.put(user2);
 
       Entity user3 = new Entity("user");
-      user3.setProperty(sessionIdCookieName, "value3");
+      user3.setProperty(UserUtils.sessionIdCookieName, "value3");
       datastore.put(user3);
 
-    Cookie cookie1 = new Cookie(sessionIdCookieName, "wrongvalue");
+    Cookie cookie1 = new Cookie(UserUtils.sessionIdCookieName, "wrongvalue");
     Cookie cookies[] = new Cookie[]{cookie1};
 
     Entity actual = UserUtils.getUserFromCookie(cookies, datastore);
@@ -349,10 +348,10 @@ public final class UserUtilTest {
   public void oneUserOneCookie(){
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Entity user1 = new Entity("user");
-    user1.setProperty(sessionIdCookieName, "value1");
+    user1.setProperty(UserUtils.sessionIdCookieName, "value1");
     datastore.put(user1);
 
-    Cookie cookie1 = new Cookie(sessionIdCookieName, "value1");
+    Cookie cookie1 = new Cookie(UserUtils.sessionIdCookieName, "value1");
     Cookie cookies[] = new Cookie[]{cookie1};
 
     Entity actual = UserUtils.getUserFromCookie(cookies,datastore);
@@ -369,7 +368,7 @@ public final class UserUtilTest {
     user1.setProperty(sessionIdCookieName, "value1");
     datastore.put(user1);
 
-    Cookie cookie1 = new Cookie(sessionIdCookieName, "value1");
+    Cookie cookie1 = new Cookie(UserUtils.sessionIdCookieName, "value1");
     Cookie cookies[] = new Cookie[]{cookie1};
 
     Entity actual = UserUtils.getUserFromCookie(cookies, null);
@@ -382,7 +381,7 @@ public final class UserUtilTest {
   @Test
   public void noEntities(){
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    Cookie cookie1 = new Cookie(sessionIdCookieName, "value1");
+    Cookie cookie1 = new Cookie(UserUtils.sessionIdCookieName, "value1");
     Cookie cookies[] = new Cookie[]{cookie1};
 
     Entity actual = UserUtils.getUserFromCookie(cookies, datastore);
@@ -396,7 +395,7 @@ public final class UserUtilTest {
   public void noCookies(){
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Entity user1 = new Entity("user");
-    user1.setProperty(sessionIdCookieName, "value1");
+    user1.setProperty(UserUtils.sessionIdCookieName, "value1");
     datastore.put(user1);
 
     Cookie cookies[] = new Cookie[0];
