@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Key;
+import com.google.sps.utils.UserUtils;
 import java.util.logging.Logger;
 
 public final class GameUtils {
@@ -115,15 +116,6 @@ public final class GameUtils {
     if(userIds == null){
       return false;
     }
- 
-    // create score entity for the user for this game (starts as 0)
-    int score = 0;
-    Entity scoreEntity = new Entity("Score");
-    scoreEntity.setProperty("userId", userId);
-    scoreEntity.setProperty("score", score);
-    String gameId = (String) gameEntity.getProperty("gameId");
-    scoreEntity.setProperty("gameId", gameId);
-    datastore.put(scoreEntity);
  
     // add user to game entity
     userIds.add(userId);
