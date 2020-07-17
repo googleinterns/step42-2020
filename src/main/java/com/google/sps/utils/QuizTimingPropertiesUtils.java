@@ -27,6 +27,7 @@ import java.text.DateFormat;
 import java.util.Random;
 import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.TimeZone;
 
 public final class QuizTimingPropertiesUtils {
 
@@ -67,28 +68,29 @@ public final class QuizTimingPropertiesUtils {
             Entity fetched_item = pq.asList(FetchOptions.Builder.withLimit(1)).get(0);
             return (Long) fetched_item.getProperty("quiz_timestamp");
         } 
-        //log.severe("Zero Items Quered");
         log.log(Level.SEVERE, "No results for query {0}", entity);
         return null;
     }
  
     //This function checks if the user has taken the quiz yet by comparing their timestamp with the quiz's timestamp
-    public Boolean userTookQuiz(String usersQuizTime, String currentQuizTime) {
-        return (usersQuizTime.compareTo(currentQuizTime) > 0);
+    public Boolean userTookQuiz(Long usersQuizTime, Long currentQuizTime) {
+        try {
+            return usersQuizTime > currentQuizTime;
+        } catch(NullPointerException e ) {
+            log.log(Level.SEVERE, "Null result for parameter");
+            return null;
+        }  
     }
 
     //This function checks to see if the quiz is outdated
-     public Boolean isQuizOutdated(Long current_quiz_time) {
-        String quiz_date;
+     public Boolean isQuizOutdated(Long current_quiz_time) {    
+        Long today_date = System.currentTimeMillis();
         try {
-            quiz_date = DateFormat.getDateInstance().format(current_quiz_time);
-        } catch(IllegalArgumentException e) {
+            return today_date > current_quiz_time;
+        } catch(NullPointerException e) {
             log.log(Level.SEVERE, "Given a null Parameter for {0}", current_quiz_time);
             return null;
         }
- 
-        String today_date = DateFormat.getDateInstance().format(new Date());
-        return today_date.compareTo(quiz_date) > 0;
     }
     
     //This function gets a new quiz question if the quiz is outdated
