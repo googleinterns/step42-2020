@@ -20,28 +20,31 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import java.util.logging.Logger;
 
 public final class CookieUtils {
-
+     private static final Logger log = Logger.getLogger(UserUtils.class.getName());
         /**
     * Returns a single Cookie object that can then be used in a servlet. 
     * The name arguement must be the name of a cookie active
     * on the front-end for a Cookie to be retrieved.
     * <p>
-    * This method always returns immediately, whether or not the 
-    * datastore object exists. If the object does not exist, the cookie 
-    * returned is null.
     * 
     * @param  cookies  an array of cookies (usually all of the cookies on the front end)
     * @param  name     the name of a specific cookie
     * @return          the cookie w the name passed in as a parameter
     */
 
-    public Cookie getCookieGivenName(Cookie cookies[], String name){
-        if(name == "" || cookies.length == 0){
+    public static Cookie getCookieFromName(Cookie cookies[], String name){
+        if(name == ""){
+            log.severe("Empty string passed to function getCookieFromName()");
             return null;
         }
+        if(cookies.length == 0){
+             log.severe("List of cookies is empty when searching for cookie with name: " + name + " in getCookieFromName()");
+             return null;
+        }
+         
         for(int i = 0; i < cookies.length; i++){
             Cookie cookie = cookies[i];
             if(cookie.getName() == name){
