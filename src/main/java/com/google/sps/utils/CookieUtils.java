@@ -37,11 +37,11 @@ public final class CookieUtils {
 
     public static Cookie getCookieFromName(Cookie cookies[], String name){
         if(name == ""){
-            log.severe("found null search parameter while trying to run function getCookieFromName");
+            log.severe("Empty string passed to function getCookieFromName()");
             return null;
         }
         if(cookies.length == 0){
-             log.severe("found no cookies while trying to run function getCookieFromName");
+             log.severe("List of cookies is empty when searching for cookie with name: " + name + " in getCookieFromName()");
              return null;
         }
          
