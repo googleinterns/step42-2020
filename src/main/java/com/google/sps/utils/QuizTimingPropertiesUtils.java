@@ -26,6 +26,7 @@ import java.util.Date;
 import java.text.DateFormat;
 import java.util.Random;
 import java.util.logging.Logger;
+import java.util.logging.Level;
 
 public final class QuizTimingPropertiesUtils {
 
@@ -59,14 +60,15 @@ public final class QuizTimingPropertiesUtils {
         try {
             pq = datastore.prepare(query);
         } catch(NullPointerException e) {
-            log.severe("Null datastore");
+            log.log(Level.SEVERE, "Null result for parameter {0}", datastore);
             return null;
         }
         if(pq.asList(FetchOptions.Builder.withLimit(1)).size() > 0) {
             Entity fetched_item = pq.asList(FetchOptions.Builder.withLimit(1)).get(0);
             return (Long) fetched_item.getProperty("quiz_timestamp");
         } 
-        log.severe("Zero Items Quered");
+        //log.severe("Zero Items Quered");
+        log.log(Level.SEVERE, "No results for query {0}", entity);
         return null;
     }
  
@@ -76,20 +78,17 @@ public final class QuizTimingPropertiesUtils {
     }
 
     //This function checks to see if the quiz is outdated
-     public Boolean isQuizOutdated(Object current_quiz_time) {
+     public Boolean isQuizOutdated(Long current_quiz_time) {
         String quiz_date;
         try {
             quiz_date = DateFormat.getDateInstance().format(current_quiz_time);
         } catch(IllegalArgumentException e) {
-            log.severe("Given a null Parameter");
+            log.log(Level.SEVERE, "Given a null Parameter for {0}", current_quiz_time);
             return null;
         }
  
         String today_date = DateFormat.getDateInstance().format(new Date());
-        if(today_date.compareTo(quiz_date) > 0) {
-            return true;
-        }
-        return false;
+        return today_date.compareTo(quiz_date) > 0;
     }
     
     //This function gets a new quiz question if the quiz is outdated
@@ -101,7 +100,7 @@ public final class QuizTimingPropertiesUtils {
         try {
             game_entity_key = game_entity.getKey();
         } catch(NullPointerException e) {
-            log.severe("Null value given instead of Entity");
+            log.log(Level.SEVERE, "Null value given for parameter {0}", game_entity);
             return null;
         } 
  

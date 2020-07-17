@@ -159,7 +159,7 @@ public final class TimingPropertiesTest {
         datastore.put(user);
  
         Long user_quiz_time = timing_properties_test.getTimestampProperty("user", datastore);
- 
+    
         Boolean actual = timing_properties_test.isQuizOutdated(user_quiz_time);
         Assert.assertEquals(true, actual);
     }
