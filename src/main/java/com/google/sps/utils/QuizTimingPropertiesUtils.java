@@ -128,6 +128,10 @@ public final class QuizTimingPropertiesUtils {
     // Break ----------
 
     public Boolean giveUserPoints(Boolean userQuizStatus, Entity currentUser, DatastoreService datastore) {
+        if(currentUser == null || datastore == null) {
+            log.log(Level.SEVERE, "Given a null value in parameters");
+            return null;
+        }
         if(userQuizStatus) {
             Key user_key = currentUser.getKey();
             datastore.delete(user_key);
@@ -135,9 +139,8 @@ public final class QuizTimingPropertiesUtils {
             Entity updated_user = new Entity("user");
             updated_user.setProperty("quiz_timestamp", System.currentTimeMillis());
             updated_user.setProperty("userID", currentUser.getProperty("userID"));
-            updated_user.setProperty("score", ((long) currentUser.getProperty("score")) + 20);
+            updated_user.setProperty("score", ((int) currentUser.getProperty("score")) + 20);
             datastore.put(updated_user);
-
             return true;
         }
         return false;

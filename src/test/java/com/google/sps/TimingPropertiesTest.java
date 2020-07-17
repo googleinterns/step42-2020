@@ -192,4 +192,30 @@ public final class TimingPropertiesTest {
     }
 
     //Break for PR
+
+    @Test 
+    //Test if giveUserPoints is given null value(s) as a parameter
+    public void giveUserPoints_nullParameters() {
+        QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
+        DatastoreService datastore = null;
+        Entity user = null;
+
+        Boolean actual = timing_properties_test.giveUserPoints(true, user, datastore);
+        Assert.assertEquals(null, actual);
+    }
+
+    @Test
+    public void giveUserPoints_validParameters() {
+        QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        
+        Entity user = new Entity("user");
+        user.setProperty("quiz_timestamp", 159430944365L);
+        user.setProperty("userID", 12345);
+        user.setProperty("score", 0);
+        datastore.put(user);
+
+        Boolean actual = timing_properties_test.giveUserPoints(true, user, datastore);
+        Assert.assertEquals(true, actual);
+    }
 }

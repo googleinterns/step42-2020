@@ -23,6 +23,10 @@ document.getElementById("start_quiz").onclick = function() {
                 document.getElementById("questions").innerText = tasks;
                 document.getElementById("quiz_time").style.display = "block";
                 document.getElementById("start_quiz").style.display = "none";
+                fetch("/answer-quiz-question").then(response => response.json()).then((tasks) => {
+                    console.log("here");
+                    console.log(tasks);
+                });
             });
         }
     });
