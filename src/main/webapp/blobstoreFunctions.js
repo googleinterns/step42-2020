@@ -1,10 +1,3 @@
-/** Loads photo */
-function loadScripts() {
-  fetchBlobstoreUrl();
-  imageToPage();
-}
- 
- 
 /** Loads action URL and attaches it to the upload form (the user's browser uploads the file to blobstore with the generated url) */
 function fetchBlobstoreUrl() {
   fetch('/blobstore-upload-url').then((response) => response.text()).then((imageUploadUrl) => {
