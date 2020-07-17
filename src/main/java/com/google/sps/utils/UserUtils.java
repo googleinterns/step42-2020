@@ -84,9 +84,9 @@ public final class UserUtils {
           return null;
       }
     String sessionIDName = "SessionID";
-    Cookie cookie = CookieUtils.getCookieGivenName(cookies, sessionIDName); //returns null if it doesn't exist
+    Cookie cookie = CookieUtils.getCookieFromName(cookies, sessionIDName); //returns null if it doesn't exist
     if(cookie == null){ 
-        log.severe("Error in function getUserFromCookie(): Cookie with name: " + sessionIDName + " not found.")
+        log.severe("Error in function getUserFromCookie(): Cookie with name: " + sessionIDName + " not found.");
         return null;
     }
     return getEntityFromDatastore("user", sessionIDName, cookie.getValue(), datastore); //returns null if it doesn't exist
