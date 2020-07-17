@@ -31,6 +31,7 @@ import com.google.appengine.api.datastore.Query.FilterPredicate;
 import java.util.logging.Logger;
 
 public final class UserUtils {
+    static final String sessionIdCookieName = "SessionID";
     private static final Logger log = Logger.getLogger(UserUtils.class.getName());
 
     /**
@@ -83,13 +84,12 @@ public final class UserUtils {
           log.severe("Error in function getUserFromCookie(): Datastore passed in was null");
           return null;
       }
-    String sessionIDName = "SessionID";
-    Cookie cookie = CookieUtils.getCookieFromName(cookies, sessionIDName); //returns null if it doesn't exist
+    Cookie cookie = CookieUtils.getCookieFromName(cookies, sessionIDCookieName); //returns null if it doesn't exist
     if(cookie == null){ 
-        log.severe("Error in function getUserFromCookie(): Cookie with name: " + sessionIDName + " not found.");
+        log.info("Error in function getUserFromCookie(): Cookie with name: " + sessionIDCookieName + " not found.");
         return null;
     }
-    return getEntityFromDatastore("user", sessionIDName, cookie.getValue(), datastore); //returns null if it doesn't exist
+    return getEntityFromDatastore("user", sessionIDCookieName, cookie.getValue(), datastore); //returns null if it doesn't exist
   }
 
   /**
