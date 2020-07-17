@@ -25,14 +25,13 @@ public class UserQuizStatusServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         
         QuizTimingPropertiesUtils timing_utils = new QuizTimingPropertiesUtils();
-        String current_quiz_time = (timing_utils.getTimestampProperty("Game", datastore)).toString();
-        //String current_quiz_time = String.valueOf(timing_utils.getTimestampProperty("Game", datastore));
-        //String user_quiz_status = (timing_utils.getTimestampProperty("user", datastore)).toString();
+        Long current_quiz_time = timing_utils.getTimestampProperty("Game", datastore);
+        //Long user_quiz_status = timing_utils.getTimestampProperty("user", datastore));
  
         Gson gson = new Gson();
         response.setContentType("application/json;");
  
-        String temp_val = Long.toString(1594309443653L);
+        Long temp_val = 1594309443653L;
         response.getWriter().println(gson.toJson(timing_utils.userTookQuiz(temp_val, current_quiz_time)));
     }
 }

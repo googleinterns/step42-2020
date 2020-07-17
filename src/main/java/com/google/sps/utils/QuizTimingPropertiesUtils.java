@@ -34,6 +34,8 @@ import java.util.Date;
 import java.text.DateFormat;
 import java.util.Random;
 import java.util.logging.Logger;
+import java.util.logging.Level;
+import java.util.TimeZone;
 
 public final class QuizTimingPropertiesUtils {
 
@@ -67,37 +69,36 @@ public final class QuizTimingPropertiesUtils {
         try {
             pq = datastore.prepare(query);
         } catch(NullPointerException e) {
-            log.severe("Null datastore");
+            log.log(Level.SEVERE, "Null result for parameter {0}", datastore);
             return null;
         }
         if(pq.asList(FetchOptions.Builder.withLimit(1)).size() > 0) {
             Entity fetched_item = pq.asList(FetchOptions.Builder.withLimit(1)).get(0);
             return (Long) fetched_item.getProperty("quiz_timestamp");
         } 
-        log.severe("Zero Items Quered");
+        log.log(Level.SEVERE, "No results for query {0}", entity);
         return null;
     }
  
     //This function checks if the user has taken the quiz yet by comparing their timestamp with the quiz's timestamp
-    public Boolean userTookQuiz(String usersQuizTime, String currentQuizTime) {
-        return (usersQuizTime.compareTo(currentQuizTime) > 0);
+    public Boolean userTookQuiz(Long usersQuizTime, Long currentQuizTime) {
+        try {
+            return usersQuizTime > currentQuizTime;
+        } catch(NullPointerException e ) {
+            log.log(Level.SEVERE, "Null result for parameter");
+            return null;
+        }  
     }
 
     //This function checks to see if the quiz is outdated
-     public Boolean isQuizOutdated(Object current_quiz_time) {
-        String quiz_date;
+     public Boolean isQuizOutdated(Long current_quiz_time) {    
+        Long today_date = System.currentTimeMillis();
         try {
-            quiz_date = DateFormat.getDateInstance().format(current_quiz_time);
-        } catch(IllegalArgumentException e) {
-            log.severe("Given a null Parameter");
+            return today_date > current_quiz_time;
+        } catch(NullPointerException e) {
+            log.log(Level.SEVERE, "Given a null Parameter for {0}", current_quiz_time);
             return null;
         }
- 
-        String today_date = DateFormat.getDateInstance().format(new Date());
-        if(today_date.compareTo(quiz_date) > 0) {
-            return true;
-        }
-        return false;
     }
     
     //This function gets a new quiz question if the quiz is outdated
@@ -109,7 +110,7 @@ public final class QuizTimingPropertiesUtils {
         try {
             game_entity_key = game_entity.getKey();
         } catch(NullPointerException e) {
-            log.severe("Null value given instead of Entity");
+            log.log(Level.SEVERE, "Null value given for parameter {0}", game_entity);
             return null;
         } 
         datastore.delete(game_entity_key);
@@ -126,31 +127,18 @@ public final class QuizTimingPropertiesUtils {
 
     // Break ----------
 
-    public Boolean giveUserPoints(Boolean userQuizStatus, Entity currentUser, Entity userScore, DatastoreService datastore) {
+    public Boolean giveUserPoints(Boolean userQuizStatus, Entity currentUser, DatastoreService datastore) {
         if(userQuizStatus) {
-            // Query query = new Query("Score");
-            // PreparedQuery pq = datastore.prepare(query);
-            for(Entity score : pq.asIterable()) {
-                if(((score.getProperty("userID")).toString()).compareTo((currentUser.getProperty("userID")).toString()) == 0){
-                    Key score_key = score.getKey();
-                    Key user_key = currentUser.getKey();
-                    datastore.delete(score_key);
-                    datastore.delete(user_key);
-                    Entity updated_score = new Entity(score_key);
-                    //Entity updated_user = new Entity(user_key);
-                    //change below from long to int
-                    updated_score.setProperty("score", ((Long) score.getProperty("score")) + 20);
-                    updated_score.setProperty("userID", score.getProperty("userID"));
-                    updated_score.setProperty("gameID", score.getProperty("gameID"));
+            Key user_key = currentUser.getKey();
+            datastore.delete(user_key);
 
-                    // updated_user.setProperty("quiz_timestamp", System.currentTimeMillis());
-                    // updated_user.setProperty("userID", currentUser.getProperty("userID"));
+            Entity updated_user = new Entity("user");
+            updated_user.setProperty("quiz_timestamp", System.currentTimeMillis());
+            updated_user.setProperty("userID", currentUser.getProperty("userID"));
+            updated_user.setProperty("score", ((long) currentUser.getProperty("score")) + 20);
+            datastore.put(updated_user);
 
-                    // datastore.put(updated_user);
-                    datastore.put(updated_score);
-                    return true;
-                }
-            }
+            return true;
         }
         return false;
     }

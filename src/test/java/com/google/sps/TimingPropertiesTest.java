@@ -104,40 +104,41 @@ public final class TimingPropertiesTest {
         long actual = timing_properties_test.getTimestampProperty("user", datastore);
         Assert.assertEquals(1594309443653L, actual);
     }
- 
-    // @Test
-    // //Tests for paramters being empty strings
-    // public void userTookQuiz_emptyStrings() {
-    //     QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
-    //     String user_quiz_time = "";
-    //     String current_quiz_time = "";
+
+    @Test
+    //Tests for paramters being null
+    public void userTookQuiz_nullParameters() {
+        QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
         
-    //     Boolean actual = timing_properties_test.userTookQuiz(user_quiz_time, current_quiz_time);
-    //     Assert.assertEquals(false, actual);
-    // }
-
-    // @Test
-    // //Tests valid string, timestamp paramters 
-    // public void userTookQuiz_validParameters() {
-    //     QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
+        Long user_quiz_time = null;
+        Long current_quiz_time = null;
         
-    //     Entity user = new Entity("user");
-    //     Entity game = new Entity("game");
+        Boolean actual = timing_properties_test.userTookQuiz(user_quiz_time, current_quiz_time);
+        Assert.assertEquals(null, actual);
+    }
 
-    //     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    @Test
+    //Tests valid string, timestamp paramters 
+    public void userTookQuiz_validParameters() {
+        QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
+        
+        Entity user = new Entity("user");
+        Entity game = new Entity("game");
 
-    //     user.setProperty("quiz_timestamp", 1594309443653L);
-    //     datastore.put(user);
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-    //     game.setProperty("quiz_timestamp", 1594309443660L);
-    //     datastore.put(game);
+        user.setProperty("quiz_timestamp", 1594309443653L);
+        datastore.put(user);
 
-    //     String user_quiz_time = (timing_properties_test.getTimestampProperty("user", datastore)).toString();
-    //     String game_quiz_time = (timing_properties_test.getTimestampProperty("game", datastore)).toString();
+        game.setProperty("quiz_timestamp", 1594309443660L);
+        datastore.put(game);
 
-    //     Boolean actual = timing_properties_test.userTookQuiz(user_quiz_time, game_quiz_time);
-    //     Assert.assertEquals(false, actual);
-    // }
+        Long user_quiz_time = timing_properties_test.getTimestampProperty("user", datastore);
+        Long game_quiz_time = timing_properties_test.getTimestampProperty("game", datastore);
+
+        Boolean actual = timing_properties_test.userTookQuiz(user_quiz_time, game_quiz_time);
+        Assert.assertEquals(false, actual);
+    }
 
     @Test
     //Tests if Object parameter is null
@@ -159,7 +160,7 @@ public final class TimingPropertiesTest {
         datastore.put(user);
  
         Long user_quiz_time = timing_properties_test.getTimestampProperty("user", datastore);
- 
+    
         Boolean actual = timing_properties_test.isQuizOutdated(user_quiz_time);
         Assert.assertEquals(true, actual);
     }
