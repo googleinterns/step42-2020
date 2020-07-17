@@ -5,12 +5,11 @@ function fetchBlobstoreUrl() {
   });
 }
  
- 
 /**
   * Creates and adds a card element for the photo 
-  * pic is the URL of image to be shown in the post
+  * pic_url is the URL of image to be shown in the post
 */
-function createListElement(pic) {
+function createListElement(pic_url) {
   let card = document.createElement("div");
   let body = document.createElement("div");
   let photo = document.createElement("img");
@@ -18,7 +17,7 @@ function createListElement(pic) {
  
   card.className = "card m-1";
   body.className = "card-body";
-  photo.src = pic;
+  photo.src = pic_url;
  
   body.append(photo);
   card.append(body);
