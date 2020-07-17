@@ -126,10 +126,10 @@ public final class QuizTimingPropertiesUtils {
 
     // Break ----------
 
-    public Boolean giveUserPoints(Boolean userQuizStatus, Entity currentUser, DatastoreService datastore) {
+    public Boolean giveUserPoints(Boolean userQuizStatus, Entity currentUser, Entity userScore, DatastoreService datastore) {
         if(userQuizStatus) {
-            Query query = new Query("Score");
-            PreparedQuery pq = datastore.prepare(query);
+            // Query query = new Query("Score");
+            // PreparedQuery pq = datastore.prepare(query);
             for(Entity score : pq.asIterable()) {
                 if(((score.getProperty("userID")).toString()).compareTo((currentUser.getProperty("userID")).toString()) == 0){
                     Key score_key = score.getKey();
