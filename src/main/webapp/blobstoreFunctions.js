@@ -25,7 +25,7 @@ function createCardElement(pic_url) {
 }
  
 /**
-  * Populates the list element with JSON fetched from the /get-blob-key servlet.
+  * Populates the card element with JSON fetched from the /get-blob-key servlet.
 */
 function imageToPage() {
   fetch('/get-blob-key').then(response => response.json()).then((blobKey) => {
