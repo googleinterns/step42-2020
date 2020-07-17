@@ -21,13 +21,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.sps.utils.SafeSearchUtils;
  
 /**
  * When the fetch() function requests the /blobstore-upload-url URL, the content of the response is
  * the URL that allows a user to upload a file to Blobstore. 
  * The user's browser uploads the file directly to the Blobstore via the generated URL.
- * Blobstore rewrites the request to contain a blobkey 
  */
 @WebServlet("/blobstore-upload-url")
 public class BlobstoreUploadUrlServlet extends HttpServlet {
@@ -41,8 +39,6 @@ public class BlobstoreUploadUrlServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String uploadUrl = blobstoreService.createUploadUrl("/image-upload-handler-blobstore");
-
-    // TODO: scan for inappropriate content: SafeSearchUtils.detectSafeSearch(uploadUrl);
 
     response.setContentType("text/html"); 
     response.getWriter().println(uploadUrl);

@@ -24,9 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
  
 /**
- * Serves the blob by passing the blob key to blobstore service 
- * replaces the getServingUrl method (Obtains a URL that can dynamically 
- * serve the image stored as a blob)
+ * Serves the image file corresponding to the given blob key
 */ 
 @WebServlet("/get-image")
 public class ServeImageServlet extends HttpServlet {
@@ -36,7 +34,11 @@ public class ServeImageServlet extends HttpServlet {
   public ServeImageServlet(){
     blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
   }
- 
+
+  /**
+   * Replaces the getServingUrl method (Obtains a URL that can dynamically 
+   * serve the image stored as a blob by passing the blobkey to blobstore service)
+  */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     BlobKey blobKey = new BlobKey(request.getParameter("blobKey"));
