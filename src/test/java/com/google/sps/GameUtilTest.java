@@ -33,9 +33,6 @@ import com.google.sps.utils.GameUtils;
 @RunWith(JUnit4.class)
 public final class GameUtilTest {
 
-  private static String userID1 = "1";
-  private static String userID2 = "2";
-
   // helper variable allows the use of entities in testing 
   private final LocalServiceTestHelper helper =
     new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
@@ -58,7 +55,7 @@ public final class GameUtilTest {
     ArrayList<String> gameNames2 = new ArrayList<>();
 
     userEntity2.setProperty("gameNames",gameNames2);
-    userEntity2.setProperty("userID",userID2);
+    userEntity2.setProperty("userID","2");
 
     boolean actual = GameUtils.IsValidGameName("game1", userEntity2);
 
@@ -74,9 +71,9 @@ public final class GameUtilTest {
 
     gameNames1.add("game1");
     gameNames1.add("game2");
-    gameNames1.add("Game3");
+    gameNames1.add("game3");
     userEntity1.setProperty("gameNames",gameNames1);
-    userEntity1.setProperty("userID",userID1);
+    userEntity1.setProperty("userID","1");
 
     boolean actual = GameUtils.IsValidGameName("game1", userEntity1);
 
@@ -92,9 +89,9 @@ public final class GameUtilTest {
     
     gameNames1.add("game1");
     gameNames1.add("game2");
-    gameNames1.add("Game3");
+    gameNames1.add("game3");
     userEntity1.setProperty("gameNames",gameNames1);
-    userEntity1.setProperty("userID",userID1);
+    userEntity1.setProperty("userID","1");
 
     boolean actual = GameUtils.IsValidGameName("game4", userEntity1);
 
@@ -110,9 +107,9 @@ public final class GameUtilTest {
     
     gameNames1.add("game1");
     gameNames1.add("game2");
-    gameNames1.add("Game3");
+    gameNames1.add("game3");
     userEntity1.setProperty("gameNames",gameNames1);
-    userEntity1.setProperty("userID",userID1);
+    userEntity1.setProperty("userID","1");
 
     boolean actual = GameUtils.IsValidGameName("Game1", userEntity1);
 
@@ -130,7 +127,7 @@ public final class GameUtilTest {
     gameNames1.add("game2");
     gameNames1.add("game3");
     userEntity1.setProperty("gameNames",gameNames1);
-    userEntity1.setProperty("userID",userID1);
+    userEntity1.setProperty("userID","1");
 
     boolean actual = GameUtils.IsValidGameName("", userEntity1);
 
