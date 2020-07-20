@@ -48,7 +48,7 @@ public final class TimingPropertiesTest {
         QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
         Entity user = new Entity("user");
         user.setProperty("quiz_timestamp", null);
-
+ 
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         datastore.put(user);
  
@@ -60,9 +60,9 @@ public final class TimingPropertiesTest {
     //Test where String parameter is empty
     public void getTimestampProperty_emptyEntityString() {
         QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
-
+ 
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-
+ 
         Long actual = timing_properties_test.getTimestampProperty("", datastore);
         Assert.assertEquals(null, actual);
     }
@@ -71,35 +71,35 @@ public final class TimingPropertiesTest {
     //Test where datastore object is null
     public void getTimestampProperty_noDatastore() {
         QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
-
+ 
         Entity user = new Entity("user");
         Long actual = timing_properties_test.getTimestampProperty("user", null);
         Assert.assertEquals(null, actual);
     }
-
+ 
     @Test
     //Test for if user entity does not have a timestamp property
     public void getTimestampProperty_noTimeStampProperty() {
         QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
-
+ 
         Entity user = new Entity("user");
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-
+ 
         Long actual = timing_properties_test.getTimestampProperty("user", datastore);
         Assert.assertEquals(null, actual);
     }
-
+ 
     @Test 
     //Tests if a valid timestamp object is returned
     public void getTimestampProperty_validParamters() {
         QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
-
+ 
         Entity user = new Entity("user");
         user.setProperty("quiz_timestamp", 1594309443653L);
-
+ 
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         datastore.put(user);
-
+ 
         long actual = timing_properties_test.getTimestampProperty("user", datastore);
         Assert.assertEquals(1594309443653L, actual);
     }
@@ -115,7 +115,7 @@ public final class TimingPropertiesTest {
         boolean actual = timing_properties_test.userTookQuiz(user_quiz_time, current_quiz_time);
         Assert.assertEquals(false, actual);
     }
-
+ 
     @Test
     //Tests valid string, timestamp paramters 
     public void userTookQuiz_validParameters() {
@@ -123,22 +123,22 @@ public final class TimingPropertiesTest {
         
         Entity user = new Entity("user");
         Entity game = new Entity("game");
-
+ 
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-
+ 
         user.setProperty("quiz_timestamp", 1594309443653L);
         datastore.put(user);
-
+ 
         game.setProperty("quiz_timestamp", 1594309443660L);
         datastore.put(game);
-
+ 
         Long user_quiz_time = timing_properties_test.getTimestampProperty("user", datastore);
         Long game_quiz_time = timing_properties_test.getTimestampProperty("game", datastore);
 
         boolean actual = timing_properties_test.userTookQuiz(user_quiz_time, game_quiz_time);
         Assert.assertEquals(false, actual);
     }
-
+ 
     @Test
     //Tests if Object parameter is null
     public void isQuizOutdated_nullParamter(){
@@ -237,6 +237,7 @@ public final class TimingPropertiesTest {
         boolean actual = timing_properties_test.giveUserQuizTakenPoints(true, user, datastore);
         Assert.assertEquals(user.getProperty("score"), 20);
     }
+
 
     @Test
     //Test if user was given points if their initial value was not zero
