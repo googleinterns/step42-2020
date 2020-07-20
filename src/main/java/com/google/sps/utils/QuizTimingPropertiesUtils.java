@@ -136,12 +136,18 @@ public final class QuizTimingPropertiesUtils {
     }
 
     // Break ----------
-
+    //Gives the user points if they have taken a quiz
     public Boolean giveUserPoints(Boolean userQuizStatus, Entity currentUser, DatastoreService datastore) {
-        if(currentUser == null || datastore == null) {
-            log.log(Level.SEVERE, "Given a null value in parameters");
+        if(currentUser == null) {
+            log.log(Level.SEVERE, "Given a null {0}", currentUser);
             return null;
         }
+
+        if (datastore == null) {
+            log.log(Level.SEVERE, "Given a null {0}", datastore);
+            return null;
+        }
+
         if(userQuizStatus) {
             Key user_key = currentUser.getKey();
             datastore.delete(user_key);
