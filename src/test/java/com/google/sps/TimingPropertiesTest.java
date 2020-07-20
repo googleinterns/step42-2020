@@ -204,7 +204,7 @@ public final class TimingPropertiesTest {
  
     @Test 
     //Test if giveUserPoints is given null datastore value as a parameter
-    public void giveUserQuizTakenPoints_nullDatastore() {
+    public void giveUserQuizTakenPoints_nullParameters() {
         QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
         DatastoreService datastore = null;
         Entity user = new Entity("user");
@@ -225,6 +225,60 @@ public final class TimingPropertiesTest {
     }
  
     @Test
+    //Tests if user does not have a score property 
+    public void giveUserQuizTakenPoints_notScoreProperty() {
+        QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        
+        Entity user = new Entity("user");
+        user.setProperty("quiz_timestamp", 159430944365L);
+        user.setProperty("userID", 12345);
+        datastore.put(user);
+ 
+        boolean actual = timing_properties_test.giveUserQuizTakenPoints(true, user, datastore);
+        Assert.assertEquals(false, actual);
+    }
+ 
+    @Test
+    //Test if user was given points if their initial value was not zero
+    public void giveUserQuizTakenPoints_actuallyAddedPoints_notStartAtZero(){
+        QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        
+        Entity user = new Entity("user");
+        user.setProperty("quiz_timestamp", 159430944365L);
+        user.setProperty("userID", 12345);
+        int score_value = 15;
+ 
+        user.setProperty("score", score_value);
+        datastore.put(user);
+ 
+        boolean actual = timing_properties_test.giveUserQuizTakenPoints(true, user, datastore);
+        if(((int) user.getProperty("score")) == (score_value + 20) ) {
+            Assert.assertEquals(actual, true);
+        }
+    }
+ 
+    @Test
+    //Test if user was given points if their initial value is zero
+    public void giveUserQuizTakenPoints_actuallyAddedPoints(){
+        QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        
+        Entity user = new Entity("user");
+        user.setProperty("quiz_timestamp", 159430944365L);
+        user.setProperty("userID", 12345);
+        int score_value = 0;
+        user.setProperty("score", score_value);
+        datastore.put(user);
+ 
+        boolean actual = timing_properties_test.giveUserQuizTakenPoints(true, user, datastore);
+        if(((int) user.getProperty("score")) == (score_value + 20) ) {
+            Assert.assertEquals(actual, true);
+        }
+    }
+ 
+    @Test
     //Tests for valid paramters for give UserQuizTakenPoints
     public void giveUserQuizTakenPoints_validParameters() {
         QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
@@ -240,3 +294,4 @@ public final class TimingPropertiesTest {
         Assert.assertEquals(true, actual);
     }
 }
+
