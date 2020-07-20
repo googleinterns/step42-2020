@@ -46,7 +46,6 @@ public final class TimingPropertiesTest {
     //Test where user has null timestamp
     public void getTimestampProperty_nullUserTimeStamp() {
         QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
- 
         Entity user = new Entity("user");
         user.setProperty("quiz_timestamp", null);
  
@@ -204,7 +203,7 @@ public final class TimingPropertiesTest {
  
     @Test 
     //Test if giveUserPoints is given null datastore value as a parameter
-    public void giveUserQuizTakenPoints_nullParameters() {
+    public void giveUserQuizTakenPoints_nullDatastore() {
         QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
         DatastoreService datastore = null;
         Entity user = new Entity("user");
@@ -236,7 +235,7 @@ public final class TimingPropertiesTest {
         datastore.put(user);
  
         boolean actual = timing_properties_test.giveUserQuizTakenPoints(true, user, datastore);
-        Assert.assertEquals(false, actual);
+        Assert.assertEquals(user.getProperty("score"), 20);
     }
  
     @Test
@@ -254,9 +253,7 @@ public final class TimingPropertiesTest {
         datastore.put(user);
  
         boolean actual = timing_properties_test.giveUserQuizTakenPoints(true, user, datastore);
-        if(((int) user.getProperty("score")) == (score_value + 20) ) {
-            Assert.assertEquals(actual, true);
-        }
+        Assert.assertEquals(user.getProperty("score"), 35);
     }
  
     @Test
@@ -273,9 +270,7 @@ public final class TimingPropertiesTest {
         datastore.put(user);
  
         boolean actual = timing_properties_test.giveUserQuizTakenPoints(true, user, datastore);
-        if(((int) user.getProperty("score")) == (score_value + 20) ) {
-            Assert.assertEquals(actual, true);
-        }
+        Assert.assertEquals(user.getProperty("score"), 20);
     }
  
     @Test
@@ -294,4 +289,3 @@ public final class TimingPropertiesTest {
         Assert.assertEquals(true, actual);
     }
 }
-
