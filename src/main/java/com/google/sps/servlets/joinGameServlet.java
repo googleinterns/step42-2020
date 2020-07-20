@@ -51,40 +51,30 @@ public class joinGameServlet extends HttpServlet {
     // get user entity
     Cookie cookies[] = request.getCookies();
     Entity userEntity = UserUtils.getUserFromCookie(cookies, datastore);
- 
-    if(userEntity == null){
-        // no user entity, send back to login
-        response.sendRedirect("/index.html");
-        return;
+
+    String joinGame = GameUtils.joinGame(userEntity, null, datastore, gameId);
+
+    if(joinGame == "nullUserEntity" || joinGame == "userAddedFailed" || joinGame == "gameAddedFailed"){
+      response.sendRedirect("/index.html");
+      return;
     }
- 
-    // prevent users from joining more than one game
-    if((String) userEntity.getProperty("gameId") != null){
+
+    if(joinGame == "badGameCode"){
+      PrintWriter out = response.getWriter();
+      out.println("<p>We couldn't find a game by that code, <a href = \"join.html\"><h3>press here</h3></a> and enter a different game code.</p>");
+      return;
+    }
+
+    if(joinGame == "alreadyHasGame"){
       PrintWriter out = response.getWriter();
       out.println("<p>You are already in a game, see the gameboard here:</p>");
       out.println("<a href = \"gameBoard.html\"><h3>Your game</h3></a>");
       return;
     }
- 
-    // get game entity
-    Entity gameEntity = UserUtils.getEntityFromDatastore("Game", "gameId", gameId, datastore);
-    
-    if(gameEntity == null){
-      // return error message 
-      PrintWriter out = response.getWriter();
-      out.println("<p>We couldn't find a game by that code, <a href = \"join.html\"><h3>press here</h3></a> and enter a different game code.</p>");
+
+    if(newGame == "success"){
+      response.sendRedirect("/gameBoard.html");
       return;
-    }else{
- 
-      boolean userAdded = GameUtils.addUserToGame((String) userEntity.getProperty("userId"), gameEntity, datastore);
-      boolean gameAdded = UserUtils.addGameToUser(userEntity, datastore, gameId);
-        
-      if(userAdded && gameAdded){
-        response.sendRedirect("/gameBoard.html");
-      }else{
-        // something's wrong, send back to login
-        response.sendRedirect("/index.html");
-      }
     }
   }
 }
