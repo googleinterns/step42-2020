@@ -14,7 +14,6 @@
 
 package com.google.sps.utils;
 
-
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -109,15 +108,8 @@ public final class UserUtils {
         log.severe("found empty gameId trying to add game to user " + (String) userEntity.getProperty("userId"));
         return false;
     }
- 
-    ArrayList<String> games = (ArrayList<String>) userEntity.getProperty("games");
- 
-    if(games == null){
-        return false;
-    }
- 
-    games.add(gameId);
-    userEntity.setProperty("games", games);
+
+    userEntity.setProperty("gameId", gameId);
     datastore.put(userEntity);
  
     return true;
