@@ -33,7 +33,7 @@ public class AnswerQuizQuestion extends HttpServlet {
         PreparedQuery pq = datastore.prepare(query);
         Entity user = pq.asList(FetchOptions.Builder.withLimit(1)).get(0);
 
-        Boolean value = timing_properties.giveUserPoints(timing_properties.userTookQuiz(userTime, quizTime), user, datastore);
+        boolean value = timing_properties.giveUserQuizTakenPoints(timing_properties.userTookQuiz(userTime, quizTime), user, datastore);
 
         Gson gson = new Gson();
         response.setContentType("application/json;");
