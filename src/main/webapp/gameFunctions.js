@@ -5,4 +5,7 @@ function getUserQuizStatus() {
         }
     });
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 839f511bd078025d21187259834e396e64881c5a
