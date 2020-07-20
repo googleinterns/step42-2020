@@ -50,36 +50,28 @@ public class startGameServlet extends HttpServlet {
     Cookie cookies[] = request.getCookies();
     Entity userEntity = UserUtils.getUserFromCookie(cookies, datastore);
  
-    if(userEntity == null){
-        // no user entity, send back to login
-        response.sendRedirect("/index.html");
-        return;
+    String newGame = GameUtils.joinGame(userEntity, gameName, datastore, null);
+ 
+    if(newGame == "noGameName"){
+      response.sendRedirect("/start.html");
+      return;
     }
  
-    // prevent users from joining more than one game
-    if((String) userEntity.getProperty("gameId") != null){
+    if(newGame == "nullUserEntity" || newGame == "createGameFailed" || newGame == "userAddedFailed" || newGame == "gameAddedFailed"){
+      response.sendRedirect("/index.html");
+      return;
+    }
+ 
+    if(newGame == "alreadyHasGame"){
       PrintWriter out = response.getWriter();
       out.println("<p>You are already in a game, see the gameboard here:</p>");
       out.println("<a href = \"gameBoard.html\"><h3>Your game</h3></a>");
       return;
     }
-      
-    // create game entity
-    Entity gameEntity = GameUtils.createGameEntity(gameName, datastore);
  
-    // add user to game entity + vice versa
-    boolean userAdded = false;
-    boolean gameAdded = false;
-    if(gameEntity != null){
-        userAdded = GameUtils.addUserToGame((String) userEntity.getProperty("userId"), gameEntity, datastore);
-        gameAdded = UserUtils.addGameToUser(userEntity, datastore, (String) gameEntity.getProperty("gameId"));
-    }
-    
-    if(userAdded && gameAdded){
-        response.sendRedirect("/gameBoard.html");
-    }else{
-        // something's wrong, send back to login
-        response.sendRedirect("/index.html");
+    if(newGame == "success"){
+      response.sendRedirect("/gameBoard.html");
+      return;
     }
   }
 }

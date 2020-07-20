@@ -11,21 +11,22 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
+ 
 package com.google.sps.utils;
-
+ 
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.DatastoreService;
 import java.util.ArrayList;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Key;
+import com.google.sps.utils.UserUtils;
 import java.util.logging.Logger;
-
+ 
 public final class GameUtils {
-
+ 
   private static final Logger log = Logger.getLogger(GameUtils.class.getName());
-
+ 
   /**
   * Checks to see whether the user already has a game by the given name, and returns false if so
   */
@@ -41,7 +42,7 @@ public final class GameUtils {
     
     // list of game names for the given user
     ArrayList<String> names = (ArrayList<String>) userEntity.getProperty("gameNames");
-
+ 
     //compares game names to the prospective game name, and returns false if there's a match
     for(String name : names){
         if(name == gameName){
@@ -50,7 +51,7 @@ public final class GameUtils {
     }
     return true;
   }
-
+ 
   /**
   * Creates a game entity and returns the entity if successful
   */
@@ -77,12 +78,12 @@ public final class GameUtils {
     Key gameKey = gameEntity.getKey();
  
     datastore.put(gameEntity);
-
+ 
     // getting the game id for the game id property
     Entity entity = null;
     try{
       entity = datastore.get(gameKey);
-
+ 
       String key = KeyFactory.keyToString(gameKey);
       entity.setProperty("gameId", key);
       datastore.put(entity);
@@ -93,12 +94,12 @@ public final class GameUtils {
  
     return entity;
   }
-
+ 
   /**
   * add user to user list in game entity, and creates a score entity for the given user and game
   */
   public static boolean addUserToGame(String userId, Entity gameEntity, DatastoreService datastore) {
-
+ 
     if(userId == ""){
       return false;
     }
@@ -113,7 +114,7 @@ public final class GameUtils {
  
     ArrayList<String> userIds = (ArrayList<String>) gameEntity.getProperty("userIds");
     if(userIds == null){
-      return false;
+      userIds = new ArrayList<String>();
     }
  
     // add user to game entity
@@ -123,4 +124,59 @@ public final class GameUtils {
     
     return true;
   }
+ 
+  public static String joinGame(Entity userEntity, String gameName, DatastoreService datastore, String gameId) {
+ 
+    if(gameName == ""){
+        return "noGameName";
+    }
+ 
+    if(userEntity == null){
+        log.severe("found null userEntity trying to join game " + gameName);
+        return "nullUserEntity";
+    }
+ 
+    if(datastore == null){
+        log.severe("found null datastore trying to join game " + gameName);
+        return "nullDatastore";
+    }
+ 
+    // prevent users from joining more than one game
+    if(userEntity.getProperty("gameId") != null){
+      return "alreadyHasGame";
+    }
+ 
+    Entity gameEntity;
+    if(gameId == null){
+        // create game entity
+        gameEntity = GameUtils.createGameEntity(gameName, datastore);
+        if(gameEntity == null){
+            log.severe("create game failed for game " + gameName);
+            return "createGameFailed";
+        }
+ 
+    }else{
+        // or join a game 
+        gameEntity = UserUtils.getEntityFromDatastore("Game", "gameId", gameId, datastore);
+    
+        if(gameEntity == null){ 
+          return "badGameCode";
+        }
+    }
+ 
+    // add user to game entity + vice versa
+    boolean userAdded = GameUtils.addUserToGame((String) userEntity.getProperty("userId"), gameEntity, datastore);
+    if(!userAdded){
+        log.severe("failed to add user to game " + gameName);
+        return "userAddedFailed";
+    }
+    boolean gameAdded = UserUtils.addGameToUser(userEntity, datastore, (String) gameEntity.getProperty("gameId"));
+    if(!gameAdded){
+        log.severe("failed to add game "  + gameName + " to user");
+        return "gameAddedFailed";
+    }
+    
+    return "success";
+  }
+ 
 }
