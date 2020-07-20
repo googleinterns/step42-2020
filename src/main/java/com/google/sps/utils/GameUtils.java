@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Key;
-import com.google.sps.utils.UserUtils;
 import java.util.logging.Logger;
 
 public final class GameUtils {
