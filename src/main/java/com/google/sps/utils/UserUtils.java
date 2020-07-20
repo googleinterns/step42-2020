@@ -1,11 +1,11 @@
 // Copyright 2019 Google LLC
-//
+
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-//
+
 //     https://www.apache.org/licenses/LICENSE-2.0
-//
+
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -97,21 +97,21 @@
 //   public static boolean addGameToUser(Entity userEntity, DatastoreService datastore, String gameId) {
 
 
-    // if(userEntity == null){
-    //     log.severe("found null user entity trying to add game to user");
-    //     return false;
-    // }
-    // if(datastore == null){
-    //     log.severe("found null datastore trying to add game to user " + (String) userEntity.getProperty("userId"));
-    //     return false;
-    // }
-    // if(gameId == ""){
-    //     log.severe("found empty gameId trying to add game to user " + (String) userEntity.getProperty("userId"));
-    //     return false;
-    // }
+//     if(userEntity == null){
+//         log.severe("found null user entity trying to add game to user");
+//         return false;
+//     }
+//     if(datastore == null){
+//         log.severe("found null datastore trying to add game to user " + (String) userEntity.getProperty("userId"));
+//         return false;
+//     }
+//     if(gameId == ""){
+//         log.severe("found empty gameId trying to add game to user " + (String) userEntity.getProperty("userId"));
+//         return false;
+//     }
 
-    // userEntity.setProperty("gameId", gameId);
-    // datastore.put(userEntity);
+//     userEntity.setProperty("gameId", gameId);
+//     datastore.put(userEntity);
  
 //     return true;
 //   }
