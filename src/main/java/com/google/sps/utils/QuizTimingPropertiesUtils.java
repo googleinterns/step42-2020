@@ -18,18 +18,9 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.datastore.Key;
 import java.util.List;
 import java.util.ArrayList;
 import com.google.appengine.api.datastore.FetchOptions;
-import com.google.appengine.api.datastore.Query.Filter;
-import com.google.appengine.api.datastore.Query.FilterOperator;
-import com.google.appengine.api.datastore.Query.FilterPredicate;
-import com.google.appengine.api.datastore.Key;
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.Random;
-import java.util.logging.Logger;
 import java.util.Date;
 import java.util.Random;
 import java.util.logging.Logger;
@@ -148,8 +139,7 @@ public final class QuizTimingPropertiesUtils {
             try {
                 currentUser.setProperty("score", ((Number) currentUser.getProperty("score")).intValue() + 20);
             } catch (NullPointerException e) {
-                log.log(Level.SEVERE, "User Entity has no 'score' property");
-                return false;
+                currentUser.setProperty("score", 20);                
             }
             currentUser.setProperty("quiz_timestamp", System.currentTimeMillis());
             datastore.put(currentUser);

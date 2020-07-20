@@ -37,11 +37,11 @@ public class getUserImagesForQuizPage extends HttpServlet {
 
         List<Object> users;
 
-        for(Entity game : pqTwo.asIterable()){
-            if(game.getProperty("gameID") == user_entity.getProperty("currentGame")){
-                users = game.getProperty("userIDs");
-            }
-        }
+        // for(Entity game : pqTwo.asIterable()){
+        //     if(game.getProperty("gameID") == user_entity.getProperty("currentGame")){
+        //         users = game.getProperty("userIDs");
+        //     }
+        // }
 
         // String blobKey = "noKey";
         // if(userEntity != null){
@@ -52,8 +52,8 @@ public class getUserImagesForQuizPage extends HttpServlet {
         //     blobKey = "noKey";
         // }
     
-        Gson gson = new Gson();
-        response.setContentType("application/json;");
-        response.getWriter().println(gson.toJson(users));
+        // Gson gson = new Gson();
+        // response.setContentType("application/json;");
+        // response.getWriter().println(gson.toJson(users));
     }
 }
