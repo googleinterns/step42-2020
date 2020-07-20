@@ -73,9 +73,9 @@ public final class QuizTimingPropertiesUtils {
     }
  
     //This function checks if the user has taken the quiz yet by comparing their timestamp with the quiz's timestamp
-    public Boolean userTookQuiz(Long usersQuizTime, Long currentQuizTime) {
+    public Boolean userTookQuiz(String usersQuizTime, String currentQuizTime) {
         try {
-            return usersQuizTime > currentQuizTime;
+            return (usersQuizTime.compareTo(currentQuizTime) > 0);
         } catch(NullPointerException e ) {
             log.log(Level.SEVERE, "Null result for parameter");
             return null;
@@ -83,14 +83,17 @@ public final class QuizTimingPropertiesUtils {
     }
 
     //This function checks to see if the quiz is outdated
-     public Boolean isQuizOutdated(Long current_quiz_time) {    
-        Long today_date = System.currentTimeMillis();
+    public Boolean isQuizOutdated(Long current_quiz_time) {  
+        String quiz_date;
         try {
-            return today_date > current_quiz_time;
-        } catch(NullPointerException e) {
+            quiz_date = DateFormat.getDateInstance().format(current_quiz_time);
+        } catch(IllegalArgumentException e) {
             log.log(Level.SEVERE, "Given a null Parameter for {0}", current_quiz_time);
             return null;
         }
+ 
+        String today_date = DateFormat.getDateInstance().format(new Date());
+        return today_date.compareTo(quiz_date) > 0;
     }
     
     //This function gets a new quiz question if the quiz is outdated
