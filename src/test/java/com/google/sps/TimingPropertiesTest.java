@@ -110,8 +110,8 @@ public final class TimingPropertiesTest {
     public void userTookQuiz_nullParameters() {
         QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
         
-        String user_quiz_time = null;
-        String current_quiz_time = null;
+        Long user_quiz_time = null;
+        Long current_quiz_time = null;
         
         Boolean actual = timing_properties_test.userTookQuiz(user_quiz_time, current_quiz_time);
         Assert.assertEquals(null, actual);
@@ -133,8 +133,8 @@ public final class TimingPropertiesTest {
         game.setProperty("quiz_timestamp", 1594309443660L);
         datastore.put(game);
 
-        String user_quiz_time = (timing_properties_test.getTimestampProperty("user", datastore)).toString();
-        String game_quiz_time = (timing_properties_test.getTimestampProperty("game", datastore)).toString();
+        Long user_quiz_time = timing_properties_test.getTimestampProperty("user", datastore);
+        Long game_quiz_time = timing_properties_test.getTimestampProperty("game", datastore);
 
         Boolean actual = timing_properties_test.userTookQuiz(user_quiz_time, game_quiz_time);
         Assert.assertEquals(false, actual);
