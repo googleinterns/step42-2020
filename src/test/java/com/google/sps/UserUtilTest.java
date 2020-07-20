@@ -165,8 +165,6 @@ public final class UserUtilTest {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
     Entity userEntity = new Entity("user");
-    ArrayList<String> gameIds = new ArrayList<>();
-    userEntity.setProperty("games", gameIds);
 
     boolean actual = UserUtils.addGameToUser(userEntity, datastore, "");
 
@@ -178,8 +176,6 @@ public final class UserUtilTest {
   public void addGameToUserNullDatastore() {
 
     Entity userEntity = new Entity("user");
-    ArrayList<String> gameIds = new ArrayList<>();
-    userEntity.setProperty("games", gameIds);
 
     boolean actual = UserUtils.addGameToUser(userEntity, null, "gameId");
 
@@ -195,19 +191,6 @@ public final class UserUtilTest {
 
     Assert.assertEquals(false, actual);
   }
-
-  // test an user entity without a gameid list
-  @Test
-  public void addGameToUserInvalidUser() {
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-
-    Entity userEntity = new Entity("user");
-    userEntity.setProperty("userName", "user1");
-
-    boolean actual = UserUtils.addGameToUser(userEntity, datastore, "gameId");
-
-    Assert.assertEquals(false, actual);
-  }
  
   // test given all correct valid parameters
   @Test
@@ -215,8 +198,6 @@ public final class UserUtilTest {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
     Entity userEntity = new Entity("user");
-    ArrayList<String> gameIds = new ArrayList<>();
-    userEntity.setProperty("games", gameIds);
 
     boolean actual = UserUtils.addGameToUser(userEntity, datastore, "gameId");
 
