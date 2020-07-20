@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Game Board</title>
+    <link rel="icon" href="/images/plantFav.png" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 </head>
-
+ 
 <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
     <a class="navbar-brand" href="index.html"><img src="images/logo.png" alt="logo" class="logo"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -30,24 +31,23 @@
         </ul>
     </div>
 </nav>
-
-<body>
+ 
+<body onload="getUserQuizStatus()">
     <div class="view">
         <div id="container">
             </br>
             </br>
             <h5 id="headings"> Game Name </h5>
             </br>
-
+ 
             <div id="leaderboard-container">
                 LeaderBoard Elements will be populated Here
             </div>
             </br>
-
-            <div id="QuizButtons">
-            </div>
+ 
+            <button type="button" id="QuizButton" style="display:none"><a href="quiz.html">Take Quiz </a></button>
             </br>
-
+            
             <div id="individual-container">
                 <div class="column left"> 
                     <h5 id="users-name"> User Name </h5>
@@ -58,9 +58,8 @@
                 </div>
             </div>
             </br>
-
-            <button type="button" id="button"> Upload Picture <buttton>
-
+ 
+            <button type="button" id="button"> Upload Picture </buttton>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
