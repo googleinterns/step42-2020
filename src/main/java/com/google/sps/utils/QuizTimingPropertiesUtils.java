@@ -125,15 +125,22 @@ public final class QuizTimingPropertiesUtils {
         return (update_game_entity.getProperty("quizQuestion")).toString();
     }
 
+    //Gives the user points if they have taken a quiz
     public Boolean giveUserPoints(Boolean userQuizStatus, Entity currentUser, DatastoreService datastore) {
-        if(currentUser == null || datastore == null) {
-            log.log(Level.SEVERE, "Given a null value in parameters");
+        if(currentUser == null) {
+            log.log(Level.SEVERE, "Given a null {0}", currentUser);
             return null;
         }
+
+        if (datastore == null) {
+            log.log(Level.SEVERE, "Given a null {0}", datastore);
+            return null;
+        }
+
         if(userQuizStatus) {
             Key user_key = currentUser.getKey();
             datastore.delete(user_key);
- 
+
             Entity updated_user = new Entity("user");
             updated_user.setProperty("quiz_timestamp", System.currentTimeMillis());
             updated_user.setProperty("userID", currentUser.getProperty("userID"));
@@ -143,6 +150,4 @@ public final class QuizTimingPropertiesUtils {
         }
         return false;
     }
-
-
 }
