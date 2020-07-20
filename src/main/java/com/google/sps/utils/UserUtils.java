@@ -31,8 +31,8 @@ import com.google.appengine.api.datastore.Query.FilterPredicate;
 import java.util.logging.Logger;
 
 public final class UserUtils {
-
-    private static final Logger log = Logger.getLogger(GameUtils.class.getName());
+    static final String sessionIdCookieName = "SessionID";
+    private static final Logger log = Logger.getLogger(UserUtils.class.getName());
 
     /**
     * Returns a single Entity object that can then be used in a servlet. 
@@ -65,6 +65,31 @@ public final class UserUtils {
 
     Entity entity = resultsList.get(0);
     return entity;
+  }
+
+     /**
+    * This function takes in a list of cookies and matches a sessionID cookie
+    * with a specific name/value pair to a user entity with the same name/value
+    * pair as one of its properties. This user entity is then returned. 
+    * 
+    * <p>
+    * 
+    * @param  cookies    an array of cookies (usually all cookies on front end)
+    * @param  datastore  the database where entities are stored
+    * @return            a single entity that has the cookie name/value pair as a property
+    */
+ 
+  public static Entity getUserFromCookie(Cookie cookies[], DatastoreService datastore){
+      if(datastore == null){
+          log.severe("Error in function getUserFromCookie(): Datastore passed in was null");
+          return null;
+      }
+    Cookie cookie = CookieUtils.getCookieFromName(cookies, sessionIDCookieName); //returns null if it doesn't exist
+    if(cookie == null){ 
+        log.info("Error in function getUserFromCookie(): Cookie with name: " + sessionIDCookieName + " not found.");
+        return null;
+    }
+    return getEntityFromDatastore("user", sessionIDCookieName, cookie.getValue(), datastore); //returns null if it doesn't exist
   }
 
   /**

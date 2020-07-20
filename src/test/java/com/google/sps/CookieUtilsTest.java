@@ -15,7 +15,7 @@ import org.junit.runners.JUnit4;
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
-import com.google.sps.CookieUtils; 
+import com.google.sps.utils.CookieUtils; 
 
 @RunWith(JUnit4.class)
 public final class CookieUtilsTest {
@@ -29,7 +29,7 @@ public final class CookieUtilsTest {
 
         Cookie cookieArray[] = new Cookie[]{cookie1,cookie2,cookie3};
 
-        Cookie actual = CookieUtils.getCookieGivenName(cookieArray, "name1");
+        Cookie actual = CookieUtils.getCookieFromName(cookieArray, "name1");
 
         Assert.assertEquals(cookie1, actual);     
   }
@@ -43,7 +43,7 @@ public final class CookieUtilsTest {
 
         Cookie cookieArray[] = new Cookie[]{cookie1,cookie2,cookie3};
 
-        Cookie actual = CookieUtils.getCookieGivenName(cookieArray, "noname");
+        Cookie actual = CookieUtils.getCookieFromName(cookieArray, "noname");
         Cookie expected = null;
 
         Assert.assertEquals(expected, actual);     
@@ -56,7 +56,7 @@ public final class CookieUtilsTest {
 
         Cookie cookieArray[] = new Cookie[]{cookie1};
 
-        Cookie actual = CookieUtils.getCookieGivenName(cookieArray, "name1");
+        Cookie actual = CookieUtils.getCookieFromName(cookieArray, "name1");
         Cookie expected = cookie1;
 
         Assert.assertEquals(cookie1, actual);     
@@ -69,7 +69,7 @@ public final class CookieUtilsTest {
 
         Cookie cookieArray[] = new Cookie[]{cookie1};
 
-        Cookie actual = CookieUtils.getCookieGivenName(cookieArray, "value1");
+        Cookie actual = CookieUtils.getCookieFromName(cookieArray, "value1");
         Cookie expected = null;
 
          Assert.assertEquals(expected, actual);     
@@ -80,7 +80,7 @@ public final class CookieUtilsTest {
   public void noCookiesWithName() {
         Cookie cookieArray[] = new Cookie[0];
 
-        Cookie actual = CookieUtils.getCookieGivenName(cookieArray, "name1");
+        Cookie actual = CookieUtils.getCookieFromName(cookieArray, "name1");
         Cookie expected = null;
 
         Assert.assertEquals(expected, actual);     
@@ -95,7 +95,7 @@ public final class CookieUtilsTest {
 
         Cookie cookieArray[] = new Cookie[]{cookie1, cookie2, cookie3};
 
-        Cookie actual = CookieUtils.getCookieGivenName(cookieArray, "");
+        Cookie actual = CookieUtils.getCookieFromName(cookieArray, "");
         Cookie expected = null;
 
         Assert.assertEquals(expected, actual);  
