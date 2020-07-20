@@ -22,6 +22,14 @@ import com.google.appengine.api.datastore.Key;
 import java.util.List;
 import java.util.ArrayList;
 import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
+import com.google.appengine.api.datastore.Key;
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Random;
+import java.util.logging.Logger;
 import java.util.Date;
 import java.util.Random;
 import java.util.logging.Logger;
@@ -53,7 +61,7 @@ public final class QuizTimingPropertiesUtils {
         "Which plant would look the best outside in a garden?",
         "Which plant would you give as a gift?"
     ));
- 
+
     //This function gets the the "quiz_timestamp" property of the entity that is fed into the function
     public Long getTimestampProperty(String entity, DatastoreService datastore) {
         Query query = new Query(entity);
@@ -73,32 +81,36 @@ public final class QuizTimingPropertiesUtils {
     }
  
     //This function checks if the user has taken the quiz yet by comparing their timestamp with the quiz's timestamp
-    public Boolean userTookQuiz(Long usersQuizTime, Long currentQuizTime) {
+    public boolean userTookQuiz(Long usersQuizTime, Long currentQuizTime) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         String users_quiz_time;
         String current_quiz_time;
+
         try {
             users_quiz_time = sdf.format(usersQuizTime);
             current_quiz_time = sdf.format(currentQuizTime);
         } catch(IllegalArgumentException e ) {
             log.log(Level.SEVERE, "Null result for parameter");
-            return null;
+            return false;
         }  
+        
         return (users_quiz_time.compareTo(current_quiz_time) > 0);
     }
 
     //This function checks to see if the quiz is outdated
-    public Boolean isQuizOutdated(Long current_quiz_time) {  
+    public boolean isQuizOutdated(Long current_quiz_time) {  
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         String quiz_date;
+
         try {
             quiz_date = sdf.format(current_quiz_time);
         } catch(IllegalArgumentException e) {
             log.log(Level.SEVERE, "Given a null Parameter for {0}", current_quiz_time);
-            return null;
+            return false;
         }
+
         String today_date = sdf.format(new Date());
         return today_date.compareTo(quiz_date) > 0;
     }
@@ -107,47 +119,38 @@ public final class QuizTimingPropertiesUtils {
     public String getNewQuestion(Entity game_entity, DatastoreService datastore) {
         Random rand = new Random();
         int rand_number = rand.nextInt(quiz_questions.size());
-        Key game_entity_key;
- 
+
         try {
-            game_entity_key = game_entity.getKey();
+            game_entity.setProperty("quiz_timestamp", System.currentTimeMillis());
         } catch(NullPointerException e) {
             log.log(Level.SEVERE, "Null value given for parameter {0}", game_entity);
             return null;
         } 
- 
-        datastore.delete(game_entity_key);
-            
-        Entity update_game_entity = new Entity(game_entity_key);
-        update_game_entity.setProperty("quiz_timestamp", System.currentTimeMillis());
-        update_game_entity.setProperty("quizQuestion", quiz_questions.get(rand_number));
-        datastore.put(update_game_entity);
-        return (update_game_entity.getProperty("quizQuestion")).toString();
+
+        game_entity.setProperty("quizQuestion", quiz_questions.get(rand_number));
+        datastore.put(game_entity);
+        return (game_entity.getProperty("quizQuestion")).toString();
     }
 
-    //Gives the user points if they have taken a quiz
-    public Boolean giveUserPoints(Boolean userQuizStatus, Entity currentUser, DatastoreService datastore) {
+    //Gives the user 20 points if they have taken a quiz
+    public boolean giveUserQuizTakenPoints(boolean userQuizStatus, Entity currentUser, DatastoreService datastore) {
         if(currentUser == null) {
             log.log(Level.SEVERE, "Given a null {0}", currentUser);
-            return null;
+            return false;
         }
 
-        if (datastore == null) {
+        if(datastore == null) {
             log.log(Level.SEVERE, "Given a null {0}", datastore);
-            return null;
+            return false;
         }
 
         if(userQuizStatus) {
-            Key user_key = currentUser.getKey();
-            datastore.delete(user_key);
-
-            Entity updated_user = new Entity("user");
-            updated_user.setProperty("quiz_timestamp", System.currentTimeMillis());
-            updated_user.setProperty("userID", currentUser.getProperty("userID"));
-            updated_user.setProperty("score", ((int) currentUser.getProperty("score")) + 20);
-            datastore.put(updated_user);
+            currentUser.setProperty("score", ((Number) currentUser.getProperty("score")).intValue() + 20);
+            currentUser.setProperty("quiz_timestamp", System.currentTimeMillis());
+            datastore.put(currentUser);
             return true;
         }
         return false;
     }
+
 }
