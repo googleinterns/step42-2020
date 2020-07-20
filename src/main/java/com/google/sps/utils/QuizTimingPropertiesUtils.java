@@ -145,7 +145,12 @@ public final class QuizTimingPropertiesUtils {
         }
 
         if(userQuizStatus) {
-            currentUser.setProperty("score", ((Number) currentUser.getProperty("score")).intValue() + 20);
+            try {
+                currentUser.setProperty("score", ((Number) currentUser.getProperty("score")).intValue() + 20);
+            } catch (NullPointerException e) {
+                log.log(Level.SEVERE, "User Entity has no 'score' property");
+                return false;
+            }
             currentUser.setProperty("quiz_timestamp", System.currentTimeMillis());
             datastore.put(currentUser);
             return true;

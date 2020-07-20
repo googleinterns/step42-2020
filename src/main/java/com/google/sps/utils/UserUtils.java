@@ -14,8 +14,6 @@
 
 // package com.google.sps.utils;
 
-<<<<<<< HEAD
-
 // import java.io.*;
 // import javax.servlet.*;
 // import javax.servlet.http.*;
@@ -30,22 +28,6 @@
 // import com.google.appengine.api.datastore.Query.FilterOperator;
 // import com.google.appengine.api.datastore.Query.FilterPredicate;
 // import java.util.logging.Logger;
-=======
-import java.io.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.Query;
-import java.util.List;
-import java.util.ArrayList;
-import com.google.appengine.api.datastore.FetchOptions;
-import com.google.appengine.api.datastore.Query.Filter;
-import com.google.appengine.api.datastore.Query.FilterOperator;
-import com.google.appengine.api.datastore.Query.FilterPredicate;
-import java.util.logging.Logger;
->>>>>>> 51ab9accb24952afa2a5a0c5fb12c5c9be3c2639
 
 // public final class UserUtils {
 //     static final String sessionIdCookieName = "SessionID";
@@ -114,46 +96,22 @@ import java.util.logging.Logger;
 //   */
 //   public static boolean addGameToUser(Entity userEntity, DatastoreService datastore, String gameId) {
 
-<<<<<<< HEAD
-//     if(userEntity == null){
-//         log.severe("found null user entity trying to add game to user");
-//         return false;
-//     }
-//     if(datastore == null){
-//         log.severe("found null datastore trying to add game to user " + (String) userEntity.getProperty("userId"));
-//         return false;
-//     }
-//     if(gameId == ""){
-//         log.severe("found empty gameId trying to add game to user " + (String) userEntity.getProperty("userId"));
-//         return false;
-//     }
- 
-//     ArrayList<String> games = (ArrayList<String>) userEntity.getProperty("games");
- 
-//     if(games == null){
-//         return false;
-//     }
- 
-//     games.add(gameId);
-//     userEntity.setProperty("games", games);
-//     datastore.put(userEntity);
-=======
-    if(userEntity == null){
-        log.severe("found null user entity trying to add game to user");
-        return false;
-    }
-    if(datastore == null){
-        log.severe("found null datastore trying to add game to user " + (String) userEntity.getProperty("userId"));
-        return false;
-    }
-    if(gameId == ""){
-        log.severe("found empty gameId trying to add game to user " + (String) userEntity.getProperty("userId"));
-        return false;
-    }
 
-    userEntity.setProperty("gameId", gameId);
-    datastore.put(userEntity);
->>>>>>> 51ab9accb24952afa2a5a0c5fb12c5c9be3c2639
+    // if(userEntity == null){
+    //     log.severe("found null user entity trying to add game to user");
+    //     return false;
+    // }
+    // if(datastore == null){
+    //     log.severe("found null datastore trying to add game to user " + (String) userEntity.getProperty("userId"));
+    //     return false;
+    // }
+    // if(gameId == ""){
+    //     log.severe("found empty gameId trying to add game to user " + (String) userEntity.getProperty("userId"));
+    //     return false;
+    // }
+
+    // userEntity.setProperty("gameId", gameId);
+    // datastore.put(userEntity);
  
 //     return true;
 //   }
