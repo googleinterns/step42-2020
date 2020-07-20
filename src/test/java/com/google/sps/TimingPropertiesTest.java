@@ -204,7 +204,7 @@ public final class TimingPropertiesTest {
  
     @Test 
     //Test if giveUserPoints is given null datastore value as a parameter
-    public void giveUserQuizTakenPoints_nullParameters() {
+    public void giveUserQuizTakenPoints_nullDatastore() {
         QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
         DatastoreService datastore = null;
         Entity user = new Entity("user");
