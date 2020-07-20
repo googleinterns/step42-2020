@@ -31,11 +31,11 @@ import java.util.Date;
 import java.util.Random;
 import java.util.logging.Logger;
 import java.util.Date;
-import java.text.DateFormat;
 import java.util.Random;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 import java.util.TimeZone;
+import java.text.SimpleDateFormat;
 
 public final class QuizTimingPropertiesUtils {
 
@@ -82,23 +82,33 @@ public final class QuizTimingPropertiesUtils {
  
     //This function checks if the user has taken the quiz yet by comparing their timestamp with the quiz's timestamp
     public Boolean userTookQuiz(Long usersQuizTime, Long currentQuizTime) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String users_quiz_time;
+        String current_quiz_time;
         try {
-            return usersQuizTime > currentQuizTime;
-        } catch(NullPointerException e ) {
+            users_quiz_time = sdf.format(usersQuizTime);
+            current_quiz_time = sdf.format(currentQuizTime);
+        } catch(IllegalArgumentException e ) {
             log.log(Level.SEVERE, "Null result for parameter");
             return null;
         }  
+        return (users_quiz_time.compareTo(current_quiz_time) > 0);
     }
 
     //This function checks to see if the quiz is outdated
-     public Boolean isQuizOutdated(Long current_quiz_time) {    
-        Long today_date = System.currentTimeMillis();
+    public Boolean isQuizOutdated(Long current_quiz_time) {  
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String quiz_date;
         try {
-            return today_date > current_quiz_time;
-        } catch(NullPointerException e) {
+            quiz_date = sdf.format(current_quiz_time);
+        } catch(IllegalArgumentException e) {
             log.log(Level.SEVERE, "Given a null Parameter for {0}", current_quiz_time);
             return null;
         }
+        String today_date = sdf.format(new Date());
+        return today_date.compareTo(quiz_date) > 0;
     }
     
     //This function gets a new quiz question if the quiz is outdated
