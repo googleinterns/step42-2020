@@ -164,9 +164,13 @@
 //   public void addGameToUserEmptyGameId() {
 //     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
+<<<<<<< HEAD
 //     Entity userEntity = new Entity("user");
 //     ArrayList<String> gameIds = new ArrayList<>();
 //     userEntity.setProperty("games", gameIds);
+=======
+    Entity userEntity = new Entity("user");
+>>>>>>> 51ab9accb24952afa2a5a0c5fb12c5c9be3c2639
 
 //     boolean actual = UserUtils.addGameToUser(userEntity, datastore, "");
 
@@ -177,9 +181,13 @@
 //   @Test
 //   public void addGameToUserNullDatastore() {
 
+<<<<<<< HEAD
 //     Entity userEntity = new Entity("user");
 //     ArrayList<String> gameIds = new ArrayList<>();
 //     userEntity.setProperty("games", gameIds);
+=======
+    Entity userEntity = new Entity("user");
+>>>>>>> 51ab9accb24952afa2a5a0c5fb12c5c9be3c2639
 
 //     boolean actual = UserUtils.addGameToUser(userEntity, null, "gameId");
 
@@ -193,6 +201,7 @@
 
 //     boolean actual = UserUtils.addGameToUser(null, datastore, "gameId");
 
+<<<<<<< HEAD
 //     Assert.assertEquals(false, actual);
 //   }
 
@@ -208,15 +217,23 @@
 
 //     Assert.assertEquals(false, actual);
 //   }
+=======
+    Assert.assertEquals(false, actual);
+  }
+>>>>>>> 51ab9accb24952afa2a5a0c5fb12c5c9be3c2639
  
 //   // test given all correct valid parameters
 //   @Test
 //   public void addGameToUserSuccess() {
 //     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
+<<<<<<< HEAD
 //     Entity userEntity = new Entity("user");
 //     ArrayList<String> gameIds = new ArrayList<>();
 //     userEntity.setProperty("games", gameIds);
+=======
+    Entity userEntity = new Entity("user");
+>>>>>>> 51ab9accb24952afa2a5a0c5fb12c5c9be3c2639
 
 //     boolean actual = UserUtils.addGameToUser(userEntity, datastore, "gameId");
 
