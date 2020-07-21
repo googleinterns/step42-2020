@@ -33,7 +33,7 @@ import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
  
-/** Retrieves blobkey from Datastore */
+/** Retrieves blobkey from Datastore for the image of the logged in user */
 @WebServlet("/get-blob-key")
 public class getBlobKeyServlet extends HttpServlet {
   
@@ -46,8 +46,12 @@ public class getBlobKeyServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
  
-    // get user id -- get entity from user id -- new func!!
+    // get the user entity
     Cookie cookies[] = request.getCookies();
+    if(cookies == null){
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        return;
+    }
     Entity userEntity = UserUtils.getUserFromCookie(cookies, datastore);
  
     String blobKey = "noKey";
@@ -55,8 +59,8 @@ public class getBlobKeyServlet extends HttpServlet {
       blobKey = (String) userEntity.getProperty("blobKey");
     }
     if(blobKey == null){
-        // if the user hasn't uploaded a picture yet, nothing is printed
-        blobKey = "noKey";
+      // if the user hasn't uploaded a picture yet, nothing is printed
+      blobKey = "noKey";
     }
  
     Gson gson = new Gson();

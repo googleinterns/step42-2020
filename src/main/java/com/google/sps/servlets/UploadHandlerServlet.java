@@ -53,8 +53,12 @@ public class UploadHandlerServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     
-    // TODO: userID using new func
+    // get the user entity 
     Cookie cookies[] = request.getCookies();
+    if(cookies == null){
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        return;
+    }
     Entity userEntity = UserUtils.getUserFromCookie(cookies, datastore);
     
     // getting the blobkey + making it part of the request
