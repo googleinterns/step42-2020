@@ -125,7 +125,10 @@ public final class GameUtils {
     return true;
   }
  
- 
+  /**
+    Connects the given game entity to the given user entity by calling the addUserToGame
+    and addGameToUser functions
+  */
   public static boolean setGame(Entity userEntity, DatastoreService datastore, Entity gameEntity) {
  
     if(userEntity == null){
