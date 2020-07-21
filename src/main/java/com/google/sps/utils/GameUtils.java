@@ -125,39 +125,6 @@ public final class GameUtils {
     return true;
   }
  
-  public static Entity startGame(String gameName, DatastoreService datastore) {
- 
-    if(datastore == null){
-        log.severe("found null datastore trying to join game " + gameName);
-        return null;
-    }
- 
-    // create game entity
-    Entity gameEntity = GameUtils.createGameEntity(gameName, datastore);
-    if(gameEntity == null){
-        log.severe("create game failed for game " + gameName);
-        return null;
-    }
- 
-    return gameEntity;
-  }
- 
-  public static Entity joinGame(DatastoreService datastore, String gameId) {
- 
-    if(datastore == null){
-        log.severe("found null datastore trying to join game " + gameId);
-        return null;
-    }
- 
-    // or join a game 
-    Entity gameEntity = UserUtils.getEntityFromDatastore("Game", "gameId", gameId, datastore);
-    if(gameEntity == null){ 
-        return null;
-    }
-    
-    return gameEntity;
-  }
- 
  
   public static boolean setGame(Entity userEntity, DatastoreService datastore, Entity gameEntity) {
  
