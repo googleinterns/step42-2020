@@ -53,14 +53,16 @@ public class getBlobKeyServlet extends HttpServlet {
         return;
     }
     Entity userEntity = UserUtils.getUserFromCookie(cookies, datastore);
- 
-    String blobKey = "noKey";
-    if(userEntity != null){
-      blobKey = (String) userEntity.getProperty("blobKey");
+    if(userEntity == null){
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        return;
     }
+ 
+    String blobKey = (String) userEntity.getProperty("blobKey");
     if(blobKey == null){
       // if the user hasn't uploaded a picture yet, nothing is printed
-      blobKey = "noKey";
+      response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+      return;
     }
  
     Gson gson = new Gson();
