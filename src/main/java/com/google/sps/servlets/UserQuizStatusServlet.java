@@ -26,12 +26,11 @@ public class UserQuizStatusServlet extends HttpServlet {
         
         QuizTimingPropertiesUtils timing_utils = new QuizTimingPropertiesUtils();
         Long current_quiz_time = timing_utils.getTimestampProperty("Game", datastore);
-        //Long user_quiz_status = timing_utils.getTimestampProperty("user", datastore));
+        Long user_quiz_status = timing_utils.getTimestampProperty("user", datastore));
  
         Gson gson = new Gson();
         response.setContentType("application/json;");
  
-        Long temp_val = 1594309443653L;
-        response.getWriter().println(gson.toJson(timing_utils.userTookQuiz(temp_val, current_quiz_time)));
+        response.getWriter().println(gson.toJson(timing_utils.userTookQuiz(user_quiz_status, current_quiz_time)));
     }
 }
