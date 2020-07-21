@@ -240,90 +240,53 @@ public final class GameUtilTest {
     Assert.assertEquals(true, actual);
   }
 
-  // Test joinGame with null datastore 
+  // Test setGame with null datastore 
   @Test
-  public void joinGame_NullDatastore() {
+  public void setGame_NullDatastore() {
 
     Entity userEntity = new Entity("User");
     userEntity.setProperty("userId", "user1");
+    Entity gameEntity = new Entity("Game");
 
-    String actual = GameUtils.joinGame(userEntity, "newGame", null, null);
+    boolean actual = GameUtils.setGame(userEntity, null, gameEntity);
 
-    Assert.assertEquals("nullDatastore", actual);
+    Assert.assertEquals(false, actual);
   }
 
-  // Test joinGame with null user entity
+  // Test setGame with null user entity
   @Test
   public void joinGame_NullUserEntity() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Entity gameEntity = new Entity("Game");
 
-    String actual = GameUtils.joinGame(null, "newGame", datastore, null);
+    boolean actual = GameUtils.setGame(null, datastore, gameEntity);
 
-    Assert.assertEquals("nullUserEntity", actual);
+    Assert.assertEquals(false, actual);
   }
 
-  // Test joinGame with no game name 
+  // Test setGame with null game Entity 
   @Test
-  public void joinGame_NoGameName() {
+  public void setGame_NullGameEntity() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Entity userEntity = new Entity("User");
     userEntity.setProperty("userId", "user1");
 
-    String actual = GameUtils.joinGame(userEntity, "", datastore, null);
+    boolean actual = GameUtils.setGame(userEntity, datastore, null);
 
-    Assert.assertEquals("noGameName", actual);
+    Assert.assertEquals(false, actual);
   }
 
-  // Test joinGame with user already in a game 
+  // Test setGame with valid parameters 
   @Test
-  public void joinGame_AlreadyHasGame() {
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    Entity userEntity = new Entity("User");
-    userEntity.setProperty("userId", "user1");
-    userEntity.setProperty("gameId", "game1");
-
-    String actual = GameUtils.joinGame(userEntity, "newGame", datastore, null);
-
-    Assert.assertEquals("alreadyHasGame", actual);
-  }
-
-  // Test joinGame with bad game code  
-  @Test
-  public void joinGame_badGameCode() {
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    Entity userEntity = new Entity("User");
-    userEntity.setProperty("userId", "user1");
-
-    String actual = GameUtils.joinGame(userEntity, null, datastore, "123");
-
-    Assert.assertEquals("badGameCode", actual);
-  }
-
-  // Test joinGame with valid parameters for a new game
-  @Test
-  public void joinGame_NewGameSuccess() {
+  public void setGame_NewGameSuccess() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
     Entity userEntity = new Entity("User");
     userEntity.setProperty("userId", "user1");
+    Entity gameEntity = GameUtils.createGameEntity("game1", datastore);
 
-    String actual = GameUtils.joinGame(userEntity, "newGame", datastore, null);
+    boolean actual = GameUtils.setGame(userEntity, datastore, gameEntity);
 
-    Assert.assertEquals("success", actual);
-  }
-
-  // Test joinGame with valid parameters to join an existing game
-  @Test
-  public void joinGame_FindGameSuccess() {
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-
-    Entity userEntity = new Entity("User");
-    userEntity.setProperty("userId", "user1");
-
-    Entity gameEntity = GameUtils.createGameEntity("existingGame", datastore);
-
-    String actual = GameUtils.joinGame(userEntity, null, datastore, (String) gameEntity.getProperty("gameId"));
-
-    Assert.assertEquals("success", actual);
+    Assert.assertEquals(true, actual);
   }
 }

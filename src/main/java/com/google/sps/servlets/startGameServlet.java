@@ -72,7 +72,7 @@ public class startGameServlet extends HttpServlet {
     Entity newGame = GameUtils.createGameEntity(gameName, datastore);
     boolean gameSet = GameUtils.setGame(userEntity, datastore, newGame);
  
-    if(newGame == false){
+    if(gameSet == false){
       response.sendRedirect("/index.html");
       return;
     }else{

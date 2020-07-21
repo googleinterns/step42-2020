@@ -1,4 +1,4 @@
-/ Copyright 2019 Google LLC
+// Copyright 2019 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -129,29 +129,29 @@ public final class GameUtils {
   public static boolean setGame(Entity userEntity, DatastoreService datastore, Entity gameEntity) {
  
     if(userEntity == null){
-        log.severe("found null userEntity trying to join game " + gameName);
-        return false;
-    }
- 
-    if(datastore == null){
-        log.severe("found null datastore trying to join game " + gameName + " with user " + (String) userEntity.getProperty("username"));
+        log.severe("found null userEntity trying to join game");
         return false;
     }
 
     if(gameEntity == null){
-        log.severe("found null game Entity trying to join game " + gameName + " with user " + (String) userEntity.getProperty("username"));
+        log.severe("found null game Entity trying to join game with user " + (String) userEntity.getProperty("username"));
+        return false;
+    }
+ 
+    if(datastore == null){
+        log.severe("found null datastore trying to join game " + (String) gameEntity.getProperty("gameName") + " with user " + (String) userEntity.getProperty("username"));
         return false;
     }
  
     // add user to game entity + vice versa
     boolean userAdded = GameUtils.addUserToGame((String) userEntity.getProperty("userId"), gameEntity, datastore);
     if(!userAdded){
-        log.severe("failed to add user to game " + gameName);
+        log.severe("failed to add user to game " + (String) gameEntity.getProperty("gameName"));
         return false;
     }
     boolean gameAdded = UserUtils.addGameToUser(userEntity, datastore, (String) gameEntity.getProperty("gameId"));
     if(!gameAdded){
-        log.severe("failed to add game "  + gameName + " to user");
+        log.severe("failed to add game "  + (String) gameEntity.getProperty("gameName") + " to user");
         return false;
     }
     
