@@ -45,31 +45,37 @@ public class startGameServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
  
     String gameName = request.getParameter("game-name");
-    
-    // query user 
-    Cookie cookies[] = request.getCookies();
-    Entity userEntity = UserUtils.getUserFromCookie(cookies, datastore);
  
-    String newGame = GameUtils.joinGame(userEntity, gameName, datastore, null);
- 
-    if(newGame == "noGameName"){
+    if(gameName == ""){
       response.sendRedirect("/start.html");
       return;
     }
+    
+    // query user 
+    Cookie cookies[] = request.getCookies();
+    if(cookies == null){
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        return;
+    }
+    Entity userEntity = UserUtils.getUserFromCookie(cookies, datastore);
+    if(userEntity == null){
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        return;
+    }
  
-    if(newGame == "nullUserEntity" || newGame == "createGameFailed" || newGame == "userAddedFailed" || newGame == "gameAddedFailed"){
+    // prevent users from joining more than one game
+    if(userEntity.getProperty("gameId") != null){
+      response.sendRedirect("/gameBoard.html");
+      return;
+    }
+ 
+    Entity newGame = GameUtils.startGame(gameName, datastore);
+    boolean gameSet = GameUtils.setGame(userEntity, datastore, newGame);
+ 
+    if(newGame == false){
       response.sendRedirect("/index.html");
       return;
-    }
- 
-    if(newGame == "alreadyHasGame"){
-      PrintWriter out = response.getWriter();
-      out.println("<p>You are already in a game, see the gameboard here:</p>");
-      out.println("<a href = \"gameBoard.html\"><h3>Your game</h3></a>");
-      return;
-    }
- 
-    if(newGame == "success"){
+    }else{
       response.sendRedirect("/gameBoard.html");
       return;
     }

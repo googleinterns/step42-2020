@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+/ Copyright 2019 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -125,58 +125,72 @@ public final class GameUtils {
     return true;
   }
  
-  public static String joinGame(Entity userEntity, String gameName, DatastoreService datastore, String gameId) {
- 
-    if(gameName == ""){
-        return "noGameName";
-    }
- 
-    if(userEntity == null){
-        log.severe("found null userEntity trying to join game " + gameName);
-        return "nullUserEntity";
-    }
+  public static Entity startGame(String gameName, DatastoreService datastore) {
  
     if(datastore == null){
         log.severe("found null datastore trying to join game " + gameName);
-        return "nullDatastore";
+        return null;
     }
  
-    // prevent users from joining more than one game
-    if(userEntity.getProperty("gameId") != null){
-      return "alreadyHasGame";
+    // create game entity
+    Entity gameEntity = GameUtils.createGameEntity(gameName, datastore);
+    if(gameEntity == null){
+        log.severe("create game failed for game " + gameName);
+        return null;
     }
  
-    Entity gameEntity;
-    if(gameId == null){
-        // create game entity
-        gameEntity = GameUtils.createGameEntity(gameName, datastore);
-        if(gameEntity == null){
-            log.severe("create game failed for game " + gameName);
-            return "createGameFailed";
-        }
+    return gameEntity;
+  }
  
-    }else{
-        // or join a game 
-        gameEntity = UserUtils.getEntityFromDatastore("Game", "gameId", gameId, datastore);
+  public static Entity joinGame(DatastoreService datastore, String gameId) {
+ 
+    if(datastore == null){
+        log.severe("found null datastore trying to join game " + gameId);
+        return null;
+    }
+ 
+    // or join a game 
+    Entity gameEntity = UserUtils.getEntityFromDatastore("Game", "gameId", gameId, datastore);
+    if(gameEntity == null){ 
+        return null;
+    }
     
-        if(gameEntity == null){ 
-          return "badGameCode";
-        }
+    return gameEntity;
+  }
+ 
+ 
+  public static boolean setGame(Entity userEntity, DatastoreService datastore, Entity gameEntity) {
+ 
+    if(userEntity == null){
+        log.severe("found null userEntity trying to join game " + gameName);
+        return false;
+    }
+ 
+    if(datastore == null){
+        log.severe("found null datastore trying to join game " + gameName + " with user " + (String) userEntity.getProperty("username"));
+        return false;
+    }
+
+    if(gameEntity == null){
+        log.severe("found null game Entity trying to join game " + gameName + " with user " + (String) userEntity.getProperty("username"));
+        return false;
     }
  
     // add user to game entity + vice versa
     boolean userAdded = GameUtils.addUserToGame((String) userEntity.getProperty("userId"), gameEntity, datastore);
     if(!userAdded){
         log.severe("failed to add user to game " + gameName);
-        return "userAddedFailed";
+        return false;
     }
     boolean gameAdded = UserUtils.addGameToUser(userEntity, datastore, (String) gameEntity.getProperty("gameId"));
     if(!gameAdded){
         log.severe("failed to add game "  + gameName + " to user");
-        return "gameAddedFailed";
+        return false;
     }
     
-    return "success";
+    return true;
   }
  
 }
+ 
+ 
