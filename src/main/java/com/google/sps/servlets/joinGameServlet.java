@@ -50,29 +50,34 @@ public class joinGameServlet extends HttpServlet {
  
     // get user entity
     Cookie cookies[] = request.getCookies();
+    if(cookies == null){
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        return;
+    }
     Entity userEntity = UserUtils.getUserFromCookie(cookies, datastore);
+    if(userEntity == null){
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        return;
+    }
 
-    String joinGame = GameUtils.joinGame(userEntity, null, datastore, gameId);
-
-    if(joinGame == "nullUserEntity" || joinGame == "userAddedFailed" || joinGame == "gameAddedFailed"){
-      response.sendRedirect("/index.html");
+    // prevent users from joining more than one game
+    if(userEntity.getProperty("gameId") != null){
+      response.sendRedirect("/gameBoard.html");
       return;
     }
 
-    if(joinGame == "badGameCode"){
+    Entity gameEntity = UserUtils.getEntityFromDatastore("Game", "gameId", gameId, datastore);
+    if(gameEntity = null){
       PrintWriter out = response.getWriter();
       out.println("<p>We couldn't find a game by that code, <a href = \"join.html\"><h3>press here</h3></a> and enter a different game code.</p>");
       return;
     }
+    boolean setGame = GameUtils.setGame(userEntity, datastore, newGame);
 
-    if(joinGame == "alreadyHasGame"){
-      PrintWriter out = response.getWriter();
-      out.println("<p>You are already in a game, see the gameboard here:</p>");
-      out.println("<a href = \"gameBoard.html\"><h3>Your game</h3></a>");
+    if(!setGame){
+      response.sendRedirect("/index.html");
       return;
-    }
-
-    if(newGame == "success"){
+    }else{
       response.sendRedirect("/gameBoard.html");
       return;
     }
