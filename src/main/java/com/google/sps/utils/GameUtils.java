@@ -131,21 +131,6 @@ public final class GameUtils {
   */
   public static boolean setGame(Entity userEntity, DatastoreService datastore, Entity gameEntity) {
  
-    if(userEntity == null){
-        log.severe("found null userEntity trying to join game");
-        return false;
-    }
-
-    if(gameEntity == null){
-        log.severe("found null game Entity trying to join game with user " + (String) userEntity.getProperty("username"));
-        return false;
-    }
- 
-    if(datastore == null){
-        log.severe("found null datastore trying to join game " + (String) gameEntity.getProperty("gameName") + " with user " + (String) userEntity.getProperty("username"));
-        return false;
-    }
- 
     // add user to game entity + vice versa
     boolean userAdded = GameUtils.addUserToGame((String) userEntity.getProperty("userId"), gameEntity, datastore);
     if(!userAdded){
