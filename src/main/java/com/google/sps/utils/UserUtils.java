@@ -30,7 +30,7 @@ import com.google.appengine.api.datastore.Query.FilterPredicate;
 import java.util.logging.Logger;
 
 public final class UserUtils {
-    static final String sessionIdCookieName = "SessionID";
+    public static final String sessionIDCookieName = "SessionID";
     private static final Logger log = Logger.getLogger(UserUtils.class.getName());
 
     /**
@@ -137,5 +137,17 @@ public final class UserUtils {
     datastore.put(userEntity);
  
     return true; 
+  }
+
+  /**
+    adds a specified number of points to the user's points
+  */
+  public static void addPoints(Entity userEntity, int numPoints, DatastoreService datastore){
+    try {
+      userEntity.setProperty("score", ((int) userEntity.getProperty("score")) + numPoints);
+    } catch (NullPointerException e) {
+      userEntity.setProperty("score", numPoints);                
+    }
+    datastore.put(userEntity);
   }
 }
