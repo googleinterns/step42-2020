@@ -223,7 +223,7 @@ public final class GameUtilTest {
 
     boolean actual = GameUtils.addUserToGame("user1", gameEntity, datastore);
 
-    Assert.assertEquals(false, actual);
+    Assert.assertEquals(true, actual);
   }
  
   // Test addUserToGame with valid parameters
@@ -236,6 +236,65 @@ public final class GameUtilTest {
     gameEntity.setProperty("userIds", userIds);
 
     boolean actual = GameUtils.addUserToGame("user1", gameEntity, datastore);
+
+    Assert.assertEquals(true, actual);
+  }
+
+  // Test setGame with null datastore 
+  @Test
+  public void setGame_NullDatastore() {
+
+    Entity userEntity = new Entity("User");
+    userEntity.setProperty("userId", "user1");
+    Entity gameEntity = new Entity("Game");
+
+    boolean actual = false;
+    try{
+        actual = GameUtils.setGame(userEntity, null, gameEntity);
+    }catch(NullPointerException e){
+        Assert.assertEquals(false, actual);
+    }
+  }
+
+  // Test setGame with null user entity
+  @Test
+  public void joinGame_NullUserEntity() {
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Entity gameEntity = new Entity("Game");
+
+    boolean actual = false;
+    try{
+        actual = GameUtils.setGame(null, datastore, gameEntity);
+    }catch(NullPointerException e){
+        Assert.assertEquals(false, actual);
+    }
+  }
+
+  // Test setGame with null game Entity 
+  @Test
+  public void setGame_NullGameEntity() {
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Entity userEntity = new Entity("User");
+    userEntity.setProperty("userId", "user1");
+
+    boolean actual = false;
+    try{
+        actual = GameUtils.setGame(userEntity, datastore, null);
+    }catch(NullPointerException e){
+        Assert.assertEquals(false, actual);
+    }
+  }
+
+  // Test setGame with valid parameters 
+  @Test
+  public void setGame_NewGameSuccess() {
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+    Entity userEntity = new Entity("User");
+    userEntity.setProperty("userId", "user1");
+    Entity gameEntity = GameUtils.createGameEntity("game1", datastore);
+
+    boolean actual = GameUtils.setGame(userEntity, datastore, gameEntity);
 
     Assert.assertEquals(true, actual);
   }
