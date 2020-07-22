@@ -40,30 +40,33 @@ public class quizTiming extends HttpServlet {
     userOne.setProperty("quiz_timestamp", System.currentTimeMillis());
     userOne.setProperty("currentGame", 67890);
     userOne.setProperty("blobkey", 12345);
+    userOne.setProperty("userID", "abc");
     datastore.put(userOne);
 
     Entity userTwo = new Entity("user");
     userTwo.setProperty("quiz_timestamp", System.currentTimeMillis());
     userTwo.setProperty("currentGame", 67890);
     userTwo.setProperty("blobkey", 55555);
+    userTwo.setProperty("userID", "def");
     datastore.put(userTwo);
 
     Entity userThree = new Entity("user");
     userThree.setProperty("quiz_timestamp", System.currentTimeMillis());
     userThree.setProperty("currentGame", 67890);
     userThree.setProperty("blobkey", 11111);
+    userThree.setProperty("userID", "hij");
     datastore.put(userThree);
 
-    List<Object> users = new ArrayList<>();
-    users.add(userOne);
-    users.add(userTwo);
-    users.add(userThree);
+    List<String> usersList = new ArrayList<String>();
+    usersList.add((userOne.getProperty("userID")).toString());
+    usersList.add((userTwo.getProperty("userID")).toString());
+    usersList.add((userThree.getProperty("userID")).toString());
 
     Entity fake_game = new Entity("Game");
     fake_game.setProperty("quiz_timestamp", defaultTime);
     fake_game.setProperty("quizQuestion", defaultQuestion);
     fake_game.setProperty("gameID", 67890);
-    fake_game.setProperty("userIDs", users);
+    fake_game.setProperty("userIDs", usersList);
     
     datastore.put(quiz);
     datastore.put(fake_game);

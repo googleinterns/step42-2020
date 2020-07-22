@@ -16,6 +16,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.sps.QuizTimingPropertiesUtils;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @WebServlet("/get-user-images")
 public class getUserImagesForQuizPage extends HttpServlet {
@@ -26,22 +27,29 @@ public class getUserImagesForQuizPage extends HttpServlet {
         // Cookie cookies[] = request.getCookies();
         // Entity userEntity = UserUtils.getUserFromCookie(cookies, datastore);
 
+        //Get cookies of user and then the current game from the user 
+
         Query query = new Query("user");
         PreparedQuery pq = datastore.prepare(query);
  
         Entity user_entity = pq.asList(FetchOptions.Builder.withLimit(1)).get(0);
-        System.out.println(user_entity.getProperty("currentGame"));
 
-        Query queryTwo = new Query("game");
+        Query queryTwo = new Query("Game");
         PreparedQuery pqTwo = datastore.prepare(queryTwo);
 
-        List<Object> users;
+        HashMap<String, String> user_ids_and_pictures = new HashMap<String, String>();
 
-        // for(Entity game : pqTwo.asIterable()){
-        //     if(game.getProperty("gameID") == user_entity.getProperty("currentGame")){
-        //         users = game.getProperty("userIDs");
-        //     }
-        // }
+        for(Entity game : pqTwo.asIterable()){
+            if(game.getProperty("gameID").equals(user_entity.getProperty("currentGame"))){
+                for(String playerID : (ArrayList<String>) game.getProperty("userIDs")) {
+                    for(Entity player : pq.asIterable()) {
+                        if(player.getProperty("userID").equals(playerID) && !user_entity.getProperty("userID").equals(playerID)) {
+                            user_ids_and_pictures.put((player.getProperty("userID")).toString(), (player.getProperty("blobkey")).toString());
+                        }
+                    }
+                }
+            }
+        }
 
         // String blobKey = "noKey";
         // if(userEntity != null){
@@ -52,8 +60,8 @@ public class getUserImagesForQuizPage extends HttpServlet {
         //     blobKey = "noKey";
         // }
     
-        // Gson gson = new Gson();
-        // response.setContentType("application/json;");
-        // response.getWriter().println(gson.toJson(users));
+        Gson gson = new Gson();
+        response.setContentType("application/json;");
+        response.getWriter().println(gson.toJson(user_ids_and_pictures));
     }
 }

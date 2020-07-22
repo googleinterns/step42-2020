@@ -16,9 +16,15 @@ if(document.getElementById("sound").onclick = function() {
 
 document.getElementById("start_quiz").onclick = function() {
     fetch("/user-quiz-status-servlet").then(response => response.json()).then((tasks) => {
-        if(tasks == true){
-            console.log("You already took this quiz!");
-        } else {
+        // if(tasks == true){
+        //     console.log("You already took this quiz!");
+        // } else {
+            fetch("/get-user-images").then(response => response.json()).then((user_has_taken_quiz) => {
+                console.log("no errors");
+                //Send blob key to the next serve/function that emma showed
+                //Then test this stuff
+                console.log(user_has_taken_quiz);
+            });
             fetch("/game-quiz-status-servlet").then(response => response.json()).then((tasks) => {
                 document.getElementById("questions").innerText = tasks;
                 document.getElementById("quiz_time").style.display = "block";
@@ -28,7 +34,7 @@ document.getElementById("start_quiz").onclick = function() {
                     console.log(tasks);
                 });
             });
-        }
+        // }
     });
 }
 
