@@ -49,6 +49,8 @@ public class GameQuizStatusServlet extends HttpServlet {
             response.getWriter().println(gson.toJson(timing_properties.getNewQuestion(game_entity, datastore)));
         }
 
+        //Have to search for the right qame enitty and then return that game's quiz question
+        //Can probably get this from Emma's function
         response.getWriter().println(gson.toJson(game_entity.getProperty("quizQuestion")));
     }
 }
