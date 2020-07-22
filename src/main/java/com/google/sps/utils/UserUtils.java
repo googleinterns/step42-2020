@@ -144,7 +144,7 @@ public final class UserUtils {
   */
   public static void addPoints(Entity userEntity, int numPoints, DatastoreService datastore){
     try {
-      userEntity.setProperty("score", ((int) userEntity.getProperty("score")) + numPoints);
+      userEntity.setProperty("score", ((Number) userEntity.getProperty("score")).intValue() + numPoints);
     } catch (NullPointerException e) {
       userEntity.setProperty("score", numPoints);                
     }

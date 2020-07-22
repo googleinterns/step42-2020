@@ -399,8 +399,9 @@ public final class UserUtilTest {
     UserUtils.addPoints(user1, 20, datastore);
 
     Entity userEntity = UserUtils.getEntityFromDatastore("user", "userId", "newUser1", datastore);
+    long expected = 30;
     
-    Assert.assertEquals(30, (long) userEntity.getProperty("score"));
+    Assert.assertEquals(expected, userEntity.getProperty("score"));
   }
 
   // addPoints where user doesn't have points
@@ -414,7 +415,8 @@ public final class UserUtilTest {
     UserUtils.addPoints(user1, 20, datastore);
 
     Entity userEntity = UserUtils.getEntityFromDatastore("user", "userId", "newUser1", datastore);
+    long expected = 20;
     
-    Assert.assertEquals(20, (long) userEntity.getProperty("score"));
+    Assert.assertEquals(expected, userEntity.getProperty("score"));
   }
 }
