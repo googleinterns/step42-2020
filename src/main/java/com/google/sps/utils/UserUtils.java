@@ -30,7 +30,7 @@ import com.google.appengine.api.datastore.Query.FilterPredicate;
 import java.util.logging.Logger;
 
 public final class UserUtils {
-    static final String sessionIdCookieName = "SessionID";
+    public static final String SESSION_ID_COOKIE_NAME = "SessionID";
     private static final Logger log = Logger.getLogger(UserUtils.class.getName());
 
     /**
@@ -83,12 +83,12 @@ public final class UserUtils {
           log.severe("Error in function getUserFromCookie(): Datastore passed in was null");
           return null;
       }
-    Cookie cookie = CookieUtils.getCookieFromName(cookies, sessionIDCookieName); //returns null if it doesn't exist
+    Cookie cookie = CookieUtils.getCookieFromName(cookies, SESSION_ID_COOKIE_NAME); //returns null if it doesn't exist
     if(cookie == null){ 
-        log.info("Error in function getUserFromCookie(): Cookie with name: " + sessionIDCookieName + " not found.");
+        log.info("Error in function getUserFromCookie(): Cookie with name: " + SESSION_ID_COOKIE_NAME + " not found.");
         return null;
     }
-    return getEntityFromDatastore("user", sessionIDCookieName, cookie.getValue(), datastore); //returns null if it doesn't exist
+    return getEntityFromDatastore("user", SESSION_ID_COOKIE_NAME, cookie.getValue(), datastore); //returns null if it doesn't exist
   }
 
   /**
@@ -137,5 +137,17 @@ public final class UserUtils {
     datastore.put(userEntity);
  
     return true; 
+  }
+
+  /**
+    adds a specified number of points to the user's points
+  */
+  public static void addPoints(Entity userEntity, int numPoints, DatastoreService datastore){
+    try {
+      userEntity.setProperty("score", ((Number) userEntity.getProperty("score")).intValue() + numPoints);
+    } catch (NullPointerException e) {
+      userEntity.setProperty("score", numPoints);                
+    }
+    datastore.put(userEntity);
   }
 }
