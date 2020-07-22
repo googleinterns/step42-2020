@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 import java.util.TimeZone;
 import java.text.SimpleDateFormat;
- 
+
 public final class QuizTimingPropertiesUtils {
  
     private static final Logger log = Logger.getLogger(QuizTimingPropertiesUtils.class.getName());
