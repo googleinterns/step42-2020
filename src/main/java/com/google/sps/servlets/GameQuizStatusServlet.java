@@ -14,7 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.sps.QuizTimingPropertiesUtils;
+import com.google.sps.UserUtils;
 
+//This servlet gets the quiz question from the Game entity 
+//The quiz question is updated if the quiz timestamp is outdated
 @WebServlet("/game-quiz-status-servlet")
 public class GameQuizStatusServlet extends HttpServlet {
 
@@ -33,14 +36,8 @@ public class GameQuizStatusServlet extends HttpServlet {
         }
 
         QuizTimingPropertiesUtils timing_properties = new QuizTimingPropertiesUtils();
-        //Add cookies for current user then get the current game that way
-        //replace the above code for lines 29 through 32 
-   
-        // Query query = new Query("Game");
-        // PreparedQuery pq = datastore.prepare(query);
- 
-        // Entity game_entity = pq.asList(FetchOptions.Builder.withLimit(1)).get(0);
-        Long current_quiz_stamp = timing_properties.getQuizTimestampProperty("Game", "currentGame", userEntity.getProperty("currentGame"), datastore);
+        UserUtils user_utils_class = new UserUtils();
+        Long current_quiz_stamp = timing_properties.getQuizTimestampProperty("Game", "currentGame", userEntity.getProperty("currentGame").toString(), datastore);
 
         Gson gson = new Gson();
         response.setContentType("application/json;");
@@ -48,9 +45,8 @@ public class GameQuizStatusServlet extends HttpServlet {
         if(timing_properties.isTimestampOutdated(current_quiz_stamp)) {
             response.getWriter().println(gson.toJson(timing_properties.getNewQuestion(game_entity, datastore)));
         }
-
-        //Have to search for the right qame enitty and then return that game's quiz question
-        //Can probably get this from Emma's function
-        response.getWriter().println(gson.toJson(game_entity.getProperty("quizQuestion")));
+        
+        Entity current_game = user_utils_class.getEntityFromDatastore("Game", "currentGame", userEntity.getProperty("currentGame").toString(), datastore);
+        response.getWriter().println(gson.toJson(current_game.getProperty("quizQuestion")));
     }
 }
