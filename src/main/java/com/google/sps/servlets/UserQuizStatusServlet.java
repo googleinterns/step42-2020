@@ -16,7 +16,7 @@ import java.text.DateFormat;
 import java.util.Date;
 import com.google.appengine.api.datastore.Key;
 import com.google.sps.QuizTimingPropertiesUtils;
-// import com.google.sps.UserUtils;
+import com.google.sps.UserUtils;
  
 @WebServlet("/user-quiz-status-servlet")
 public class UserQuizStatusServlet extends HttpServlet {
