@@ -150,4 +150,17 @@ public final class UserUtils {
     }
     datastore.put(userEntity);
   }
+
+  /**
+    Adds 20 points to a user for uploading if it has been more than a day since they last uploaded
+  */
+  public static void addUploadPoints(Entity userEntity, DatastoreService datastore){
+ 
+    if(lastUploadTime == null || QuizTimingPropertiesUtils.isTimeStampOutdated((Long) userEntity.getProperty("lastUploadTime"))){
+        addPoints(userEntity, 20, datastore);
+        userEntity.setProperty("lastUploadTime", System.currentTimeMillis());
+        datastore.put(userEntity);
+    }
+  }
+
 }

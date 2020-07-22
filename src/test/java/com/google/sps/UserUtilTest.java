@@ -419,4 +419,56 @@ public final class UserUtilTest {
     
     Assert.assertEquals(expected, userEntity.getProperty("score"));
   }
+
+  // addUploadPoints when the user hasn't uploaded yet
+  @Test
+  public void addUploadPoints_firstPoints(){
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Entity user1 = new Entity("user");
+    user1.setProperty("userId", "newUser1");
+    datastore.put(user1);
+ 
+    UserUtils.addUploadPoints(user1, datastore);
+ 
+    Entity userEntity = UserUtils.getEntityFromDatastore("user", "userId", "newUser1", datastore);
+    long expected = 20;
+    
+    Assert.assertEquals(expected, userEntity.getProperty("score"));
+  }
+ 
+  // addUploadPoints when the user has uploaded recently
+  @Test
+  public void addUploadPoints_uploadRecent(){
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Entity user1 = new Entity("user");
+    user1.setProperty("userId", "newUser1");
+    user1.setProperty("score", 0);
+    user1.setProperty("lastUploadTime", System.currentTimeMillis()); 
+    datastore.put(user1);
+ 
+    UserUtils.addUploadPoints(user1, datastore);
+ 
+    Entity userEntity = UserUtils.getEntityFromDatastore("user", "userId", "newUser1", datastore);
+    long expected = 0;
+    
+    Assert.assertEquals(expected, userEntity.getProperty("score"));
+  }
+ 
+  // addUploadPoints when the user hasn't uploaded recently
+  @Test
+  public void addUploadPoints_noRecentUpload(){
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Entity user1 = new Entity("user");
+    user1.setProperty("userId", "newUser1");
+    user1.setProperty("score", 0);
+    user1.setProperty("lastUploadTime", 159430944365L); 
+    datastore.put(user1);
+ 
+    UserUtils.addUploadPoints(user1, datastore);
+ 
+    Entity userEntity = UserUtils.getEntityFromDatastore("user", "userId", "newUser1", datastore);
+    long expected = 20;
+    
+    Assert.assertEquals(expected, userEntity.getProperty("score"));
+  }
 }
