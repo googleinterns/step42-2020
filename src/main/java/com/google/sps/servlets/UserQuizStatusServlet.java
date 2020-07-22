@@ -19,7 +19,7 @@ import com.google.sps.QuizTimingPropertiesUtils;
 import com.google.sps.UserUtils;
  
 //This servlet checks to see if the user took the quiz that was available today
-//If they did take the quiz the true boolean value will be returned and used when other functions/servlets are called in the js files
+//If they did take the quiz the true boolean value will be returned 
 @WebServlet("/user-quiz-status-servlet")
 public class UserQuizStatusServlet extends HttpServlet {
  
