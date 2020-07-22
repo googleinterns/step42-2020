@@ -27,11 +27,11 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 import java.util.TimeZone;
 import java.text.SimpleDateFormat;
-
+ 
 public final class QuizTimingPropertiesUtils {
-
+ 
     private static final Logger log = Logger.getLogger(QuizTimingPropertiesUtils.class.getName());
-
+ 
     List<String> quiz_questions = new ArrayList<String>(List.of(
         "Which plant has the most food growing from it?",
         "Which plant has the prettiest colors?",
@@ -52,9 +52,9 @@ public final class QuizTimingPropertiesUtils {
         "Which plant would look the best outside in a garden?",
         "Which plant would you give as a gift?"
     ));
-
+ 
     //This function gets the the "quiz_timestamp" property of the entity that is fed into the function
-    public Long getTimestampProperty(String entity, DatastoreService datastore) {
+    public Long getQuizTimestampProperty(String entity, String idProperty, String idPropertyValue, DatastoreService datastore) {
         Query query = new Query(entity);
         PreparedQuery pq;
         try {
@@ -63,10 +63,11 @@ public final class QuizTimingPropertiesUtils {
             log.log(Level.SEVERE, "Null result for parameter {0}", datastore);
             return null;
         }
-        if(pq.asList(FetchOptions.Builder.withLimit(1)).size() > 0) {
-            Entity fetched_item = pq.asList(FetchOptions.Builder.withLimit(1)).get(0);
-            return (Long) fetched_item.getProperty("quiz_timestamp");
-        } 
+        for(Entity query_entity : pq.asIterable()){
+            if(query_entity.getProperty(idProperty).equals(idPropertyValue)) {
+                return (Long) query_entity.getProperty("quiz_timestamp");
+            }
+        }
         log.log(Level.SEVERE, "No results for query {0}", entity);
         return null;
     }
@@ -77,7 +78,7 @@ public final class QuizTimingPropertiesUtils {
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         String users_quiz_time;
         String current_quiz_time;
-
+ 
         try {
             users_quiz_time = sdf.format(usersQuizTime);
             current_quiz_time = sdf.format(currentQuizTime);
@@ -88,20 +89,20 @@ public final class QuizTimingPropertiesUtils {
         
         return (users_quiz_time.compareTo(current_quiz_time) > 0);
     }
-
+ 
     //This function checks to see if the quiz is outdated
-    public boolean isQuizOutdated(Long current_quiz_time) {  
+    public boolean isTimestampOutdated(Long current_quiz_time) {  
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         String quiz_date;
-
+ 
         try {
             quiz_date = sdf.format(current_quiz_time);
         } catch(IllegalArgumentException e) {
             log.log(Level.SEVERE, "Given a null Parameter for {0}", current_quiz_time);
             return false;
         }
-
+ 
         String today_date = sdf.format(new Date());
         return today_date.compareTo(quiz_date) > 0;
     }
@@ -110,31 +111,31 @@ public final class QuizTimingPropertiesUtils {
     public String getNewQuestion(Entity game_entity, DatastoreService datastore) {
         Random rand = new Random();
         int rand_number = rand.nextInt(quiz_questions.size());
-
+ 
         try {
             game_entity.setProperty("quiz_timestamp", System.currentTimeMillis());
         } catch(NullPointerException e) {
             log.log(Level.SEVERE, "Null value given for parameter {0}", game_entity);
             return null;
         } 
-
+ 
         game_entity.setProperty("quizQuestion", quiz_questions.get(rand_number));
         datastore.put(game_entity);
         return (game_entity.getProperty("quizQuestion")).toString();
     }
-
+ 
     //Gives the user 20 points if they have taken a quiz
     public boolean giveUserQuizTakenPoints(boolean userQuizStatus, Entity currentUser, DatastoreService datastore) {
         if(currentUser == null) {
             log.log(Level.SEVERE, "Given a null {0}", currentUser);
             return false;
         }
-
+ 
         if(datastore == null) {
             log.log(Level.SEVERE, "Given a null {0}", datastore);
             return false;
         }
-
+ 
         if(userQuizStatus) {
             try {
                 currentUser.setProperty("score", ((Number) currentUser.getProperty("score")).intValue() + 20);
