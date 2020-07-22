@@ -75,6 +75,7 @@ public class joinGameServlet extends HttpServlet {
     boolean setGame = GameUtils.setGame(userEntity, datastore, newGame);
 
     if(!setGame){
+      // connecting the game to the user failed because the user was not logged in, send back to login
       response.sendRedirect("/index.html");
       return;
     }else{
