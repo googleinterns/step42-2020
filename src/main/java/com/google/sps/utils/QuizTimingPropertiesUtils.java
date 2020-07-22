@@ -32,27 +32,26 @@ public final class QuizTimingPropertiesUtils {
 
     private static final Logger log = Logger.getLogger(QuizTimingPropertiesUtils.class.getName());
 
-    List<String> quiz_questions = new ArrayList<String>(List.of(
-        "Which plant has the most food growing from it?",
-        "Which plant has the prettiest colors?",
-        "Which plant is likely to grow the fastest?",
-        "Which plant is likely to require the most maintenance to take care of?",
-        "Which plant is most likely to be poisonous?",
-        "Which plant is most likely to survive really dry weather?",
-        "Which plant is the largest?",
-        "Which plant looks edible?",
-        "Which plant looks the healthiest?",
-        "Which plant looks the most serene?",
-        "Which plant needs the most sunlight?",
-        "Which plant needs the most water?",
-        "Which plant represents you?",
-        "Which plant represents your best friend?",
-        "Which plant will most likely impress your friends and family?",
-        "Which plant would look the best inside as a houseplant?",
-        "Which plant would look the best outside in a garden?",
-        "Which plant would you give as a gift?"
-    ));
-
+    List<String> quiz_questions = new ArrayList<String>(){{
+        add("Which plant has the most food growing from it?");
+        add("Which plant has the prettiest colors?");
+        add("Which plant is likely to grow the fastest?");
+        add("Which plant is likely to require the most maintenance to take care of?");
+        add("Which plant is most likely to be poisonous?");
+        add("Which plant is most likely to survive really dry weather?");
+        add("Which plant is the largest?");
+        add("Which plant looks edible?");
+        add("Which plant looks the healthiest?");
+        add("Which plant looks the most serene?");
+        add("Which plant needs the most sunlight?");
+        add("Which plant needs the most water?");
+        add("Which plant represents you?");
+        add("Which plant represents your best friend?");
+        add("Which plant will most likely impress your friends and family?");
+        add("Which plant would look the best inside as a houseplant?");
+        add("Which plant would look the best outside in a garden?");
+        add("Which plant would you give as a gift?");
+    }};
     //This function gets the the "quiz_timestamp" property of the entity that is fed into the function
     public Long getTimestampProperty(String entity, DatastoreService datastore) {
         Query query = new Query(entity);

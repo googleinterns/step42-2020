@@ -67,12 +67,12 @@ public class joinGameServlet extends HttpServlet {
     }
 
     Entity gameEntity = UserUtils.getEntityFromDatastore("Game", "gameId", gameId, datastore);
-    if(gameEntity = null){
+    if(gameEntity == null){
       PrintWriter out = response.getWriter();
       out.println("<p>We couldn't find a game by that code, <a href = \"join.html\"><h3>press here</h3></a> and enter a different game code.</p>");
       return;
     }
-    boolean setGame = GameUtils.setGame(userEntity, datastore, newGame);
+    boolean setGame = GameUtils.setGame(userEntity, datastore, gameEntity);
 
     if(!setGame){
       // connecting the game to the user failed because the user was not logged in, send back to login
