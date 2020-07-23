@@ -12,41 +12,43 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
  
-package com.google.sps.servlets;
+package com.google.plantasy.servlets;
  
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.Query.SortDirection;
-import com.google.gson.Gson;
 import java.io.IOException;
-import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.appengine.api.datastore.FetchOptions;
-import com.google.sps.utils.UserUtils; 
+import com.google.plantasy.utils.GameUtils;
+import com.google.plantasy.utils.UserUtils; 
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
+import java.io.PrintWriter;
  
-/** Retrieves blobkey from Datastore for the image of the logged in user */
-@WebServlet("/get-blob-key")
-public class getBlobKeyServlet extends HttpServlet {
-  
+/** When a user joins a game, check if the given game id exists
+    if so, get the game entity and add the user,
+    then add the game to the user entity.
+    If it doesn't exist, redirect back to the join game page.
+*/
+@WebServlet("/join-game")
+public class joinGameServlet extends HttpServlet {
+ 
   DatastoreService datastore;
  
-  public getBlobKeyServlet(){
+  public joinGameServlet(){
     datastore = DatastoreServiceFactory.getDatastoreService();
   }
  
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    
+    String gameId = request.getParameter("game-id");
  
-    // get the user entity
+    // get user entity
     Cookie cookies[] = request.getCookies();
     if(cookies == null){
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -57,16 +59,28 @@ public class getBlobKeyServlet extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         return;
     }
- 
-    String blobKey = (String) userEntity.getProperty("blobKey");
-    if(blobKey == null){
-      // if the user hasn't uploaded a picture yet, nothing is printed
-      response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+
+    // prevent users from joining more than one game
+    if(userEntity.getProperty("gameId") != null){
+      response.sendRedirect("/gameBoard.html");
       return;
     }
- 
-    Gson gson = new Gson();
-    response.setContentType("application/json;");
-    response.getWriter().println(gson.toJson(blobKey));
+
+    Entity gameEntity = UserUtils.getEntityFromDatastore("Game", "gameId", gameId, datastore);
+    if(gameEntity = null){
+      PrintWriter out = response.getWriter();
+      out.println("<p>We couldn't find a game by that code, <a href = \"join.html\"><h3>press here</h3></a> and enter a different game code.</p>");
+      return;
+    }
+    boolean setGame = GameUtils.setGame(userEntity, datastore, newGame);
+
+    if(!setGame){
+      // connecting the game to the user failed because the user was not logged in, send back to login
+      response.sendRedirect("/index.html");
+      return;
+    }else{
+      response.sendRedirect("/gameBoard.html");
+      return;
+    }
   }
-} 
+}

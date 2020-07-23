@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.sps.utils;
+package com.google.plantasy.utils;
 
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.DatastoreService;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Key;
-import com.google.sps.utils.UserUtils;
+import com.google.plantasy.utils.UserUtils;
 import java.util.logging.Logger;
 
 public final class GameUtils {
