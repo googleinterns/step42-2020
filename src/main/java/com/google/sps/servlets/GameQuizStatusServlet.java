@@ -14,7 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.sps.QuizTimingPropertiesUtils;
-import com.google.sps.UserUtils;
+import com.google.sps.utils.UserUtils;
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
  
 //This servlet gets the quiz question from the Game entity 
 //The quiz question is updated if the quiz timestamp is outdated
