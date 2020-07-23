@@ -16,7 +16,7 @@ import java.text.DateFormat;
 import java.util.Date;
 import com.google.appengine.api.datastore.Key;
 import com.google.sps.QuizTimingPropertiesUtils;
-import com.google.sps.UserUtils;
+//import com.google.sps.UserUtils;
  
 @WebServlet("/user-quiz-status-servlet")
 public class UserQuizStatusServlet extends HttpServlet {
@@ -25,24 +25,24 @@ public class UserQuizStatusServlet extends HttpServlet {
  
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        Cookie cookies[] = request.getCookies();
-        if(cookies == null){
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
-        Entity userEntity = UserUtils.getUserFromCookie(cookies, datastore);
-        if(userEntity == null){
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
+    //     Cookie cookies[] = request.getCookies();
+    //     if(cookies == null){
+    //         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    //         return;
+    //     }
+    //     Entity userEntity = UserUtils.getUserFromCookie(cookies, datastore);
+    //     if(userEntity == null){
+    //         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    //         return;
+    //     }
 
-        QuizTimingPropertiesUtils timing_utils = new QuizTimingPropertiesUtils();
-        Long current_quiz_time = timing_utils.getQuizTimestampProperty("Game", "currentGame", userEntity.getProperty("currentGame").toString(), datastore);
-        Long user_quiz_status = timing_utils.getQuizTimestampProperty("user", "userID", userEntity.getProperty("userID").toString(), datastore);
+    //     QuizTimingPropertiesUtils timing_utils = new QuizTimingPropertiesUtils();
+    //     Long current_quiz_time = timing_utils.getQuizTimestampProperty("Game", "currentGame", userEntity.getProperty("currentGame").toString(), datastore);
+    //     Long user_quiz_status = timing_utils.getQuizTimestampProperty("user", "userID", userEntity.getProperty("userID").toString(), datastore);
  
-        Gson gson = new Gson();
-        response.setContentType("application/json;");
+    //     Gson gson = new Gson();
+    //     response.setContentType("application/json;");
  
-        response.getWriter().println(gson.toJson(timing_utils.userTookQuiz(user_quiz_status, current_quiz_time)));
+    //     response.getWriter().println(gson.toJson(timing_utils.userTookQuiz(user_quiz_status, current_quiz_time)));
     }
 }

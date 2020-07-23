@@ -54,7 +54,7 @@ public final class QuizTimingPropertiesUtils {
     ));
 
     //This function gets the the "quiz_timestamp" property of the entity that is fed into the function
-    public Long getQuizTimestampProperty(String entity, String idProperty, String idPropertyValue, DatastoreService datastore) {
+    public Long getQuizTimestampProperty(String entity, String id_of_entity, String id_of_entity_value, DatastoreService datastore) {
         Query query = new Query(entity);
         PreparedQuery pq;
         try {
@@ -64,7 +64,7 @@ public final class QuizTimingPropertiesUtils {
             return null;
         }
         for(Entity query_entity : pq.asIterable()){
-            if(query_entity.getProperty(idProperty).equals(idPropertyValue)) {
+            if(query_entity.getProperty(id_of_entity).equals(id_of_entity_value)) {
                 return (Long) query_entity.getProperty("quiz_timestamp");
             }
         }
@@ -148,5 +148,4 @@ public final class QuizTimingPropertiesUtils {
         }
         return false;
     }
-
 }

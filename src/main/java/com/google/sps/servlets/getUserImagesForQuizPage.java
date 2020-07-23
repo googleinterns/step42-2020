@@ -37,29 +37,26 @@ public class getUserImagesForQuizPage extends HttpServlet {
         Query queryTwo = new Query("Game");
         PreparedQuery pqTwo = datastore.prepare(queryTwo);
 
-        HashMap<String, String> user_ids_and_pictures = new HashMap<String, String>();
+        HashMap<String, HashMap> user_photo_info = new HashMap<String, HashMap>();
+        HashMap<String,String> user_ids_and_pictures = new HashMap<String, String>();
 
         for(Entity game : pqTwo.asIterable()){
             if(game.getProperty("gameID").equals(user_entity.getProperty("currentGame"))){
                 for(String playerID : (ArrayList<String>) game.getProperty("userIDs")) {
                     for(Entity player : pq.asIterable()) {
                         if(player.getProperty("userID").equals(playerID) && !user_entity.getProperty("userID").equals(playerID)) {
+                            System.out.println("twice");
                             user_ids_and_pictures.put((player.getProperty("userID")).toString(), (player.getProperty("blobkey")).toString());
+                            // users_playing_the_game.add((player.getProperty("userID")).toString());
+                            // users_playing_blob_keys.add((player.getProperty("blobkey")).toString());
                         }
                     }
+                    // user_ids_and_pictures.put(users_playing_the_game, users_playing_blob_keys);
+                    // user_photo_info.put("user", user_ids_and_pictures);
                 }
             }
         }
 
-        // String blobKey = "noKey";
-        // if(userEntity != null){
-        // blobKey = (String) userEntity.getProperty("blobKey");
-        // }
-        // if(blobKey == null){
-        //     // if the user hasn't uploaded a picture yet, nothing is printed
-        //     blobKey = "noKey";
-        // }
-    
         Gson gson = new Gson();
         response.setContentType("application/json;");
         response.getWriter().println(gson.toJson(user_ids_and_pictures));
