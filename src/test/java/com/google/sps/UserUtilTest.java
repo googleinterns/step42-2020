@@ -443,7 +443,7 @@ public final class UserUtilTest {
     Entity user1 = new Entity("user");
     user1.setProperty("userId", "newUser1");
     user1.setProperty("score", 0);
-    user1.setProperty("lastUploadTime", System.currentTimeMillis()); 
+    user1.setProperty("lastAwardedUploadPoints", System.currentTimeMillis()); 
     datastore.put(user1);
  
     UserUtils.addUploadPoints(user1, datastore);
@@ -461,7 +461,7 @@ public final class UserUtilTest {
     Entity user1 = new Entity("user");
     user1.setProperty("userId", "newUser1");
     user1.setProperty("score", 0);
-    user1.setProperty("lastUploadTime", 159430944365L); 
+    user1.setProperty("lastAwardedUploadPoints", 159430944365L); 
     datastore.put(user1);
  
     UserUtils.addUploadPoints(user1, datastore);
