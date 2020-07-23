@@ -158,9 +158,9 @@ public final class UserUtils {
   public static void addUploadPoints(Entity userEntity, DatastoreService datastore){
 
     QuizTimingPropertiesUtils utils = new QuizTimingPropertiesUtils();
-    if(userEntity.getProperty("lastUploadTime") == null || utils.isTimestampOutdated((long) userEntity.getProperty("lastUploadTime"))){
+    if(userEntity.getProperty("lastAwardedUploadPoints") == null || utils.isTimestampOutdated((long) userEntity.getProperty("lastAwardedUploadPoints"))){
         addPoints(userEntity, 20, datastore);
-        userEntity.setProperty("lastUploadTime", System.currentTimeMillis());
+        userEntity.setProperty("lastAwardedUploadPoints", System.currentTimeMillis());
         datastore.put(userEntity);
     }
   }
