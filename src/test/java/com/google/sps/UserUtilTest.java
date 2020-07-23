@@ -177,9 +177,12 @@ public final class UserUtilTest {
 
     Entity userEntity = new Entity("user");
 
-    boolean actual = UserUtils.addGameToUser(userEntity, null, "gameId");
-
-    Assert.assertEquals(false, actual);
+    boolean actual = false;
+    try{
+        actual = UserUtils.addGameToUser(userEntity, null, "gameId");
+    }catch(NullPointerException e){
+        Assert.assertEquals(false, actual);
+    }
   }
 
   // test a null for user entity
@@ -187,9 +190,12 @@ public final class UserUtilTest {
   public void addGameToUserNullUserEntity() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-    boolean actual = UserUtils.addGameToUser(null, datastore, "gameId");
-
-    Assert.assertEquals(false, actual);
+    boolean actual = false;
+    try{
+        actual = UserUtils.addGameToUser(null, datastore, "gameId");
+    }catch(NullPointerException e){
+        Assert.assertEquals(false, actual);
+    }
   }
  
   // test given all correct valid parameters
@@ -222,9 +228,12 @@ public final class UserUtilTest {
 
     Entity userEntity = new Entity("user");
 
-    boolean actual = UserUtils.addBlobKey("blobkey", userEntity, null);
-
-    Assert.assertEquals(false, actual);
+    boolean actual = false;
+    try{
+        actual = UserUtils.addBlobKey("blobkey", userEntity, null);
+    }catch(NullPointerException e){
+        Assert.assertEquals(false, actual);
+    }
   }
 
   // test null for user entity
@@ -232,9 +241,12 @@ public final class UserUtilTest {
   public void blobKeyNullUserEntityFails() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-    boolean actual = UserUtils.addBlobKey("blobkey", null, datastore);
-
-    Assert.assertEquals(false, actual);
+    boolean actual = false;
+    try{
+        actual = UserUtils.addBlobKey("blobkey", null, datastore);
+    }catch(NullPointerException e){
+        Assert.assertEquals(false, actual);
+    }
   }
  
   // test a valid blobkey, datastore and user entity
@@ -248,6 +260,7 @@ public final class UserUtilTest {
 
     Assert.assertEquals(true, actual);
   }
+  
   //Test given a list of entities, and a list of cookies
   @Test
   public void findEntityByCookie(){

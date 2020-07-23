@@ -143,23 +143,16 @@ public final class GameUtilTest {
     Assert.assertEquals(false, actual);
   }
 
-  // Test create game with an empty string for game name
-  @Test
-  public void createGame_EmptyGameName() {
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-
-    Entity actual = GameUtils.createGameEntity("", datastore);
-
-    Assert.assertEquals(null, actual);
-  }
-
   // Test create game with null for datastore instance
   @Test
   public void createGame_NullDatastore() {
 
-    Entity actual = GameUtils.createGameEntity("game", null);
-
-    Assert.assertEquals(null, actual);
+    Entity actual = null;
+    try{
+        actual = GameUtils.createGameEntity("game", null);
+    }catch(NullPointerException e){
+        Assert.assertEquals(null, actual);
+    }
   }
 
   // Test create game with valid datastore and gamename
@@ -198,9 +191,12 @@ public final class GameUtilTest {
     ArrayList<String> userIds = new ArrayList<>();
     gameEntity.setProperty("userIds", userIds);
 
-    boolean actual = GameUtils.addUserToGame("user1", gameEntity, null);
-
-    Assert.assertEquals(false, actual);
+    boolean actual = false;
+    try{
+        actual = GameUtils.addUserToGame("user1", gameEntity, null);
+    }catch(NullPointerException e){
+        Assert.assertEquals(false, actual);
+    }
   }
 
   // Test addUserToGame with a null for game entity
@@ -208,9 +204,12 @@ public final class GameUtilTest {
   public void addUserToGame_NullGameEntity() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-    boolean actual = GameUtils.addUserToGame("user1", null, datastore);
-
-    Assert.assertEquals(false, actual);
+    boolean actual = false;
+    try{
+        actual = GameUtils.addUserToGame("user1", null, datastore);
+    }catch(NullPointerException e){
+        Assert.assertEquals(false, actual);
+    }
   }
 
   // Test addUserToGame with a game entity without an initialized username list

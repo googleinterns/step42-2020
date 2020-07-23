@@ -96,14 +96,6 @@ public final class UserUtils {
   */
   public static boolean addGameToUser(Entity userEntity, DatastoreService datastore, String gameId) {
 
-    if(userEntity == null){
-        log.severe("found null user entity trying to add game to user");
-        return false;
-    }
-    if(datastore == null){
-        log.severe("found null datastore trying to add game to user " + (String) userEntity.getProperty("userId"));
-        return false;
-    }
     if(gameId == ""){
         log.severe("found empty gameId trying to add game to user " + (String) userEntity.getProperty("userId"));
         return false;
@@ -120,14 +112,6 @@ public final class UserUtils {
   */
   public static boolean addBlobKey(String blobKey, Entity userEntity, DatastoreService datastore) {
 
-    if(userEntity == null){
-        log.severe("found null user entity trying to add blobkey to user");
-        return false;
-    }
-    if(datastore == null){
-        log.severe("found null datastore trying to add blobkey to user " + (String) userEntity.getProperty("userId"));
-        return false;
-    }
     if(blobKey == ""){
         log.severe("found empty blobkey trying to add blobkey to user " + (String) userEntity.getProperty("userId"));
         return false;
