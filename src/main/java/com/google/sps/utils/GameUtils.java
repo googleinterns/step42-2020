@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Key;
+import com.google.sps.utils.UserUtils;
 import java.util.logging.Logger;
 
 public final class GameUtils {
@@ -113,9 +114,9 @@ public final class GameUtils {
  
     ArrayList<String> userIds = (ArrayList<String>) gameEntity.getProperty("userIds");
     if(userIds == null){
-      return false;
+      userIds = new ArrayList<String>();
     }
- 
+
     // add user to game entity
     userIds.add(userId);
     gameEntity.setProperty("userIds", userIds);
@@ -123,4 +124,28 @@ public final class GameUtils {
     
     return true;
   }
+ 
+  /**
+    Connects the given game entity to the given user entity by calling the addUserToGame
+    and addGameToUser functions
+  */
+  public static boolean setGame(Entity userEntity, DatastoreService datastore, Entity gameEntity) {
+ 
+    // add user to game entity + vice versa
+    boolean userAdded = GameUtils.addUserToGame((String) userEntity.getProperty("userId"), gameEntity, datastore);
+    if(!userAdded){
+        log.severe("failed to add user to game " + (String) gameEntity.getProperty("gameName"));
+        return false;
+    }
+    boolean gameAdded = UserUtils.addGameToUser(userEntity, datastore, (String) gameEntity.getProperty("gameId"));
+    if(!gameAdded){
+        log.severe("failed to add game "  + (String) gameEntity.getProperty("gameName") + " to user");
+        return false;
+    }
+    
+    return true;
+  }
+ 
 }
+ 
+ 
