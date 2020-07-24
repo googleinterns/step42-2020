@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
  
+//This servlet loads user images to the quiz page for a logged-in user 
 @WebServlet("/get-user-images")
 public class getUserImagesForQuizPage extends HttpServlet {
  
