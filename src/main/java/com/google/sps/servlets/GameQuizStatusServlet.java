@@ -45,9 +45,9 @@ public class GameQuizStatusServlet extends HttpServlet {
         Query queryTwo = new Query("Game");
         PreparedQuery pqTwo = datastore.prepare(queryTwo);
 
-        QuizTimingPropertiesUtils timing_properties = new QuizTimingPropertiesUtils();
+        //QuizTimingPropertiesUtils timing_properties = new QuizTimingPropertiesUtils();
         //UserUtils user_utils_class = new UserUtils();
-        Long current_quiz_stamp = timing_properties.getQuizTimestampProperty("Game", "gameID", userEntity.getProperty("currentGame").toString(), datastore);
+        Long current_quiz_stamp = QuizTimingPropertiesUtils.getQuizTimestampProperty("Game", "gameID", userEntity.getProperty("currentGame").toString(), datastore);
 
         //Entity current_game = getEntityFromDatastore("Game", "gameID", userEntity.getProperty("currentGame").toString(), datastore);        
 
@@ -61,9 +61,9 @@ public class GameQuizStatusServlet extends HttpServlet {
             }
         }
 
-        if(timing_properties.isTimestampOutdated(current_quiz_stamp)) {
+        if(QuizTimingPropertiesUtils.isTimestampOutdated(current_quiz_stamp)) {
             //response.getWriter().println(gson.toJson(timing_properties.getNewQuestion(game_entity, datastore)));
-            response.getWriter().println(gson.toJson(timing_properties.getNewQuestion(current_game, datastore)));
+            response.getWriter().println(gson.toJson(QuizTimingPropertiesUtils.getNewQuestion(current_game, datastore)));
 
         }
         
