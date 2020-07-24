@@ -28,6 +28,8 @@ import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 import java.util.logging.Logger;
+import com.google.sps.utils.User;
+import com.google.appengine.api.datastore.Query.SortDirection;
 
 public final class UserUtils {
     public static final String SESSION_ID_COOKIE_NAME = "SessionID";
@@ -150,4 +152,29 @@ public final class UserUtils {
     }
     datastore.put(userEntity);
   }
+
+    /**
+       gets the users of a particular game to populate the leaderboard
+    */
+    public static ArrayList<User> userList(String gameId, DatastoreService datastore){
+        //create and prepare a query
+        Filter queryFilter = new FilterPredicate("gameId", FilterOperator.EQUAL, gameId);
+        Query query = new Query("user").setFilter(queryFilter).addSort("score", SortDirection.DESCENDING);
+        PreparedQuery results = datastore.prepare(query);
+    
+        // stores each user in a User object 
+        ArrayList<User> users = new ArrayList<>();
+        for (Entity entity : results.asIterable()) {
+            String userID = (String) entity.getProperty("userID");
+            String userName = (String) entity.getProperty("username");
+            long score = (long) entity.getProperty("score");
+    
+            User user = new User(userID, userName, score);
+            users.add(user);
+        }
+
+        System.out.println(users);
+
+        return users;
+    }
 }
