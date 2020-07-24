@@ -54,7 +54,7 @@ public final class QuizTimingPropertiesUtils {
     ));
 
     //This function gets the the "quiz_timestamp" property of the entity that is fed into the function
-    public Long getTimestampProperty(String entity, DatastoreService datastore) {
+    public Long getQuizTimestampProperty(String entity, String id_of_entity, String id_of_entity_value, DatastoreService datastore) {
         Query query = new Query(entity);
         PreparedQuery pq;
         try {
@@ -63,10 +63,11 @@ public final class QuizTimingPropertiesUtils {
             log.log(Level.SEVERE, "Null result for parameter {0}", datastore);
             return null;
         }
-        if(pq.asList(FetchOptions.Builder.withLimit(1)).size() > 0) {
-            Entity fetched_item = pq.asList(FetchOptions.Builder.withLimit(1)).get(0);
-            return (Long) fetched_item.getProperty("quiz_timestamp");
-        } 
+        for(Entity query_entity : pq.asIterable()){
+            if(query_entity.getProperty(id_of_entity).equals(id_of_entity_value)) {
+                return (Long) query_entity.getProperty("quiz_timestamp");
+            }
+        }
         log.log(Level.SEVERE, "No results for query {0}", entity);
         return null;
     }
@@ -90,7 +91,7 @@ public final class QuizTimingPropertiesUtils {
     }
 
     //This function checks to see if the quiz is outdated
-    public boolean isQuizOutdated(Long current_quiz_time) {  
+    public boolean isTimestampOutdated(Long current_quiz_time) {  
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         String quiz_date;
