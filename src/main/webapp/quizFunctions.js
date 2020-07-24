@@ -15,8 +15,8 @@ if(document.getElementById("sound").onclick = function() {
 });
  
 document.getElementById("start_quiz").onclick = function() {
-    fetch("/user-quiz-status-servlet").then(response => response.json()).then((tasks) => {
-        if(tasks == true){
+    fetch("/user-quiz-status-servlet").then(response => response.json()).then((user_already_took_quiz) => {
+        if(user_already_took_quiz){
             alert("You already took this quiz!");
         } else {
             fetch("/get-user-images").then(response => response.json()).then((players_ids_and_photos) => {
