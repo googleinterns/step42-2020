@@ -11,9 +11,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
- 
+
 package com.google.sps.utils;
- 
+
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -28,7 +28,7 @@ import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 import java.util.logging.Logger;
- 
+
 public final class UserUtils {
     public static final String SESSION_ID_COOKIE_NAME = "SessionID";
     private static final Logger log = Logger.getLogger(UserUtils.class.getName());
@@ -47,30 +47,28 @@ public final class UserUtils {
     * @param  entityPropertyValue  the value of the property that is filtered for
     * @return                      a single entity that has the same value for the property in the parameter 
     */
- 
+
 public static Entity initializeUser(String userId, String name, String sessionID, DatastoreService datastore){
         Entity userEntity = getEntityFromDatastore("user", "userID", userId, datastore);
         if(userEntity == null){
             //these values are always empty upon initialization
             int initialScore = 0;
             long initialTime = 0L;
-            ArrayList<String> gameIDArrayList = new ArrayList<String>(); 
- 
             userEntity = new Entity("user");
             userEntity.setProperty("username",name);
             userEntity.setProperty("userID",userId);
             userEntity.setProperty("quiz_timing",initialTime);
-            userEntity.setProperty("currentGame", "");
-            userEntity.setProperty("blobkey", null);
+            userEntity.setProperty("gameId", "");
+            userEntity.setProperty("blobKey", null);
             userEntity.setProperty("score", initialScore);
         }
         userEntity.setProperty("SessionID",sessionID);
- 
+
         return userEntity;
   }
  
   public static Entity getEntityFromDatastore(String entityName, String entityPropertyTitle, String entityPropertyValue, DatastoreService datastore) {
- 
+
     if(entityPropertyValue == "" || entityName == "" || entityPropertyTitle == "" || datastore == null){
         return null;
     }
@@ -79,13 +77,11 @@ public static Entity initializeUser(String userId, String name, String sessionID
     Query query = new Query(entityName).setFilter(queryFilter);
      PreparedQuery results = datastore.prepare(query);
      List<Entity> resultsList = results.asList(FetchOptions.Builder.withLimit(1));
- 
-    if(resultsList.size() == 0){
+     if(resultsList.size() == 0){
         return null;
-    }
- 
-    Entity entity = resultsList.get(0);
-    return entity;
+     }
+     Entity entity = resultsList.get(0);
+     return entity;
   }
  
      /**
