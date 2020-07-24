@@ -14,29 +14,29 @@ if(document.getElementById("sound").onclick = function() {
     }
 });
 
-// document.getElementById("start_quiz").onclick = function() {
-//     fetch("/user-quiz-status-servlet").then(response => response.json()).then((tasks) => {
-//         if(tasks == true){
-//             console.log("You already took this quiz!");
-//         } else {
-//             fetch("/get-user-images").then(response => response.json()).then((players_ids_and_photos) => {
-//                 Object.keys(players_ids_and_photos).forEach(function(key) {
-//                     fetch('/get-image?blobKey=' + players_ids_and_photos[key]).then((pic) => {
-//                     let user_picture_node = document.createElement("IMG");
-//                     user_picture.src = pic;
-//                     user_picture.id = key;
-//                     document.getElementById("quiz_photos").appendChild(user_picture_node);
-//                     });
-//                 });
-//             });
-//             fetch("/game-quiz-status-servlet").then(response => response.json()).then((quiz_question) => {
-//                 document.getElementById("questions").innerText = quiz_question;
-//                 document.getElementById("quiz_time").style.display = "block";
-//                 document.getElementById("start_quiz").style.display = "none";
-//                 fetch("/answer-quiz-question").then(response => response.json()).then((give_user_points) => {
-//                 });
-//             });
-//         }
-//     });
-// }
+document.getElementById("start_quiz").onclick = function() {
+    fetch("/user-quiz-status-servlet").then(response => response.json()).then((tasks) => {
+        if(tasks == true){
+            console.log("You already took this quiz!");
+        } else {
+            fetch("/get-user-images").then(response => response.json()).then((players_ids_and_photos) => {
+                Object.keys(players_ids_and_photos).forEach(function(key) {
+                    fetch('/get-image?blobKey=' + players_ids_and_photos[key]).then((pic) => {
+                    let button_for_picture = document.createElement("BUTTON");
+                    button_for_picture.name="user_picture";
+                    button_for_picture.value=key;
+                    let picture = document.createElement("IMG");
+                    picture.src = pic;
+                    document.getElementById("quiz_photos").appendChild(button_for_picture).appendChild(picture);
+                    });
+                });
+            });
+            fetch("/game-quiz-status-servlet").then(response => response.json()).then((quiz_question) => {
+                document.getElementById("questions").innerText = quiz_question;
+                document.getElementById("quiz_time").style.display = "block";
+                document.getElementById("start_quiz").style.display = "none";
+            });
+        }
+    });
+ }
 

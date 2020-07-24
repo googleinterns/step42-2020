@@ -41,6 +41,7 @@ public class quizTiming extends HttpServlet {
     userOne.setProperty("currentGame", 67890);
     userOne.setProperty("blobkey", 12345);
     userOne.setProperty("userID", "abc");
+    userOne.setProperty("score", 0);
     datastore.put(userOne);
 
     Entity userTwo = new Entity("user");
@@ -48,6 +49,7 @@ public class quizTiming extends HttpServlet {
     userTwo.setProperty("currentGame", 67890);
     userTwo.setProperty("blobkey", 55555);
     userTwo.setProperty("userID", "def");
+    userTwo.setProperty("score", 0);
     datastore.put(userTwo);
 
     Entity userThree = new Entity("user");
@@ -55,6 +57,7 @@ public class quizTiming extends HttpServlet {
     userThree.setProperty("currentGame", 67890);
     userThree.setProperty("blobkey", 11111);
     userThree.setProperty("userID", "hij");
+    userThree.setProperty("score", 0);
     datastore.put(userThree);
 
     List<String> usersList = new ArrayList<String>();

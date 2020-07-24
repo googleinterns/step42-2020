@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.sps.QuizTimingPropertiesUtils;
-import com.google.sps.utils.UserUtils;
+//import com.google.sps.utils.UserUtils;
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -49,7 +49,7 @@ public class GameQuizStatusServlet extends HttpServlet {
         //UserUtils user_utils_class = new UserUtils();
         Long current_quiz_stamp = timing_properties.getQuizTimestampProperty("Game", "gameID", userEntity.getProperty("currentGame").toString(), datastore);
 
-        Entity current_game = getEntityFromDatastore("Game", "gameID", userEntity.getProperty("currentGame").toString(), datastore);        
+        //Entity current_game = getEntityFromDatastore("Game", "gameID", userEntity.getProperty("currentGame").toString(), datastore);        
 
         Gson gson = new Gson();
         response.setContentType("application/json;");

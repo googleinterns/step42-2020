@@ -13,9 +13,7 @@
     </audio> 
   </head>
 
-<!-- onload="checkSignIn()" -->
-<!-- onload="document.getElementById('background_music').play()" -->
-  <body >
+  <body onload="document.getElementById('background_music').play()">
     <div class="view">
         <div id="container">
             </br>
@@ -28,10 +26,9 @@
                 <div id="questions">
                 </div>      
                 </br>
-
-                <div id="quiz_photos">
-                    <button id="button"> temporary </button>
-                </div>
+                
+                <form action="/answer-quiz-question" method="POST" id="quiz_photos">
+                </form>
                 </br>
             </div>
         </div>
