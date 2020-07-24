@@ -45,6 +45,7 @@ public class GameQuizStatusServlet extends HttpServlet {
  
         if(QuizTimingPropertiesUtils.isTimestampOutdated(current_quiz_stamp)) {
             response.getWriter().println(gson.toJson(QuizTimingPropertiesUtils.getNewQuestion(current_game, datastore)));
+            return;
         }
         
         response.getWriter().println(gson.toJson(current_game.getProperty("quizQuestion")));
