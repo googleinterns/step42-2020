@@ -399,9 +399,8 @@ public final class UserUtilTest {
     UserUtils.addPoints(user1, 20, datastore);
 
     Entity userEntity = UserUtils.getEntityFromDatastore("user", "userId", "newUser1", datastore);
-    long expected = 30;
     
-    Assert.assertEquals(expected, userEntity.getProperty("score"));
+    Assert.assertEquals(30L, userEntity.getProperty("score"));
   }
 
   // addPoints where user doesn't have points
@@ -415,9 +414,8 @@ public final class UserUtilTest {
     UserUtils.addPoints(user1, 20, datastore);
 
     Entity userEntity = UserUtils.getEntityFromDatastore("user", "userId", "newUser1", datastore);
-    long expected = 20;
     
-    Assert.assertEquals(expected, userEntity.getProperty("score"));
+    Assert.assertEquals(20L, userEntity.getProperty("score"));
   }
 
   // addUploadPoints when the user hasn't uploaded yet
@@ -431,9 +429,8 @@ public final class UserUtilTest {
     UserUtils.addUploadPoints(user1, datastore);
  
     Entity userEntity = UserUtils.getEntityFromDatastore("user", "userId", "newUser1", datastore);
-    long expected = 20;
     
-    Assert.assertEquals(expected, userEntity.getProperty("score"));
+    Assert.assertEquals(UserUtils.ADDED_POINTS_LONG, userEntity.getProperty("score"));
   }
  
   // addUploadPoints when the user has uploaded recently
@@ -467,8 +464,7 @@ public final class UserUtilTest {
     UserUtils.addUploadPoints(user1, datastore);
  
     Entity userEntity = UserUtils.getEntityFromDatastore("user", "userId", "newUser1", datastore);
-    long expected = 20;
     
-    Assert.assertEquals(expected, userEntity.getProperty("score"));
+    Assert.assertEquals(UserUtils.ADDED_POINTS_LONG, userEntity.getProperty("score"));
   }
 }

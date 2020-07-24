@@ -32,6 +32,8 @@ import com.google.sps.utils.QuizTimingPropertiesUtils;
 
 public final class UserUtils {
     public static final String SESSION_ID_COOKIE_NAME = "SessionID";
+    public static final int ADDED_POINTS = 20;
+    public static final long ADDED_POINTS_LONG = 20L;
     private static final Logger log = Logger.getLogger(UserUtils.class.getName());
 
     /**
@@ -159,7 +161,7 @@ public final class UserUtils {
 
     QuizTimingPropertiesUtils utils = new QuizTimingPropertiesUtils();
     if(userEntity.getProperty("lastAwardedUploadPoints") == null || utils.isTimestampOutdated((long) userEntity.getProperty("lastAwardedUploadPoints"))){
-        addPoints(userEntity, 20, datastore);
+        addPoints(userEntity, ADDED_POINTS, datastore);
         userEntity.setProperty("lastAwardedUploadPoints", System.currentTimeMillis());
         datastore.put(userEntity);
     }
