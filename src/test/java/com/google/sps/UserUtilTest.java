@@ -393,7 +393,7 @@ public final class UserUtilTest {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Entity user1 = new Entity("user");
     user1.setProperty("score", 10);
-    user1.setProperty("userId", "newUser1");
+    user1.setProperty("userID", "newUser1");
     datastore.put(user1);
 
     UserUtils.addPoints(user1, 20, datastore);
@@ -408,7 +408,7 @@ public final class UserUtilTest {
   public void addPoints_firstPoints(){
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Entity user1 = new Entity("user");
-    user1.setProperty("userId", "newUser1");
+    user1.setProperty("userID", "newUser1");
     datastore.put(user1);
 
     UserUtils.addPoints(user1, 20, datastore);
