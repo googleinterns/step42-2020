@@ -398,7 +398,7 @@ public final class UserUtilTest {
 
     UserUtils.addPoints(user1, 20, datastore);
 
-    Entity userEntity = UserUtils.getEntityFromDatastore("user", "userId", "newUser1", datastore);
+    Entity userEntity = UserUtils.getEntityFromDatastore("user", "userID", "newUser1", datastore);
     
     Assert.assertEquals(30L, userEntity.getProperty("score"));
   }
@@ -413,7 +413,7 @@ public final class UserUtilTest {
 
     UserUtils.addPoints(user1, 20, datastore);
 
-    Entity userEntity = UserUtils.getEntityFromDatastore("user", "userId", "newUser1", datastore);
+    Entity userEntity = UserUtils.getEntityFromDatastore("user", "userID", "newUser1", datastore);
     
     Assert.assertEquals(20L, userEntity.getProperty("score"));
   }
@@ -423,14 +423,14 @@ public final class UserUtilTest {
   public void addUploadPoints_firstPoints(){
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Entity user1 = new Entity("user");
-    user1.setProperty("userId", "newUser1");
+    user1.setProperty("userID", "newUser1");
     datastore.put(user1);
  
     UserUtils.addUploadPoints(user1, datastore);
  
-    Entity userEntity = UserUtils.getEntityFromDatastore("user", "userId", "newUser1", datastore);
+    Entity userEntity = UserUtils.getEntityFromDatastore("user", "userID", "newUser1", datastore);
     
-    Assert.assertEquals(UserUtils.ADDED_POINTS, userEntity.getProperty("score"));
+    Assert.assertEquals(UserUtils.ADDED_POINTS, ((Number) userEntity.getProperty("score")).intValue());
   }
  
   // addUploadPoints when the user has uploaded recently
@@ -438,17 +438,17 @@ public final class UserUtilTest {
   public void addUploadPoints_uploadRecent(){
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Entity user1 = new Entity("user");
-    user1.setProperty("userId", "newUser1");
+    user1.setProperty("userID", "newUser1");
     user1.setProperty("score", 0);
     user1.setProperty("lastAwardedUploadPoints", System.currentTimeMillis()); 
     datastore.put(user1);
  
     UserUtils.addUploadPoints(user1, datastore);
  
-    Entity userEntity = UserUtils.getEntityFromDatastore("user", "userId", "newUser1", datastore);
-    long expected = 0;
+    Entity userEntity = UserUtils.getEntityFromDatastore("user", "userID", "newUser1", datastore);
+    int expected = 0;
     
-    Assert.assertEquals(expected, userEntity.getProperty("score"));
+    Assert.assertEquals(expected, ((Number) userEntity.getProperty("score")).intValue());
   }
  
   // addUploadPoints when the user hasn't uploaded recently
@@ -456,15 +456,15 @@ public final class UserUtilTest {
   public void addUploadPoints_noRecentUpload(){
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Entity user1 = new Entity("user");
-    user1.setProperty("userId", "newUser1");
+    user1.setProperty("userID", "newUser1");
     user1.setProperty("score", 0);
     user1.setProperty("lastAwardedUploadPoints", 159430944365L); 
     datastore.put(user1);
  
     UserUtils.addUploadPoints(user1, datastore);
  
-    Entity userEntity = UserUtils.getEntityFromDatastore("user", "userId", "newUser1", datastore);
+    Entity userEntity = UserUtils.getEntityFromDatastore("user", "userID", "newUser1", datastore);
     
-    Assert.assertEquals(UserUtils.ADDED_POINTS, userEntity.getProperty("score"));
+    Assert.assertEquals(UserUtils.ADDED_POINTS, ((Number) userEntity.getProperty("score")).intValue());
   }
 }
