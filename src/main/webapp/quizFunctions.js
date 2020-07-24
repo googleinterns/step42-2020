@@ -17,7 +17,7 @@ if(document.getElementById("sound").onclick = function() {
 document.getElementById("start_quiz").onclick = function() {
     fetch("/user-quiz-status-servlet").then(response => response.json()).then((tasks) => {
         if(tasks == true){
-            console.log("You already took this quiz!");
+            alert("You already took this quiz!");
         } else {
             fetch("/get-user-images").then(response => response.json()).then((players_ids_and_photos) => {
                 Object.keys(players_ids_and_photos).forEach(function(key) {
