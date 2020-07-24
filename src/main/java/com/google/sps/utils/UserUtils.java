@@ -28,9 +28,11 @@ import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 import java.util.logging.Logger;
+import com.google.sps.utils.QuizTimingPropertiesUtils;
 
 public final class UserUtils {
     public static final String SESSION_ID_COOKIE_NAME = "SessionID";
+    public static final int ADDED_POINTS = 20;
     private static final Logger log = Logger.getLogger(UserUtils.class.getName());
 
     /**
@@ -150,4 +152,18 @@ public final class UserUtils {
     }
     datastore.put(userEntity);
   }
+
+  /**
+    Adds 20 points to a user for uploading if it has been more than a day since they last uploaded
+  */
+  public static void addUploadPoints(Entity userEntity, DatastoreService datastore){
+
+    QuizTimingPropertiesUtils utils = new QuizTimingPropertiesUtils();
+    if(userEntity.getProperty("lastAwardedUploadPoints") == null || utils.isTimestampOutdated((long) userEntity.getProperty("lastAwardedUploadPoints"))){
+        addPoints(userEntity, ADDED_POINTS, datastore);
+        userEntity.setProperty("lastAwardedUploadPoints", System.currentTimeMillis());
+        datastore.put(userEntity);
+    }
+  }
+
 }
