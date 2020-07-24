@@ -19,9 +19,7 @@ import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
  
-//The request from this servlet uses a cookie to determine if the user is logged in 
-//The response from this servlet will be in JSON and sent to the quizFunctions.js file
-//The function of this servlet is to check if the quiz question made available by the game is outdated or not and depending on that check returns the accurate quiz question
+//This servelet returns the quiz question of the day to the logged in user as a json string
 @WebServlet("/game-quiz-status-servlet")
 public class GameQuizStatusServlet extends HttpServlet {
  
