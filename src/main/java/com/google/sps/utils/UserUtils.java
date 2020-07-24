@@ -32,8 +32,7 @@ import com.google.sps.utils.QuizTimingPropertiesUtils;
 
 public final class UserUtils {
     public static final String SESSION_ID_COOKIE_NAME = "SessionID";
-    public static final int ADDED_POINTS = 20;
-    public static final long ADDED_POINTS_LONG = 20L;
+    public static final long ADDED_POINTS = 20L;
     private static final Logger log = Logger.getLogger(UserUtils.class.getName());
 
     /**
@@ -145,9 +144,9 @@ public final class UserUtils {
   /**
     adds a specified number of points to the user's points
   */
-  public static void addPoints(Entity userEntity, int numPoints, DatastoreService datastore){
+  public static void addPoints(Entity userEntity, long numPoints, DatastoreService datastore){
     try {
-      userEntity.setProperty("score", ((Number) userEntity.getProperty("score")).intValue() + numPoints);
+      userEntity.setProperty("score", ((Number) userEntity.getProperty("score")).longValue() + numPoints);
     } catch (NullPointerException e) {
       userEntity.setProperty("score", numPoints);                
     }

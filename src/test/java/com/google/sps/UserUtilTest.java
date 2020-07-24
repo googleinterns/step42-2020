@@ -430,7 +430,7 @@ public final class UserUtilTest {
  
     Entity userEntity = UserUtils.getEntityFromDatastore("user", "userId", "newUser1", datastore);
     
-    Assert.assertEquals(UserUtils.ADDED_POINTS_LONG, userEntity.getProperty("score"));
+    Assert.assertEquals(UserUtils.ADDED_POINTS, userEntity.getProperty("score"));
   }
  
   // addUploadPoints when the user has uploaded recently
@@ -465,6 +465,6 @@ public final class UserUtilTest {
  
     Entity userEntity = UserUtils.getEntityFromDatastore("user", "userId", "newUser1", datastore);
     
-    Assert.assertEquals(UserUtils.ADDED_POINTS_LONG, userEntity.getProperty("score"));
+    Assert.assertEquals(UserUtils.ADDED_POINTS, userEntity.getProperty("score"));
   }
 }
