@@ -13,9 +13,6 @@ function getUserQuizStatus() {
 function loadUsers() {
     fetch('/populate-leaderboard').then(response => response.json()).then((users) => {
         const userListElement = document.getElementById('leader-board');
-        console.log(users[0]);
-        console.log(users[0].userName);
-        console.log(users);
         for(i = 0; i < users.length; i++){
             userListElement.appendChild(createUserElement(users[i]));
         }
