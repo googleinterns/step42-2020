@@ -22,7 +22,7 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import com.google.sps.utils.HttpRequestUtils;
+import com.google.sps.HttpRequestUtils;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import static org.mockito.Mockito.*;
@@ -50,14 +50,22 @@ public final class HttpRequestUtilsTest {
     }
  
     @Test
-    public void something() {
+    //Tests when getParameterWithDefault is given valid parameters 
+    public void getParameterWithDefault_validParameters() {
         when(request.getParameter("name")).thenReturn("works");
-        //HttpServletRequest request = mock(HttpServletRequest.class);
-        // HttpServletRequest request = new HttpServletRequest();
-        // request.
-
-        String actual = HttpRequestUtils.getParameter(request, "name", "works");
+        String actual = HttpRequestUtils.getParameterWithDefault(request, "name", "works");
         Assert.assertEquals("works", actual);
+    }
+
+    @Test
+    //Tests when getParameterWithDeafult is not given a request
+    public void getParameterWithDefault_nullRequest() {
+        String actual = "";
+        try {
+            actual = HttpRequestUtils.getParameterWithDefault(null, "name", "works");
+        } catch(NullPointerException e) {
+            Assert.assertEquals("", actual);
+        }
     }
 
 }
