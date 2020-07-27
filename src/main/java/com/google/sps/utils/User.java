@@ -36,12 +36,6 @@
         return gameId;
     }   
 
-    public void setId(String userID){
-        userID = userID;
-    }
-    public void setName(String userName){
-        userName = userName;
-    }
     public void setScore(int score){
         score = score;
     }
