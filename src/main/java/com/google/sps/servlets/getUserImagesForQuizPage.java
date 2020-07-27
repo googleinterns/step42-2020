@@ -3,22 +3,17 @@ package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.Query;
 import com.google.gson.Gson;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.appengine.api.datastore.FetchOptions;
-import com.google.appengine.api.datastore.Key;
 import com.google.sps.utils.QuizTimingPropertiesUtils;
 import com.google.sps.utils.UserUtils;
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
-import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
  
@@ -43,9 +38,9 @@ public class getUserImagesForQuizPage extends HttpServlet {
         HashMap<String,String> user_ids_and_pictures = new HashMap<String, String>();
  
         current_game = UserUtils.getEntityFromDatastore("Game", "gameId", (userEntity.getProperty("gameId")).toString(), datastore);
-        for(String playerID : (ArrayList<String>) current_game.getProperty("userIDs")) {
+        for(String player : (ArrayList<String>) current_game.getProperty("userIds")) {
             if(player.getProperty("userID").equals(playerID) && !user_entity.getProperty("userID").equals(playerID)) {
-                user_ids_and_pictures.put((player.getProperty("userIds")).toString(), (player.getProperty("blobkey")).toString());
+                user_ids_and_pictures.put((player.getProperty("userID")).toString(), (player.getProperty("blobkey")).toString());
             }
         }
  
