@@ -448,9 +448,9 @@ public final class UserUtilTest {
 
     ArrayList<User> users = UserUtils.userList("game1", datastore);
     
-    // Assert.assertEquals("user1", users.get(0).userID); 
-    // Assert.assertEquals("user3", users.get(1).userID); 
-    // Assert.assertEquals("user2", users.get(2).userID); 
+    Assert.assertEquals("user1", users.get(0).getId()); 
+    Assert.assertEquals("user3", users.get(1).getId()); 
+    Assert.assertEquals("user2", users.get(2).getId()); 
   }
 
 }

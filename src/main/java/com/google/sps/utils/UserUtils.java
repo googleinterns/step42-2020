@@ -167,13 +167,11 @@ public final class UserUtils {
         for (Entity entity : results.asIterable()) {
             String userID = (String) entity.getProperty("userID");
             String userName = (String) entity.getProperty("username");
-            long score = (long) entity.getProperty("score");
+            int score = ((Number) entity.getProperty("score")).intValue();
     
             User user = new User(userID, userName, score);
             users.add(user);
         }
-
-        System.out.println(users);
 
         return users;
     }
