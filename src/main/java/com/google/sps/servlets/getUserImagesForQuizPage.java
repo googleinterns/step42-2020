@@ -19,7 +19,8 @@ import java.util.HashMap;
  
 //This servlet loads user images to the quiz page for a logged-in user 
 //The return will be a JSON map from userIDs to image blobkey for all the users playing a game minus the logged in user
-//The logged in user is excluded because we don't want the loggedin user to vote for their own image in the game
+//The logged in user is excluded because we don't want the loggedin users photo to appear on the quiz page
+// If the logged in user's photo was on the quiz page then they would be able to vote for their own image in the game
 @WebServlet("/get-user-images")
 public class getUserImagesForQuizPage extends HttpServlet {
  
