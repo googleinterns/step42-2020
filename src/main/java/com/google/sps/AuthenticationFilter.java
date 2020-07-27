@@ -1,5 +1,6 @@
 package com.google.sps.filter;
  
+import javax.servlet.http.Cookie;
 import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -10,15 +11,10 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.sps.utils.UserUtils;
-import com.google.sps.utils.CookieUtils;
  
 public class AuthenticationFilter implements Filter {
     private ServletContext context;
@@ -44,7 +40,7 @@ public class AuthenticationFilter implements Filter {
         Cookie cookies[] = req.getCookies();
         Entity userEntity = UserUtils.getUserFromCookie(cookies, datastore);
  
-        //check to make sure there is an active session and that its attached to a person
+        //check to make sure there is an active session and that it's attached to a person
         if(userEntity == null){
             this.context.log("Unauthorized access request");
             res.sendRedirect("/login-page");
