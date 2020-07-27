@@ -467,4 +467,32 @@ public final class UserUtilTest {
     
     Assert.assertEquals(UserUtils.ADDED_POINTS, ((Number) userEntity.getProperty("score")).intValue());
   }
-}
+
+  //Test where everything is passed in as expected
+  @Test
+  public void initializeUser_basic(){
+      String name = "value1";
+      String userId = "value2";
+      Long initialTime = 0L;
+      int initialScore = 0;
+      String sessionID = "value3";
+
+      Entity expected = new Entity("user");
+      expected.setProperty("username",name);
+      expected.setProperty("userID",userId);
+      expected.setProperty("quiz_timing",initialTime);
+      expected.setProperty("currentGame", "");
+      expected.setProperty("blobkey", null);
+      expected.setProperty("score", initialScore);
+      expected.setProperty("SessionID", sessionID);
+
+      Entity actual = UserUtils.initializeUser(userId, name, sessionID);
+
+      Assert.assertEquals(expected.getProperty("username"),actual.getProperty("username"));
+      Assert.assertEquals(expected.getProperty("userID"),actual.getProperty("userID"));
+      Assert.assertEquals(expected.getProperty("quiz_timing"),actual.getProperty("quiz_timing"));
+      Assert.assertEquals(expected.getProperty("currentGame"),actual.getProperty("currentGame"));
+      Assert.assertEquals(expected.getProperty("blobkey"),actual.getProperty("blobkey"));
+      Assert.assertEquals(expected.getProperty("score"),actual.getProperty("score"));
+      Assert.assertEquals(expected.getProperty("SessionID"),actual.getProperty("SessionID"));
+  }

@@ -34,8 +34,34 @@ public final class UserUtils {
     public static final String SESSION_ID_COOKIE_NAME = "SessionID";
     public static final int ADDED_POINTS = 20;
     private static final Logger log = Logger.getLogger(UserUtils.class.getName());
+ 
+   
+     /**
+    * Takes user's information and creates an entity from it. 
+    * This function inputs all the parameters, while also initializing
+    * some parameters to null values. The entity returned can be stored in the
+    * datastore.
+    * 
+    * @param  name          the user's name
+    * @param  sessionID     the user's current session id (should match with a cookie client-side)
+    * @return               a single entity that has contains all the parameters passed in. 
+    */
 
-    /**
+public static Entity initializeUser(String userId, String name, String sessionID){
+        //these values are always empty upon initialization
+        int initialScore = 0;
+        long initialTime = 0L;
+        userEntity = new Entity("user");
+        userEntity.setProperty("username",name);
+        userEntity.setProperty("userID",userId);
+        userEntity.setProperty("quiz_timing",initialTime);
+        userEntity.setProperty("gameId", "");
+        userEntity.setProperty("blobKey", null);
+        userEntity.setProperty("score", initialScore);
+        return userEntity;
+  }
+ 
+     /**
     * Returns a single Entity object that can then be used in a servlet. 
     * The entityPropertyTitle and entityPropertyValue
     * arguments are relative to the entityName argument. 
@@ -49,25 +75,24 @@ public final class UserUtils {
     * @param  entityPropertyValue  the value of the property that is filtered for
     * @return                      a single entity that has the same value for the property in the parameter 
     */
+    
   public static Entity getEntityFromDatastore(String entityName, String entityPropertyTitle, String entityPropertyValue, DatastoreService datastore) {
 
     if(entityPropertyValue == "" || entityName == "" || entityPropertyTitle == "" || datastore == null){
         return null;
     }
-
+ 
     Filter queryFilter = new FilterPredicate(entityPropertyTitle, FilterOperator.EQUAL, entityPropertyValue);
     Query query = new Query(entityName).setFilter(queryFilter);
      PreparedQuery results = datastore.prepare(query);
      List<Entity> resultsList = results.asList(FetchOptions.Builder.withLimit(1));
-
-    if(resultsList.size() == 0){
+     if(resultsList.size() == 0){
         return null;
-    }
-
-    Entity entity = resultsList.get(0);
-    return entity;
+     }
+     Entity entity = resultsList.get(0);
+     return entity;
   }
-
+ 
      /**
     * This function takes in a list of cookies and matches a sessionID cookie
     * with a specific name/value pair to a user entity with the same name/value
@@ -92,12 +117,12 @@ public final class UserUtils {
     }
     return getEntityFromDatastore("user", SESSION_ID_COOKIE_NAME, cookie.getValue(), datastore); //returns null if it doesn't exist
   }
-
+ 
   /**
   * Adds a game id to a user's list of games
   */
   public static boolean addGameToUser(Entity userEntity, DatastoreService datastore, String gameId) {
-
+ 
     if(userEntity == null){
         log.severe("found null user entity trying to add game to user");
         return false;
@@ -110,18 +135,18 @@ public final class UserUtils {
         log.severe("found empty gameId trying to add game to user " + (String) userEntity.getProperty("userID"));
         return false;
     }
-
+ 
     userEntity.setProperty("gameId", gameId);
     datastore.put(userEntity);
  
     return true;
   }
-
+ 
   /**
   * adds a photo to the user entity
   */
   public static boolean addBlobKey(String blobKey, Entity userEntity, DatastoreService datastore) {
-
+ 
     if(userEntity == null){
         log.severe("found null user entity trying to add blobkey to user");
         return false;
@@ -140,7 +165,7 @@ public final class UserUtils {
  
     return true; 
   }
-
+ 
   /**
     adds a specified number of points to the user's points
   */
