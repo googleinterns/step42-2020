@@ -28,11 +28,16 @@ import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 import java.util.logging.Logger;
+<<<<<<< HEAD
 import com.google.sps.utils.User;
 import com.google.appengine.api.datastore.Query.SortDirection;
+=======
+import com.google.sps.utils.QuizTimingPropertiesUtils;
+>>>>>>> a4f50e37510867b1aba9cb0c5a74f93d45725139
 
 public final class UserUtils {
     public static final String SESSION_ID_COOKIE_NAME = "SessionID";
+    public static final int ADDED_POINTS = 20;
     private static final Logger log = Logger.getLogger(UserUtils.class.getName());
 
     /**
@@ -153,26 +158,39 @@ public final class UserUtils {
     datastore.put(userEntity);
   }
 
-    /**
-       gets the users of a particular game to populate the leaderboard
-    */
-    public static ArrayList<User> userList(String gameId, DatastoreService datastore){
-        //create and prepare a query
-        Filter queryFilter = new FilterPredicate("gameId", FilterOperator.EQUAL, gameId);
-        Query query = new Query("user").setFilter(queryFilter).addSort("score", SortDirection.DESCENDING);
-        PreparedQuery results = datastore.prepare(query);
+  /**
+    gets the users of a particular game to populate the leaderboard
+  */
+  public static ArrayList<User> userList(String gameId, DatastoreService datastore){
+    //create and prepare a query
+    Filter queryFilter = new FilterPredicate("gameId", FilterOperator.EQUAL, gameId);
+    Query query = new Query("user").setFilter(queryFilter).addSort("score", SortDirection.DESCENDING);
+    PreparedQuery results = datastore.prepare(query);
     
-        // stores each user in a User object 
-        ArrayList<User> users = new ArrayList<>();
-        for (Entity entity : results.asIterable()) {
-            String userID = (String) entity.getProperty("userID");
-            String userName = (String) entity.getProperty("username");
-            int score = ((Number) entity.getProperty("score")).intValue();
+    // stores each user in a User object 
+    ArrayList<User> users = new ArrayList<>();
+    for (Entity entity : results.asIterable()) {
+        String userID = (String) entity.getProperty("userID");
+        String userName = (String) entity.getProperty("username");
+        int score = ((Number) entity.getProperty("score")).intValue();
     
-            User user = new User(userID, userName, score);
-            users.add(user);
-        }
-
-        return users;
+        User user = new User(userID, userName, score);
+        users.add(user);
     }
+
+    return users;
+  }
+
+  /**
+    Adds 20 points to a user for uploading if it has been more than a day since they last uploaded
+  */
+  public static void addUploadPoints(Entity userEntity, DatastoreService datastore){
+
+    QuizTimingPropertiesUtils utils = new QuizTimingPropertiesUtils();
+    if(userEntity.getProperty("lastAwardedUploadPoints") == null || utils.isTimestampOutdated((long) userEntity.getProperty("lastAwardedUploadPoints"))){
+        addPoints(userEntity, ADDED_POINTS, datastore);
+        userEntity.setProperty("lastAwardedUploadPoints", System.currentTimeMillis());
+        datastore.put(userEntity);
+    }
+  }
 }
