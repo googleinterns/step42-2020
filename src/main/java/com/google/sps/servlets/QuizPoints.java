@@ -17,6 +17,7 @@ import java.util.Date;
 import com.google.appengine.api.datastore.Key;
 import com.google.sps.QuizTimingPropertiesUtils;
 import com.google.sps.utils.UserUtils;
+import com.google.sps.HttpRequestUtils;
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -48,19 +49,10 @@ public class QuizPoints extends HttpServlet {
         QuizTimingPropertiesUtils.giveUserQuizTakenPoints(QuizTimingPropertiesUtils.userTookQuiz(user_time, quiz_time), userEntity, datastore);        
 
         //Adds points to the user who got voted for in the quiz 
-        String clicked_user_id = getParameter(request, "user_picture", "");
+        String clicked_user_id = HttpRequestUtils.getParameter(request, "user_picture", "");
         Entity user_clicked = UserUtils.getEntityFromDatastore("user", "userID", clicked_user_id, datastore);
-        user_clicked.setProperty("score", ((Number) user_clicked.getProperty("score")).intValue() + 20);
-        datastore.put(user_clicked);
+        UserUtils.addPoints(user_clicked, 20, datastore);
 
        response.sendRedirect("/gameBoard.html");
-    }
-
-    private String getParameter(HttpServletRequest request, String name, String defaultValue) {
-      String value = request.getParameter(name);
-      if (value == null) {
-          return defaultValue;
-      }
-      return value;
     }
 }
