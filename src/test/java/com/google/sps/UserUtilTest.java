@@ -421,7 +421,7 @@ public final class UserUtilTest {
     Assert.assertEquals(expected, userEntity.getProperty("score"));
   }
 
-  // userList 
+  // create a list of users with all valid inputs
   @Test
   public void userList_validInputs(){
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
