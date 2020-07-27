@@ -420,10 +420,9 @@ public final class UserUtilTest {
     Assert.assertEquals(expected, userEntity.getProperty("score"));
   }
 
-  //Test where nothing is in the datastore
+  //Test where everything is passed in as expected
   @Test
   public void initializeUser_basic(){
-      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       String name = "value1";
       String userId = "value2";
       Long initialTime = 0L;
@@ -439,7 +438,7 @@ public final class UserUtilTest {
       expected.setProperty("score", initialScore);
       expected.setProperty("SessionID", sessionID);
 
-      Entity actual = UserUtils.initializeUser(userId, name, sessionID, datastore);
+      Entity actual = UserUtils.initializeUser(userId, name, sessionID);
 
       Assert.assertEquals(expected.getProperty("username"),actual.getProperty("username"));
       Assert.assertEquals(expected.getProperty("userID"),actual.getProperty("userID"));
@@ -449,73 +448,4 @@ public final class UserUtilTest {
       Assert.assertEquals(expected.getProperty("score"),actual.getProperty("score"));
       Assert.assertEquals(expected.getProperty("SessionID"),actual.getProperty("SessionID"));
   }
-
-  //Test where there is already an object in the datastore, but it doesn't match
-  @Test
-  public void initializeUser_otherUserInDatastore(){
-      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-      String name = "value1";
-      String userId = "value2";
-      Long initialTime = 0L;
-      int initialScore = 0;
-      String sessionID = "value3";
-
-      Entity otherUser = new Entity("user");
-      otherUser.setProperty("username",name);
-      otherUser.setProperty("userID",userId);
-      otherUser.setProperty("quiz_timing",initialTime);
-      otherUser.setProperty("currentGame", "");
-      otherUser.setProperty("blobkey", null);
-      otherUser.setProperty("score", initialScore);
-      otherUser.setProperty("SessionID", sessionID);
-      datastore.put(otherUser);
-
-      Entity expected = otherUser;
-      expected.setProperty("userID", "differentId");
-
-      Entity actual = UserUtils.initializeUser("differentId", name, sessionID, datastore);
-
-      Assert.assertEquals(expected.getProperty("username"),actual.getProperty("username"));
-      Assert.assertEquals(expected.getProperty("userID"),actual.getProperty("userID"));
-      Assert.assertEquals(expected.getProperty("quiz_timing"),actual.getProperty("quiz_timing"));
-      Assert.assertEquals(expected.getProperty("currentGame"),actual.getProperty("currentGame"));
-      Assert.assertEquals(expected.getProperty("blobkey"),actual.getProperty("blobkey"));
-      Assert.assertEquals(expected.getProperty("score"),actual.getProperty("score"));
-      Assert.assertEquals(expected.getProperty("SessionID"),actual.getProperty("SessionID"));
-  }
-
-  //Test where there is already a user in the datastore that does match
-  @Test
-  public void initializeUser_preexistingUser(){
-      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-      String name = "value1";
-      String userId = "value2";
-      Long initialTime = 0L;
-      int initialScore = 0;
-      String sessionID = "value3";
-      String alternativeSessionID = "value4";
-
-      Entity user = new Entity("user");
-      user.setProperty("username",name);
-      user.setProperty("userID",userId);
-      user.setProperty("quiz_timing",initialTime);
-      user.setProperty("currentGame", "");
-      user.setProperty("blobkey", null);
-      user.setProperty("score", initialScore);
-      user.setProperty("SessionID", sessionID);
-      datastore.put(user);
-
-      Entity expected = user;
-      expected.setProperty("SessionID", alternativeSessionID);
-
-      Entity actual = UserUtils.initializeUser(userId, name, alternativeSessionID, datastore);
-
-      Assert.assertEquals(expected.getProperty("username"),actual.getProperty("username"));
-      Assert.assertEquals(expected.getProperty("userID"),actual.getProperty("userID"));
-      Assert.assertEquals(expected.getProperty("quiz_timing"),actual.getProperty("quiz_timing"));
-      Assert.assertEquals(expected.getProperty("currentGame"),actual.getProperty("currentGame"));
-      Assert.assertEquals(expected.getProperty("blobkey"),actual.getProperty("blobkey"));
-      Assert.assertEquals(expected.getProperty("SessionID"),actual.getProperty("SessionID"));
-  }
-}
 
