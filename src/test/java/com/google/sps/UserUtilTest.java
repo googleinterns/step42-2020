@@ -448,4 +448,3 @@ public final class UserUtilTest {
       Assert.assertEquals(expected.getProperty("score"),actual.getProperty("score"));
       Assert.assertEquals(expected.getProperty("SessionID"),actual.getProperty("SessionID"));
   }
-
