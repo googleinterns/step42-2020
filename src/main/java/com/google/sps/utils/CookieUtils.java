@@ -53,4 +53,13 @@ public final class CookieUtils {
         }
         return null;
     }
+    public static Cookie createSessionIDCookie(HttpSession oldSession, String newSessionID){
+        if(oldSession != null){
+            oldSession.invalidate();
+        }
+        Cookie cookie = new Cookie("SessionID", newSessionID);
+        
+        return cookie;
+    }
 }
+

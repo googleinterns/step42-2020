@@ -101,4 +101,16 @@ public final class CookieUtilsTest {
         Assert.assertEquals(expected, actual);  
   }
   
+//test where there is no old session
+@Test
+public void createSessionIDCookie_noOldSession(){
+    HttpSession oldSession = null;
+    String newSessionId = "value1";
+
+    Cookie actual = new Cookie("SessionID", newSessionId);
+    Cookie expected = CookieUtils.createSessionIDCookie(oldSession, newSessionId);
+
+    Assert.assertEquals(expected.getName(), actual.getName()); 
+    Assert.assertEquals(expected.getValue(), actual.getValue());   
+}
 }
