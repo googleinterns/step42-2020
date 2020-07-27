@@ -39,8 +39,6 @@ public final class UserUtils {
     * This function inputs all the parameters, while also initializing
     * some parameters to null values. The entity returned can be stored in the
     * datastore.
-    * If an entity with the same ID exists, it just updates the SessionID of the first entity. 
-    * <p>
     * 
     * @param  name          the user's name
     * @param  sessionID     the user's current session id (should match with a cookie client-side)
