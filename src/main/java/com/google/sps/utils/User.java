@@ -27,9 +27,9 @@ public final class User {
 
   public User(Entity userEntity) {
     if (userEntity.getKind() != USER_ENTITY_KIND) {
-    //   throw IllegalArgumentException(
-    //       "Attempted to interpret Entity of kind " + userEntity.getKind()
-    //       + " as a User.");
+      throw new IllegalArgumentException(
+          "Attempted to interpret Entity of kind " + userEntity.getKind()
+          + " as a User.");
     }
     entity = userEntity;
 
