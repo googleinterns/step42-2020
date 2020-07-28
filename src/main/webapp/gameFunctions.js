@@ -10,7 +10,7 @@ function getUserQuizStatus() {
 * fetches users of the game from the server 
 * and adds score, id and name to the page
 */
-function loadUsers() {
+function loadLeaderboard() {
     fetch('/populate-leaderboard').then(response => response.json()).then((users) => {
         const userListElement = document.getElementById('leader-board');
         for(i = 0; i < users.length; i++){
