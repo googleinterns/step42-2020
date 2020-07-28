@@ -64,6 +64,8 @@ public class UploadHandlerServlet extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         return;
     }
+
+    UserUtils.addUploadPoints(userEntity, datastore);
     
     // getting the blobkey + making it part of the request
     ImmutableMap<String, List<BlobKey>> blobs = ImmutableMap.copyOf(blobstoreService.getUploads(request));

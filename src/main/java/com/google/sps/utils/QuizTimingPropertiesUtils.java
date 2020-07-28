@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
  
-package com.google.sps;
+package com.google.sps.utils;
  
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.DatastoreService;
@@ -27,12 +27,14 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 import java.util.TimeZone;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 
 public final class QuizTimingPropertiesUtils {
 
     private static final Logger log = Logger.getLogger(QuizTimingPropertiesUtils.class.getName());
 
-    List<String> quiz_questions = new ArrayList<String>(List.of(
+    static final List<String> quiz_questions = new ArrayList<String>(List.of(
+        "Which plant has the most food growing from it?",
         "Which plant has the most food growing from it?",
         "Which plant has the prettiest colors?",
         "Which plant is likely to grow the fastest?",
@@ -50,11 +52,9 @@ public final class QuizTimingPropertiesUtils {
         "Which plant will most likely impress your friends and family?",
         "Which plant would look the best inside as a houseplant?",
         "Which plant would look the best outside in a garden?",
-        "Which plant would you give as a gift?"
-    ));
-
+        "Which plant would you give as a gift?");
     //This function gets the the "quiz_timestamp" property of the entity that is fed into the function
-    public Long getTimestampProperty(String entity, DatastoreService datastore) {
+    public static Long getQuizTimestampProperty(String entity, String id_of_entity, String id_of_entity_value, DatastoreService datastore) {
         Query query = new Query(entity);
         PreparedQuery pq;
         try {
@@ -63,16 +63,17 @@ public final class QuizTimingPropertiesUtils {
             log.log(Level.SEVERE, "Null result for parameter {0}", datastore);
             return null;
         }
-        if(pq.asList(FetchOptions.Builder.withLimit(1)).size() > 0) {
-            Entity fetched_item = pq.asList(FetchOptions.Builder.withLimit(1)).get(0);
-            return (Long) fetched_item.getProperty("quiz_timestamp");
-        } 
+        for(Entity query_entity : pq.asIterable()){
+            if(query_entity.getProperty(id_of_entity).equals(id_of_entity_value)) {
+                return (Long) query_entity.getProperty("quiz_timestamp");
+            }
+        }
         log.log(Level.SEVERE, "No results for query {0}", entity);
         return null;
     }
  
     //This function checks if the user has taken the quiz yet by comparing their timestamp with the quiz's timestamp
-    public boolean userTookQuiz(Long usersQuizTime, Long currentQuizTime) {
+    public static boolean userTookQuiz(Long usersQuizTime, Long currentQuizTime) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         String users_quiz_time;
@@ -90,7 +91,7 @@ public final class QuizTimingPropertiesUtils {
     }
 
     //This function checks to see if the quiz is outdated
-    public boolean isQuizOutdated(Long current_quiz_time) {  
+    public static boolean isTimestampOutdated(Long current_quiz_time) {  
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         String quiz_date;
@@ -107,7 +108,7 @@ public final class QuizTimingPropertiesUtils {
     }
     
     //This function gets a new quiz question if the quiz is outdated
-    public String getNewQuestion(Entity game_entity, DatastoreService datastore) {
+    public static String getNewQuestion(Entity game_entity, DatastoreService datastore) {
         Random rand = new Random();
         int rand_number = rand.nextInt(quiz_questions.size());
 
@@ -124,7 +125,7 @@ public final class QuizTimingPropertiesUtils {
     }
 
     //Gives the user 20 points if they have taken a quiz
-    public boolean giveUserQuizTakenPoints(boolean userQuizStatus, Entity currentUser, DatastoreService datastore) {
+    public static boolean giveUserQuizTakenPoints(boolean userQuizStatus, Entity currentUser, DatastoreService datastore) {
         if(currentUser == null) {
             log.log(Level.SEVERE, "Given a null {0}", currentUser);
             return false;
