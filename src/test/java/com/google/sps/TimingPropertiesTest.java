@@ -26,6 +26,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import com.google.sps.QuizTimingPropertiesUtils;
+import com.google.sps.utils.Game;
  
 @RunWith(JUnit4.class)
 public final class TimingPropertiesTest {
@@ -126,7 +127,7 @@ public final class TimingPropertiesTest {
         QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
         
         Entity user = new Entity("user");
-        Entity game = new Entity("game");
+        Game game = new Game();
  
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
  
@@ -134,12 +135,11 @@ public final class TimingPropertiesTest {
         user.setProperty("userID", "abc");
         datastore.put(user);
  
-        game.setProperty("quiz_timestamp", 1594309443660L);
-        game.setProperty("gameID", 67890);
-        datastore.put(game);
+        game.setQuizTimestamp(1594309443660L);
+        game.setGameId("67890");
  
         Long user_quiz_time = timing_properties_test.getQuizTimestampProperty("user", "userID", user.getProperty("userID").toString(), datastore);
-        Long game_quiz_time = timing_properties_test.getQuizTimestampProperty("game", "gameID", game.getProperty("gameID").toString(), datastore);
+        Long game_quiz_time = timing_properties_test.getQuizTimestampProperty("game", "gameID", game.getGameId(), datastore);
  
         boolean actual = timing_properties_test.userTookQuiz(user_quiz_time, game_quiz_time);
         Assert.assertEquals(false, actual);
@@ -184,13 +184,12 @@ public final class TimingPropertiesTest {
     public void getNewQuestion_validParamters() {
         QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        Entity game = new Entity("game");
+        Game game = new Game();
  
-        game.setProperty("quiz_timestamp", 159430944365L);
-        game.setProperty("quizQuestion", "");
-        datastore.put(game);
+        game.setQuizTimestamp(159430944365L);
+        game.setQuizQuestion("");
  
-        String new_question = timing_properties_test.getNewQuestion(game, datastore);
+        String new_question = timing_properties_test.getNewQuestion(game.getGameEntity(), datastore);
         if(!(new_question.equals(""))){
             Assert.assertEquals(true, true);
         }
