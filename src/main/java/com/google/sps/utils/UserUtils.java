@@ -28,12 +28,10 @@ import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 import java.util.logging.Logger;
-<<<<<<< HEAD
 import com.google.sps.utils.User;
 import com.google.appengine.api.datastore.Query.SortDirection;
-=======
 import com.google.sps.utils.QuizTimingPropertiesUtils;
->>>>>>> a4f50e37510867b1aba9cb0c5a74f93d45725139
+import java.lang.IllegalArgumentException;
 
 public final class UserUtils {
     public static final String SESSION_ID_COOKIE_NAME = "SessionID";
@@ -56,7 +54,7 @@ public static Entity initializeUser(String userId, String name, String sessionID
         //these values are always empty upon initialization
         int initialScore = 0;
         long initialTime = 0L;
-        userEntity = new Entity("user");
+        Entity userEntity = new Entity("user");
         userEntity.setProperty("username",name);
         userEntity.setProperty("userID",userId);
         userEntity.setProperty("quiz_timing",initialTime);
@@ -195,11 +193,7 @@ public static Entity initializeUser(String userId, String name, String sessionID
     // stores each user in a User object 
     ArrayList<User> users = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
-        String userID = (String) entity.getProperty("userID");
-        String userName = (String) entity.getProperty("username");
-        int score = ((Number) entity.getProperty("score")).intValue();
-    
-        User user = new User(userID, userName, score);
+        User user = new User(entity);
         users.add(user);
     }
 
