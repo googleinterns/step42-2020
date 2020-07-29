@@ -1,3 +1,37 @@
+//cant run multiple functions on load, so all functions that need to run are listed here.
+function runOnload(){
+    populateQuizPage();
+    getUserQuizStatus();
+}
+
+
+function populateQuizPage(){
+    var username_container = document.getElementById("users-name");
+    var score_container = document.getElementById("score");
+    var image_holder = document.getElementById("image-holder");
+ 
+    fetch("/populate-game-page").then(response => response.json()).then(data => {
+        username_container.innerHTML = data.propertyMap.username;
+        score_container.innerHTML = data.propertyMap.score;
+        if(data.propertyMap.blobKey != null){
+            makeImage(image_holder, data.propertyMap.blobKey);
+            console.log(data);
+        }
+    }
+    )
+}
+ 
+function makeImage(image_holder, blobKey){
+    image_holder.innerHTML = "";
+    const user_image =  document.createElement("img");
+    fetch('/get-image?blobKey=' + blobKey).then((pic) => {
+        user_image.src = pic.url;
+        user_image.className = "user_img";
+    })
+    image_holder.appendChild(user_image);
+}
+
+
 function getUserQuizStatus() {
     fetch("/user-quiz-status-servlet").then(response => response.json()).then((user_has_taken_quiz) => {
         if(!user_has_taken_quiz){
