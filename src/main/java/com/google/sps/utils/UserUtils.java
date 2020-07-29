@@ -28,7 +28,10 @@ import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 import java.util.logging.Logger;
+import com.google.sps.utils.User;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.sps.utils.QuizTimingPropertiesUtils;
+import java.lang.IllegalArgumentException;
 
 public final class UserUtils {
     public static final String SESSION_ID_COOKIE_NAME = "SessionID";
@@ -51,7 +54,7 @@ public static Entity initializeUser(String userId, String name, String sessionID
         //these values are always empty upon initialization
         int initialScore = 0;
         long initialTime = 0L;
-        userEntity = new Entity("user");
+        Entity userEntity = new Entity("user");
         userEntity.setProperty("username",name);
         userEntity.setProperty("userID",userId);
         userEntity.setProperty("quiz_timing",initialTime);
@@ -179,6 +182,25 @@ public static Entity initializeUser(String userId, String name, String sessionID
   }
 
   /**
+    gets the users of a particular game to populate the leaderboard
+  */
+  public static ArrayList<User> userList(String gameId, DatastoreService datastore){
+    //create and prepare a query
+    Filter queryFilter = new FilterPredicate("gameId", FilterOperator.EQUAL, gameId);
+    Query query = new Query("user").setFilter(queryFilter).addSort("score", SortDirection.DESCENDING);
+    PreparedQuery results = datastore.prepare(query);
+    
+    // stores each user in a User object 
+    ArrayList<User> users = new ArrayList<>();
+    for (Entity entity : results.asIterable()) {
+        User user = new User(entity);
+        users.add(user);
+    }
+
+    return users;
+  }
+
+  /**
     Adds 20 points to a user for uploading if it has been more than a day since they last uploaded
   */
   public static void addUploadPoints(Entity userEntity, DatastoreService datastore){
@@ -190,5 +212,4 @@ public static Entity initializeUser(String userId, String name, String sessionID
         datastore.put(userEntity);
     }
   }
-
 }
