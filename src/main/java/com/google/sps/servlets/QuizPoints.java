@@ -9,7 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.sps.QuizTimingPropertiesUtils;
+import com.google.sps.utils.QuizTimingPropertiesUtils;
 import com.google.sps.utils.UserUtils;
 import com.google.sps.HttpRequestUtils;
 import java.io.*;
@@ -43,7 +43,7 @@ public class QuizPoints extends HttpServlet {
         QuizTimingPropertiesUtils.giveUserQuizTakenPoints(QuizTimingPropertiesUtils.userTookQuiz(user_time, quiz_time), userEntity, datastore);        
 
         //Adds points to the user who got voted for in the quiz 
-        String clicked_user_id = HttpRequestUtils.getParameter(request, "user_picture", "");
+        String clicked_user_id = HttpRequestUtils.getParameterWithDefault(request, "user_picture", "");
         Entity user_clicked = UserUtils.getEntityFromDatastore("user", "userID", clicked_user_id, datastore);
         UserUtils.addPoints(user_clicked, 20, datastore);
 
