@@ -15,10 +15,23 @@ import org.junit.runners.JUnit4;
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
-import com.google.sps.utils.CookieUtils; 
+import com.google.sps.utils.CookieUtils;
+import static org.mockito.Mockito.*;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import static org.mockito.Mockito.when; 
 
 @RunWith(JUnit4.class)
 public final class CookieUtilsTest {
+  
+  @Mock
+  HttpSession session;
+
+  @Before
+  public void setUp(){
+      MockitoAnnotations.initMocks(this);
+      session = mock(HttpSession.class);
+  }
 
   //given a list of cookies, it should find the one with the mentioned name.
   @Test
@@ -112,5 +125,19 @@ public void createSessionIDCookie_noOldSession(){
 
     Assert.assertEquals(expected.getName(), actual.getName()); 
     Assert.assertEquals(expected.getValue(), actual.getValue());   
+}
+  
+//test where there is a new session
+@Test
+public void createSessionIDCookie_OldSessionExists(){
+    HttpSession oldSession = session;
+    String newSessionId = "value1";
+
+    Cookie actual = new Cookie("SessionID", newSessionId);
+
+    Cookie expected = CookieUtils.createSessionIDCookie(oldSession, newSessionId);
+
+    Assert.assertEquals(expected.getName(), actual.getName()); 
+    Assert.assertEquals(expected.getValue(), actual.getValue());  
 }
 }
