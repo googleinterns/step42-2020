@@ -11,7 +11,7 @@ public final class Game {
     private Entity entity;
 
     public Game(Entity game_entity) {
-        if (game_entity.getKind().equals(game_kind)) {
+        if (!game_entity.getKind().equals(game_kind)) {
             throw new IllegalArgumentException("Attempted to interpret Entity of kind " + game_entity.getKind()+ " as a Game.");
         }
     entity = game_entity;
