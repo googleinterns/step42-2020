@@ -15,6 +15,8 @@
 package com.google.sps;
 
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import org.junit.Assert;
@@ -24,7 +26,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import com.google.sps.utils.Game;
-import com.google.sps.utils.UserUtils;
+//import com.google.sps.utils.UserUtils;
 import java.util.ArrayList;
 
 // tests the usergame class functions 
@@ -71,6 +73,7 @@ public final class GameTest {
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         datastore.put(game.getGameEntity());
 
-        Assert.assertEquals(UserUtils.getEntityFromDatastore("Game", "gameId", game.getGameId(), datastore), game);
+        Entity datastore_game_entity = UserUtils.getEntityFromDatastore("Game", "gameId", game.getGameId(), datastore);
+        Assert.assertEquals(game.getGameId(), datastore_game_entity.getProperty("gameId"));
     }
 }
