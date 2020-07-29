@@ -29,6 +29,8 @@ import com.google.sps.utils.UserUtils;
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
  
 @WebServlet("/populate-leaderboard")
 public class populateLeaderboardServlet extends HttpServlet {
@@ -57,11 +59,22 @@ public class populateLeaderboardServlet extends HttpServlet {
         return;
     }
  
-    ArrayList<User> users = UserUtils.userList((String) userEntity.getProperty("gameId"), datastore);
+    //ArrayList<User> userObjects = UserUtils.userList((String) userEntity.getProperty("gameId"), datastore);
+    ArrayList<User> userObjects = new ArrayList<User>();
+    
+    // translate to JSON for loadLeaderBoard function
+    JSONArray users = new JSONArray();
+    for(User user : userObjects){
+      JSONObject obj = new JSONObject();
+
+      obj.put("userName", user.getName());
+      obj.put("userID", user.getId());
+      obj.put("score", new Integer(user.getScore()));
+      users.add(obj);
+    }
  
-    // translate to JSON for loadComments function
-    Gson gson = new Gson();
     response.setContentType("application/json;");
-    response.getWriter().println(gson.toJson(users));
+    response.getWriter().println(users);
   }
 }
+
