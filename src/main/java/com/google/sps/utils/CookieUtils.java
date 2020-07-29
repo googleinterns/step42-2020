@@ -57,7 +57,7 @@ public final class CookieUtils {
         if(oldSession != null){
             oldSession.invalidate();
         }
-        Cookie cookie = new Cookie("SessionID", newSessionID);
+        Cookie cookie = new Cookie(UserUtils.SESSION_ID_COOKIE_NAME, newSessionID);
         
         return cookie;
     }
