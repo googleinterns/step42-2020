@@ -2,8 +2,6 @@ package com.google.sps.utils;
 import com.google.appengine.api.datastore.Entity;
 import java.lang.IllegalArgumentException;
 import java.util.List;
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
   
 /**
  * Wrapper around a datastore Entity representing a user.
@@ -13,7 +11,6 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
  */
 public final class User {
 
-  DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
   // The "kind" of entity that represents a user.
   // Use `new Entity(User.USER_ENTITY_KIND)` to construct user entities.
   public final static String USER_ENTITY_KIND = "user";
@@ -32,11 +29,6 @@ public final class User {
           + " as a User.");
     }
     entity = userEntity;
-
-    // set values for the leaderboard
-    userID = (String) entity.getProperty("userID");
-    userName = (String) entity.getProperty("userName");
-    score = ((Number) entity.getProperty("score")).intValue();
   }
 
   // Retrieves (by reference) the entity managed by this instance.
@@ -50,7 +42,6 @@ public final class User {
   }
   public void setGame(String gameId) {
     entity.setProperty("gameId", gameId);
-    datastore.put(entity);
   }
 
   // Unique identifier for the user.
@@ -58,27 +49,28 @@ public final class User {
     return userID;
   }
   // TODO: Consider raising an exception instead of overwriting a non-null userId.
-  public void setId(String userID) {
+  public void setId(String newID) {
+    userID = newID;
     entity.setProperty("userID", userID);
-    datastore.put(entity);
   }
 
   // Non-unique name for the user
   public String getName(){
     return userName;
   }
-  public void setName(String userName){
-    entity.setProperty("userName", userName);
-    datastore.put(entity);
+  public void setName(String newName){
+    userName = newName;
+    
+    //entity.setProperty("userName", userName);
   }
 
   // current game score
   public int getScore(){
     return score;
   }
-  public void setScore(int score){
+  public void setScore(int newScore){
+    score = newScore;
     entity.setProperty("score", score);
-    datastore.put(entity);
   }
 
   // time the last quiz was taken
@@ -87,7 +79,6 @@ public final class User {
   }
   public void setQuizTiming(long quiz_timing){
     entity.setProperty("quiz_timing", quiz_timing);
-    datastore.put(entity);
   }
 
   // image blobKey -- used to create an image url
@@ -97,6 +88,5 @@ public final class User {
   }
   public void setBlobKey(String blobKey){
     entity.setProperty("blobKey", blobKey);
-    datastore.put(entity);
   } 
 }
