@@ -40,8 +40,9 @@ public class getUserImagesForQuizPage extends HttpServlet {
  
         Entity current_game = UserUtils.getEntityFromDatastore("Game", "gameId", (userEntity.getProperty("gameId")).toString(), datastore);
         for(String player : (ArrayList<String>) current_game.getProperty("userIds")) {
-            if(player.getProperty("userID").equals(playerID) && !userEntity.getProperty("userID").equals(playerID)) {
-                user_ids_and_pictures.put((player.getProperty("userID")).toString(), (player.getProperty("blobkey")).toString());
+            if(!userEntity.getProperty("userID").equals(player)) {
+                Entity playerEntity = UserUtils.getEntityFromDatastore("user","userID", player, datastore);
+                user_ids_and_pictures.put(player, (playerEntity.getProperty("blobkey")).toString());
             }
         }
  

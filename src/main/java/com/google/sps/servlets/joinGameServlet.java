@@ -60,12 +60,6 @@ public class joinGameServlet extends HttpServlet {
         return;
     }
 
-    // prevent users from joining more than one game
-    if(userEntity.getProperty("gameId") != null){
-      response.sendRedirect("/gameBoard.html");
-      return;
-    }
-
     Entity gameEntity = UserUtils.getEntityFromDatastore("Game", "gameId", gameId, datastore);
     if(gameEntity == null){
       PrintWriter out = response.getWriter();

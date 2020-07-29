@@ -63,12 +63,6 @@ public class startGameServlet extends HttpServlet {
         return;
     }
  
-    // prevent users from joining more than one game
-    if(userEntity.getProperty("gameId") != null){
-      response.sendRedirect("/gameBoard.html");
-      return;
-    }
- 
     Entity newGame = GameUtils.createGameEntity(gameName, datastore);
     boolean gameSet = GameUtils.setGame(userEntity, datastore, newGame);
  
