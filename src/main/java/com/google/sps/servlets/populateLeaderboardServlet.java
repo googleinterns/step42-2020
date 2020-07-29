@@ -59,8 +59,7 @@ public class populateLeaderboardServlet extends HttpServlet {
         return;
     }
  
-    //ArrayList<User> userObjects = UserUtils.userList((String) userEntity.getProperty("gameId"), datastore);
-    ArrayList<User> userObjects = new ArrayList<User>();
+    ArrayList<User> userObjects = UserUtils.userList((String) userEntity.getProperty("gameId"), datastore);
     
     // translate to JSON for loadLeaderBoard function
     JSONArray users = new JSONArray();
