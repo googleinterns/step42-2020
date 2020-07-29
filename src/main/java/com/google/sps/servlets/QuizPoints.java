@@ -25,7 +25,7 @@ public class QuizPoints extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
+ 
         Cookie cookies[] = request.getCookies();
         if(cookies == null){
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -38,7 +38,7 @@ public class QuizPoints extends HttpServlet {
         }
 
         //Adds points to the user who took the quiz
-        Long quiz_time = QuizTimingPropertiesUtils.getQuizTimestampProperty("Game", "gameID", userEntity.getProperty("currentGame").toString(), datastore);
+        Long quiz_time = QuizTimingPropertiesUtils.getQuizTimestampProperty("Game", "gameId", userEntity.getProperty("gameId").toString(), datastore);
         Long user_time = QuizTimingPropertiesUtils.getQuizTimestampProperty("user", "userID", userEntity.getProperty("userID").toString(), datastore);
         QuizTimingPropertiesUtils.giveUserQuizTakenPoints(QuizTimingPropertiesUtils.userTookQuiz(user_time, quiz_time), userEntity, datastore);        
 
@@ -46,7 +46,7 @@ public class QuizPoints extends HttpServlet {
         String clicked_user_id = HttpRequestUtils.getParameterWithDefault(request, "user_picture", "");
         Entity user_clicked = UserUtils.getEntityFromDatastore("user", "userID", clicked_user_id, datastore);
         UserUtils.addPoints(user_clicked, 20, datastore);
-
-       response.sendRedirect("/gameBoard.html");
+ 
+       response.sendRedirect("/loggedin/gameBoard");
     }
 }
