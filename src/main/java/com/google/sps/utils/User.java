@@ -17,11 +17,6 @@ public final class User {
 
   private Entity entity;
 
-  // properties for the leaderboard
-  String userID;
-  String userName;
-  int score;
-
   public User(Entity userEntity) {
     if (userEntity.getKind() != USER_ENTITY_KIND) {
       throw new IllegalArgumentException(
@@ -46,30 +41,26 @@ public final class User {
 
   // Unique identifier for the user.
   public String getId() {
-    return userID;
+    return (String) entity.getProperty("userID");
   }
   // TODO: Consider raising an exception instead of overwriting a non-null userId.
-  public void setId(String newID) {
-    userID = newID;
+  public void setId(String userID) {
     entity.setProperty("userID", userID);
   }
 
   // Non-unique name for the user
   public String getName(){
-    return userName;
+    return (String) entity.getProperty("userName");
   }
-  public void setName(String newName){
-    userName = newName;
-    
-    //entity.setProperty("userName", userName);
+  public void setName(String userName){
+    entity.setProperty("userName", userName);
   }
 
   // current game score
   public int getScore(){
-    return score;
+    return ((Number) entity.getProperty("score")).intValue();
   }
-  public void setScore(int newScore){
-    score = newScore;
+  public void setScore(int score){
     entity.setProperty("score", score);
   }
 
