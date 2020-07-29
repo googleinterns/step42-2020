@@ -58,13 +58,10 @@ public class LoginServlet extends HttpServlet {
             .setAudience(Collections.singletonList("610251294652-9ojdhjhh8kpcdvdbmrvp9nkevgr2n2d8.apps.googleusercontent.com"))
             .build();
 
-    Enumeration<String> headers = request.getHeaders("idtoken");
-    String idTokenString = null;
-    while(headers.hasMoreElements()){
-        idTokenString = headers.nextElement();
-         //header passed in should always have ONLY 1 element (just the id token)
-         //therefore, id token should always be the last element.
-    }
+    String idTokenString = request.getHeaders("idtoken").nextElement(); 
+       //request.getHeaders("idtoken") returns an Enumeration, but you only need the
+       //first (and only) value. By putting the "idtoken" parameter, it only returns 
+       //the value of the header with the name "idtoken".
 
     try{
         GoogleIdToken idToken = verifier.verify(idTokenString);
