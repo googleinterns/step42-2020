@@ -1,18 +1,17 @@
 package com.google.sps.utils;
 import com.google.appengine.api.datastore.Entity;
 import java.lang.IllegalArgumentException;
-import java.util.List;
 import java.util.ArrayList;
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
 
 public final class Game {
-    DatastoreService datastore;
+    public final static String game_kind = "Game";
     private Entity entity;
 
-    public Game() {
-        datastore = DatastoreServiceFactory.getDatastoreService();
-        entity = new Entity("Game");
+    public Game(Entity game_entity) {
+        if (game_entity.getKind().equals(game_kind)) {
+            throw new IllegalArgumentException("Attempted to interpret Entity of kind " + game_entity.getKind()+ " as a Game.");
+        }
+    entity = game_entity;
     }
 
     //Sets the individual game Id for a game entity
@@ -63,4 +62,5 @@ public final class Game {
     public ArrayList<String> getUserIds() {
         return (ArrayList<String>) entity.getProperty("userIds");
     }
+
 }

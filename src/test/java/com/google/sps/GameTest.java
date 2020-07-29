@@ -11,7 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
+ 
 package com.google.sps;
 
 import com.google.appengine.api.datastore.Entity;
@@ -26,14 +26,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import com.google.sps.utils.Game;
-//import com.google.sps.utils.UserUtils;
+import com.google.sps.utils.UserUtils;
 import java.util.ArrayList;
 
 // tests the usergame class functions 
 @RunWith(JUnit4.class)
 public final class GameTest {
     private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
-    
+
     @Before
     public void setUp() {
     helper.setUp();
@@ -47,7 +47,8 @@ public final class GameTest {
     @Test 
     //Tests if the properties are set right for the game class 
     public void SetsGameEntityCorrectly() {
-        Game game = new Game();
+        Entity game_entity = new Entity("Game");
+        Game game = new Game(game_entity);
         game.setGameId("1234");
         game.setGameName("Plants");
         game.setQuizQuestion("Which plant looks the healthiest?");
@@ -67,7 +68,8 @@ public final class GameTest {
     @Test
     //Tests if the entity created by the game class gets put into datastore
     public void putInDatastore() {
-        Game game = new Game();
+        Entity game_entity = new Entity("Game");
+        Game game = new Game(game_entity);
         game.setGameId("1234");
 
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
