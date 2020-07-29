@@ -4,11 +4,11 @@ import java.lang.IllegalArgumentException;
 import java.util.ArrayList;
 
 public final class Game {
-    public final static String game_kind = "Game";
+    public final static String GAME_KIND = "Game";
     private Entity entity;
 
     public Game(Entity game_entity) {
-        if (game_entity.getKind().equals(game_kind)) {
+        if (game_entity.getKind().equals(GAME_KIND)) {
             throw new IllegalArgumentException("Attempted to interpret Entity of kind " + game_entity.getKind()+ " as a Game.");
         }
     entity = game_entity;

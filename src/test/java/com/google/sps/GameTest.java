@@ -48,7 +48,7 @@ public final class GameTest {
     //Tests if the properties are set right for the game class 
     public void SetsGameEntityCorrectly() {
         Entity game_entity = new Entity("Game");
-        Game game = new Game(game_entity);
+        Game game = new Game(new Entity("Game"));
         game.setGameId("1234");
         game.setGameName("Plants");
         game.setQuizQuestion("Which plant looks the healthiest?");
@@ -68,8 +68,7 @@ public final class GameTest {
     @Test
     //Tests if the entity created by the game class gets put into datastore
     public void putInDatastore() {
-        Entity game_entity = new Entity("Game");
-        Game game = new Game(game_entity);
+        Game game = new Game(new Entity("Game"));
         game.setGameId("1234");
 
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();

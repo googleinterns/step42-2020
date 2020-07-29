@@ -127,8 +127,7 @@ public final class TimingPropertiesTest {
         QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
         
         Entity user = new Entity("user");
-        Entity game_entity = new Entity("Game");
-        Game game = new Game(game_entity);
+        Game game = new Game(new Entity("Game"));
  
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
  
@@ -186,8 +185,7 @@ public final class TimingPropertiesTest {
     public void getNewQuestion_validParamters() {
         QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        Entity game_entity = new Entity("Game");
-        Game game = new Game(game_entity);
+        Game game = new Game(new Entity("Game"));
  
         game.setQuizTimestamp(159430944365L);
         game.setQuizQuestion("");
