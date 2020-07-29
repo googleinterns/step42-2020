@@ -15,29 +15,29 @@ public final class Game {
         entity = new Entity("Game");
     }
 
+    //Sets the individual game Id for a game entity
     public void setGameId(String gameId) {
         entity.setProperty("gameId", gameId);
-        datastore.put(entity);
     }
 
+    //Sets the game name for the game entity
     public void setGameName(String game_name) {
         entity.setProperty("gameName", game_name);
-        datastore.put(entity);
     }
 
+    //sets the quiz question for the game entity
     public void setQuizQuestion(String quiz_question) {
         entity.setProperty("quizQuestion", quiz_question);
-        datastore.put(entity);
     }
 
+    //sets the timestamp of the quiz in the game entity 
     public void setQuizTimestamp(long quiz_timestamp) {
         entity.setProperty("quiz_timestamp", quiz_timestamp);
-        datastore.put(entity);
     }
 
+    //sets a list of users that are apart of a game 
     public void setUserIds(ArrayList<String> userIds) {
         entity.setProperty("userIds", userIds);
-        datastore.put(entity);
     }
 
     public Entity getGameEntity() {

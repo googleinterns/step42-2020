@@ -137,6 +137,7 @@ public final class TimingPropertiesTest {
  
         game.setQuizTimestamp(1594309443660L);
         game.setGameId("67890");
+        datastore.put(game.getGameEntity());
  
         Long user_quiz_time = timing_properties_test.getQuizTimestampProperty("user", "userID", user.getProperty("userID").toString(), datastore);
         Long game_quiz_time = timing_properties_test.getQuizTimestampProperty("game", "gameID", game.getGameId(), datastore);
@@ -188,6 +189,7 @@ public final class TimingPropertiesTest {
 
         game.setQuizTimestamp(159430944365L);
         game.setQuizQuestion("");
+        datastore.put(game.getGameEntity());
  
         String new_question = timing_properties_test.getNewQuestion(game.getGameEntity(), datastore);
         if(!(new_question.equals(""))){
