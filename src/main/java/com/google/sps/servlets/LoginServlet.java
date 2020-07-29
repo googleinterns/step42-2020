@@ -62,10 +62,16 @@ public class LoginServlet extends HttpServlet {
        //request.getHeaders("idtoken") returns an Enumeration, but you only need the
        //first (and only) value. By putting the "idtoken" parameter, it only returns 
        //the value of the header with the name "idtoken".
-
+       
+    GoogleIdToken idToken;
     try{
-        GoogleIdToken idToken = verifier.verify(idTokenString);
-        if (idToken != null) {
+         idToken = verifier.verify(idTokenString);
+    } catch(Exception e){
+         e.printStackTrace();
+         return;
+    }
+       
+    if (idToken != null) {
           //create coookie w session ID
           String sessionID = request.getSession(true).getId(); 
           Cookie sessionIDcookie = CookieUtils.createSessionIDCookie(request.getSession(false), sessionID);
@@ -79,16 +85,13 @@ public class LoginServlet extends HttpServlet {
           //send user data to datastore
           Entity userEntity = UserUtils.getEntityFromDatastore("user", "userID", userId, datastore);
           if(userEntity == null){
-            datastore.put(UserUtils.initializeUser(userId, username, sessionID));
+              datastore.put(UserUtils.initializeUser(userId, username, sessionID));
           } else {
-            userEntity.setProperty("SessionID",sessionID);
-            datastore.put(userEntity);
-        }
-        } else {
-          System.out.println("Invalid ID token.");
-       }
-    } catch(Exception e){
-        e.printStackTrace();
+              userEntity.setProperty("SessionID",sessionID);
+              datastore.put(userEntity);
+          }
+    } else {
+        System.out.println("Invalid ID token.");
     }
-    }
+ }
 }
