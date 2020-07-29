@@ -24,7 +24,7 @@ import com.google.sps.utils.CookieUtils;
 
      /**
     * Verifies that the Google token is legitimate. Then creates a 
-    * cookie storing the Session ID and stores the log in information in the user entity in datastore.
+    * cookie storing the Session ID and stores the login information in the user entity in datastore.
     *
     * User Entity:
     *    username      The user's full name (from their google account)
@@ -47,7 +47,7 @@ import com.google.sps.utils.CookieUtils;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+  DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
      
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -62,26 +62,28 @@ DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     String idTokenString = null;
     while(headers.hasMoreElements()){
         idTokenString = headers.nextElement();
+         //header passed in should always have ONLY 1 element (just the id token)
+         //therefore, id token should always be the last element.
     }
 
     try{
-        GoogleIdToken idToken = verifier.verify(idTokenString); //line where it breaks
+        GoogleIdToken idToken = verifier.verify(idTokenString);
         if (idToken != null) {
-        //create coookie w session ID
-        String sessionID = request.getSession(true).getId(); 
-        Cookie sessionIDcookie = CookieUtils.createSessionIDCookie(request.getSession(false), sessionID);
-        response.addCookie(sessionIDcookie);
+          //create coookie w session ID
+          String sessionID = request.getSession(true).getId(); 
+          Cookie sessionIDcookie = CookieUtils.createSessionIDCookie(request.getSession(false), sessionID);
+          response.addCookie(sessionIDcookie);
 
-        Payload payload = idToken.getPayload();
-        //get user info for user entity
-        String userId = payload.getSubject();
-        String username = (String) payload.get("name");
+          Payload payload = idToken.getPayload();
+          //get user info for user entity
+          String userId = payload.getSubject();
+          String username = (String) payload.get("name");
 
-        //send user data to datastore
-        Entity userEntity = UserUtils.getEntityFromDatastore("user", "userID", userId, datastore);
-        if(userEntity == null){
-        //datastore.put(UserUtils.initializeUser(userId, username, sessionID));
-        } else {
+          //send user data to datastore
+          Entity userEntity = UserUtils.getEntityFromDatastore("user", "userID", userId, datastore);
+          if(userEntity == null){
+            datastore.put(UserUtils.initializeUser(userId, username, sessionID));
+          } else {
             userEntity.setProperty("SessionID",sessionID);
             datastore.put(userEntity);
         }
