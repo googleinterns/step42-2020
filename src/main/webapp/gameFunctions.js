@@ -4,7 +4,7 @@ function runOnload(){
     getUserQuizStatus();
 }
 
-
+//adds the user's name, score, and picture uploaded to the quiz page.
 function populateQuizPage(){
     var username_container = document.getElementById("users-name");
     var score_container = document.getElementById("score");
@@ -20,7 +20,9 @@ function populateQuizPage(){
     }
     )
 }
- 
+
+
+//builds the user's image from their blobKey url
 function makeImage(image_holder, blobKey){
     image_holder.innerHTML = "";
     const user_image =  document.createElement("img");
