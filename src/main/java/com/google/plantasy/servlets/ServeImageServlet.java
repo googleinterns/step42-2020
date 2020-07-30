@@ -12,8 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
  
-package com.google.sps.servlets;
+package com.googl.plantasy.servlets;
  
+import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import java.io.IOException;
@@ -23,24 +24,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
  
 /**
- * When the fetch() function requests the /blobstore-upload-url URL, the content of the response is
- * the URL that allows a user to upload a file to Blobstore. 
- * The user's browser uploads the file directly to the Blobstore via the generated URL.
- */
-@WebServlet("/blobstore-upload-url")
-public class BlobstoreUploadUrlServlet extends HttpServlet {
+ * Serves the image file corresponding to the given blob key
+*/ 
+@WebServlet("/get-image")
+public class ServeImageServlet extends HttpServlet {
  
-  BlobstoreService blobstoreService;
+  BlobstoreService blobstoreService;  
  
-  public BlobstoreUploadUrlServlet(){
+  public ServeImageServlet(){
     blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
   }
- 
+
+  /**
+   * Replaces the getServingUrl method (Obtains a URL that can dynamically 
+   * serve the image stored as a blob by passing the blobkey to blobstore service)
+  */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String uploadUrl = blobstoreService.createUploadUrl("/image-upload-handler-blobstore");
-
-    response.setContentType("text/html"); 
-    response.getWriter().println(uploadUrl);
+    BlobKey blobKey = new BlobKey(request.getParameter("blobKey"));
+    blobstoreService.serve(blobKey, response);
   }
-} 
+}
