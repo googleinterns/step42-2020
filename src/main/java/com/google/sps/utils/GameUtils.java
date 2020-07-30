@@ -59,14 +59,13 @@ public final class GameUtils {
     // getting the game id for the game id property
     try{
       gameEntity = datastore.get(gameKey);
-
-      String key = KeyFactory.keyToString(gameKey);
-      game.setGameId(key);
-      datastore.put(gameEntity);
     }catch(EntityNotFoundException e){
       log.severe("EntityNotFoundException; game entity not found when adding game id in create game");
       return null;
     }
+    String key = KeyFactory.keyToString(gameKey);
+    game.setGameId(key);
+    datastore.put(gameEntity);
  
     return gameEntity;
   }
