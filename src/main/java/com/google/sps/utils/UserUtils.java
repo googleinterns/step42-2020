@@ -209,9 +209,8 @@ public static Entity initializeUser(String userId, String name, String sessionID
   */
   public static void addUploadPoints(Entity userEntity, DatastoreService datastore){
 
-    QuizTimingPropertiesUtils utils = new QuizTimingPropertiesUtils();
     User user = new User(userEntity);
-    if(user.getLastAwardedUploadPoints() == 0L || utils.isTimestampOutdated(user.getLastAwardedUploadPoints())){
+    if(user.getLastAwardedUploadPoints() == 0L || QuizTimingPropertiesUtils.isTimestampOutdated(user.getLastAwardedUploadPoints())){
         addPoints(userEntity, ADDED_POINTS, datastore);
         user.setLastAwardedUploadPoints(System.currentTimeMillis());
     }
