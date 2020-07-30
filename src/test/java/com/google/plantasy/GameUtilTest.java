@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.sps;
+package com.google.plantasy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +27,8 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import com.google.sps.utils.GameUtils;
-import com.google.sps.utils.Game;
+import com.google.plantasy.utils.GameUtils;
+import com.google.plantasy.utils.Game;
 
 /** tests the game util functions */
 @RunWith(JUnit4.class)
