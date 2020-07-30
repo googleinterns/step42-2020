@@ -79,5 +79,13 @@ public final class User {
   }
   public void setBlobKey(String blobKey){
     entity.setProperty("blobKey", blobKey);
-  } 
+  }
+
+  // last time that the user was awarded points for uploading
+  public long getLastAwardedUploadPoints(){
+    return (long) entity.getProperty("lastAwardedUploadPoints");
+  }
+  public void setLastAwardedUploadPoints(long lastAwardedUploadPoints){
+    entity.setProperty("lastAwardedUploadPoints", lastAwardedUploadPoints);
+  }
 }
