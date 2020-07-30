@@ -24,8 +24,8 @@ import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.sps.utils.UserUtils;
  
-@WebServlet("/populate-game-page")
-public class PopulateGamePage extends HttpServlet {
+@WebServlet("/get-user-info")
+public class GetUserInformation extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
  
   @Override
