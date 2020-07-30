@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.sps;
+package com.google.plantasy.utils;
 
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.DatastoreService;
@@ -34,7 +34,7 @@ public final class QuizTimingPropertiesUtils {
 
     private static final Logger log = Logger.getLogger(QuizTimingPropertiesUtils.class.getName());
 
-    static final List<String> quiz_questions = new ArrayList<String>(List.of(
+    static final List<String> quiz_questions = Arrays.asList(
         "Which plant has the most food growing from it?",
         "Which plant has the prettiest colors?",
         "Which plant is likely to grow the fastest?",
@@ -53,7 +53,7 @@ public final class QuizTimingPropertiesUtils {
         "Which plant would look the best inside as a houseplant?",
         "Which plant would look the best outside in a garden?",
         "Which plant would you give as a gift?"
-    ));
+    );
 
     //This function gets the the "quiz_timestamp" property of the entity that is fed into the function
     public static Long getQuizTimestampProperty(String entity, String id_of_entity, String id_of_entity_value, DatastoreService datastore) {
