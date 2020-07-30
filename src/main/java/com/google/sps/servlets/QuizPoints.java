@@ -46,7 +46,7 @@ public class QuizPoints extends HttpServlet {
         String clicked_user_id = HttpRequestUtils.getParameterWithDefault(request, "user_picture", "");
         Entity user_clicked = UserUtils.getEntityFromDatastore("user", "userID", clicked_user_id, datastore);
         UserUtils.addPoints(user_clicked, 20, datastore);
- 
+
        response.sendRedirect("/loggedin/gameBoard");
     }
 }

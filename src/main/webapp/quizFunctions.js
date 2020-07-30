@@ -23,8 +23,8 @@ document.getElementById("start_quiz").onclick = function() {
                 Object.keys(players_ids_and_photos).forEach(function(key) {
                     fetch('/get-image?blobKey=' + players_ids_and_photos[key]).then((pic) => {
                     let button_for_picture = document.createElement("BUTTON");
-                    button_for_picture.name= "user_picture";
-                    button_for_picture.value=key;
+                    button_for_picture.name = "user_picture";
+                    button_for_picture.value = key;
                     let picture = document.createElement("IMG");
                     picture.src = pic.url;
                     document.getElementById("quiz_photos").appendChild(button_for_picture).appendChild(picture);
