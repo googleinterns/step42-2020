@@ -9,10 +9,12 @@ function populateQuizPage(){
     var username_container = document.getElementById("users-name");
     var score_container = document.getElementById("score");
     var image_holder = document.getElementById("image-holder");
+    var gameId_container = document.getElementById("game-board-id")
  
     fetch("/get-user-info").then(response => response.json()).then(data => {
         username_container.innerHTML = data.propertyMap.username;
         score_container.innerHTML = data.propertyMap.score;
+        gameId_container.innerHTML = ("Game Id: " + data.propertyMap.gameId);
         if(data.propertyMap.blobKey != null){
             makeImage(image_holder, data.propertyMap.blobKey);
         }

@@ -99,6 +99,13 @@ a{
     color: #235952;
 }
 
+#game-board-id{
+    font-size: 4vh;
+    text-align: center;
+    font-family: 'PT Mono', monospace;
+    color: #235952;
+}
+
 #individual-container{
     margin-left:15vw;
     height: 12vw;
