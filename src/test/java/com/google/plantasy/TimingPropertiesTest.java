@@ -327,7 +327,7 @@ public final class TimingPropertiesTest {
         user.setProperty("quiz_timestamp", 159430944365L);
         user.setProperty("score", 0);
         datastore.put(user);
-        
+
         boolean actual = timing_properties_test.giveUserQuizTakenPoints(true, user, datastore);
         Assert.assertEquals(true, actual);
     }
