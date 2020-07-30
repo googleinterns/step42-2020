@@ -15,7 +15,6 @@ function populateQuizPage(){
         score_container.innerHTML = data.propertyMap.score;
         if(data.propertyMap.blobKey != null){
             makeImage(image_holder, data.propertyMap.blobKey);
-            console.log(data);
         }
     }
     )
