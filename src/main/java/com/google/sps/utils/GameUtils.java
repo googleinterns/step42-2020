@@ -21,6 +21,7 @@ import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Key;
 import com.google.sps.utils.UserUtils;
+import com.google.sps.utils.Game;
 import java.util.logging.Logger;
 
 public final class GameUtils {
@@ -42,32 +43,32 @@ public final class GameUtils {
     
     // intializing game property values
     Entity gameEntity = new Entity("Game");
+    Game game = new Game(gameEntity);
     ArrayList<String> userIds = new ArrayList<String>();
     String quizQuestion = "";
     long quiz_timestamp = 0;
- 
-    gameEntity.setProperty("gameName", gameName);
-    gameEntity.setProperty("userIds", userIds);
-    gameEntity.setProperty("quizQuestion", quizQuestion);
-    gameEntity.setProperty("quiz_timestamp", quiz_timestamp);
     Key gameKey = gameEntity.getKey();
- 
+
+    game.setGameName(gameName);
+    game.setUserIds(userIds);
+    game.setQuizQuestion(quizQuestion);
+    game.setQuizTimestamp(quiz_timestamp);
+
     datastore.put(gameEntity);
 
     // getting the game id for the game id property
-    Entity entity = null;
     try{
-      entity = datastore.get(gameKey);
+      gameEntity = datastore.get(gameKey);
 
       String key = KeyFactory.keyToString(gameKey);
-      entity.setProperty("gameId", key);
-      datastore.put(entity);
+      game.setGameId(key);
+      datastore.put(gameEntity);
     }catch(EntityNotFoundException e){
       log.severe("EntityNotFoundException; game entity not found when adding game id in create game");
       return null;
     }
  
-    return entity;
+    return gameEntity;
   }
 
   /**
@@ -86,16 +87,17 @@ public final class GameUtils {
         log.severe("found null datastore trying to game to user " + userId);
         return false;
     }
+
+    Game game = new Game(gameEntity);
  
-    ArrayList<String> userIds = (ArrayList<String>) gameEntity.getProperty("userIds");
+    ArrayList<String> userIds = game.getUserIds();
     if(userIds == null){
       userIds = new ArrayList<String>();
+      game.setUserIds(userIds);
     }
 
     // add user to game entity
     userIds.add(userId);
-    gameEntity.setProperty("userIds", userIds);
-    datastore.put(gameEntity);
     
     return true;
   }
