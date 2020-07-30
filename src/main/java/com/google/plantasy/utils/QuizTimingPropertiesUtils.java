@@ -33,7 +33,7 @@ public final class QuizTimingPropertiesUtils {
 
     private static final Logger log = Logger.getLogger(QuizTimingPropertiesUtils.class.getName());
 
-    static final List<String> quiz_questions = new ArrayList<String>(List.of(
+    static final List<String> quiz_questions = Arrays.asList(
         "Which plant has the most food growing from it?",
         "Which plant has the most food growing from it?",
         "Which plant has the prettiest colors?",

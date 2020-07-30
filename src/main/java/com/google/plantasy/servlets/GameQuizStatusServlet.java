@@ -1,4 +1,4 @@
-package com.google.sps.servlets;
+package com.google.plantasy.servlets;
  
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
-import com.google.sps.QuizTimingPropertiesUtils;
-import com.google.sps.utils.UserUtils;
+import com.google.plantasy.QuizTimingPropertiesUtils;
+import com.google.plantasy.utils.UserUtils;
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;

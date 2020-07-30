@@ -1,4 +1,4 @@
-package com.google.sps.servlets;
+package com.google.plantasy.servlets;
  
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -15,8 +15,8 @@ import com.google.appengine.api.datastore.FetchOptions;
 import java.text.DateFormat;
 import java.util.Date;
 import com.google.appengine.api.datastore.Key;
-import com.google.sps.QuizTimingPropertiesUtils;
-import com.google.sps.UserUtils;
+import com.google.plantasy.QuizTimingPropertiesUtils;
+import com.google.plantasy.UserUtils;
  
 //This servlet checks to see if the user took the quiz that was available today
 //If they did take the quiz the true boolean value will be returned 
