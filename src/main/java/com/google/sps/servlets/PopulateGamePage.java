@@ -28,7 +28,7 @@ import com.google.sps.utils.UserUtils;
 public class PopulateGamePage extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
  
-    @Override
+  @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
       //get current user from servlet
       Cookie[] cookies = request.getCookies();
