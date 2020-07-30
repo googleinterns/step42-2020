@@ -18,10 +18,10 @@ public final class User {
   private Entity entity;
 
   public User(Entity userEntity) {
-    if (userEntity.getKind() != USER_ENTITY_KIND) {
+    if (!((userEntity.getKind()).toString().equals(USER_ENTITY_KIND))) {
       throw new IllegalArgumentException(
           "Attempted to interpret Entity of kind " + userEntity.getKind()
-          + " as a User.");
+          + " as a user.");
     }
     entity = userEntity;
   }
