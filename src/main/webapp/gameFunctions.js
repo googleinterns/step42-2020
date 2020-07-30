@@ -10,7 +10,7 @@ function populateQuizPage(){
     var score_container = document.getElementById("score");
     var image_holder = document.getElementById("image-holder");
  
-    fetch("/populate-game-page").then(response => response.json()).then(data => {
+    fetch("/get-user-info").then(response => response.json()).then(data => {
         username_container.innerHTML = data.propertyMap.username;
         score_container.innerHTML = data.propertyMap.score;
         if(data.propertyMap.blobKey != null){
