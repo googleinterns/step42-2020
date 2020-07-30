@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
  
-package com.google.plantasy.servlets;
+package com.google.sps.servlets;
  
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -22,31 +22,30 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.plantasy.utils.GameUtils;
-import com.google.plantasy.utils.UserUtils; 
+import com.google.gson.Gson;
+import java.util.ArrayList;
+import com.google.sps.utils.User;
+import com.google.sps.utils.UserUtils;
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
-import java.io.PrintWriter;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
  
-/** When a user joins a game, check if the given game id exists
-    if so, get the game entity and add the user,
-    then add the game to the user entity.
-    If it doesn't exist, redirect back to the join game page.
-*/
-@WebServlet("/join-game")
-public class joinGameServlet extends HttpServlet {
+@WebServlet("/populate-leaderboard")
+public class populateLeaderboardServlet extends HttpServlet {
  
   DatastoreService datastore;
  
-  public joinGameServlet(){
+  public populateLeaderboardServlet(){
     datastore = DatastoreServiceFactory.getDatastoreService();
   }
- 
+  
+  /**
+  * Gets a list of users (user objects with score, name, id) that are playing the same game 
+  */
   @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    
-    String gameId = request.getParameter("game-id");
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
  
     // get user entity
     Cookie cookies[] = request.getCookies();
@@ -59,22 +58,22 @@ public class joinGameServlet extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         return;
     }
+ 
+    ArrayList<User> userObjects = UserUtils.userList((String) userEntity.getProperty("gameId"), datastore);
+    
+    // translate to JSON for loadLeaderBoard function
+    JSONArray users = new JSONArray();
+    for(User user : userObjects){
+      JSONObject obj = new JSONObject();
 
-    Entity gameEntity = UserUtils.getEntityFromDatastore("Game", "gameId", gameId, datastore);
-    if(gameEntity == null){
-      PrintWriter out = response.getWriter();
-      out.println("<p>We couldn't find a game by that code, <a href = \"join.html\"><h3>press here</h3></a> and enter a different game code.</p>");
-      return;
+      obj.put("userName", user.getName());
+      obj.put("userID", user.getId());
+      obj.put("score", new Integer(user.getScore()));
+      users.add(obj);
     }
-    boolean setGame = GameUtils.setGame(userEntity, datastore, gameEntity);
-
-    if(!setGame){
-      // connecting the game to the user failed because the user was not logged in, send back to login
-      response.sendRedirect("/index.html");
-      return;
-    }else{
-      response.sendRedirect("/gameBoard.html");
-      return;
-    }
+ 
+    response.setContentType("application/json;");
+    response.getWriter().println(users);
   }
 }
+

@@ -47,102 +47,6 @@ public final class GameUtilTest {
     helper.tearDown();
   }
 
-  //  Test where user has no games
-  @Test
-  public void isValidGame_UserHasNoGames() {
-
-    Entity userEntity2 = new Entity("user");
-    ArrayList<String> gameNames2 = new ArrayList<>();
-
-    userEntity2.setProperty("gameNames",gameNames2);
-    userEntity2.setProperty("userID","2");
-
-    boolean actual = GameUtils.IsValidGameName("game1", userEntity2);
-
-    Assert.assertEquals(true, actual);
-  }
-
-  // Test a game name the user already has 
-  @Test
-  public void isValidGame_UserHasDuplicateGameName() {
-
-    Entity userEntity1 = new Entity("user");
-    ArrayList<String> gameNames1 = new ArrayList<>();
-
-    gameNames1.add("game1");
-    gameNames1.add("game2");
-    gameNames1.add("game3");
-    userEntity1.setProperty("gameNames",gameNames1);
-    userEntity1.setProperty("userID","1");
-
-    boolean actual = GameUtils.IsValidGameName("game1", userEntity1);
-
-    Assert.assertEquals(false, actual);
-  }
-
-  // The user has games, but the given game name is new
-  @Test
-  public void isValidGame_NewGameName() {
-
-    Entity userEntity1 = new Entity("user");
-    ArrayList<String> gameNames1 = new ArrayList<>();
-    
-    gameNames1.add("game1");
-    gameNames1.add("game2");
-    gameNames1.add("game3");
-    userEntity1.setProperty("gameNames",gameNames1);
-    userEntity1.setProperty("userID","1");
-
-    boolean actual = GameUtils.IsValidGameName("game4", userEntity1);
-
-    Assert.assertEquals(true, actual);
-  }
-
-  // The user has games, and the given name is a duplicate name with different capitalization
-  @Test
-  public void isValidGame_SameNameDifferentCapitalization() {
-
-    Entity userEntity1 = new Entity("user");
-    ArrayList<String> gameNames1 = new ArrayList<>();
-    
-    gameNames1.add("game1");
-    gameNames1.add("game2");
-    gameNames1.add("game3");
-    userEntity1.setProperty("gameNames",gameNames1);
-    userEntity1.setProperty("userID","1");
-
-    boolean actual = GameUtils.IsValidGameName("Game1", userEntity1);
-
-    Assert.assertEquals(true, actual);
-  }
-
-  // Test IsValidGameName with a blank game name
-  @Test
-  public void isValidGame_EmptyGameName() {
-
-    Entity userEntity1 = new Entity("user");
-    ArrayList<String> gameNames1 = new ArrayList<>();
-    
-    gameNames1.add("game1");
-    gameNames1.add("game2");
-    gameNames1.add("game3");
-    userEntity1.setProperty("gameNames",gameNames1);
-    userEntity1.setProperty("userID","1");
-
-    boolean actual = GameUtils.IsValidGameName("", userEntity1);
-
-    Assert.assertEquals(false, actual);
-  }
-
-  // Test IsValidGameName with a null user entity
-  @Test
-  public void isValidGame_NullUserEntity() {
-
-    boolean actual = GameUtils.IsValidGameName("game1", null);
-
-    Assert.assertEquals(false, actual);
-  }
-
   // Test create game with an empty string for game name
   @Test
   public void createGame_EmptyGameName() {
@@ -245,7 +149,7 @@ public final class GameUtilTest {
   public void setGame_NullDatastore() {
 
     Entity userEntity = new Entity("User");
-    userEntity.setProperty("userId", "user1");
+    userEntity.setProperty("userID", "user1");
     Entity gameEntity = new Entity("Game");
 
     boolean actual = false;
@@ -275,7 +179,7 @@ public final class GameUtilTest {
   public void setGame_NullGameEntity() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Entity userEntity = new Entity("User");
-    userEntity.setProperty("userId", "user1");
+    userEntity.setProperty("userID", "user1");
 
     boolean actual = false;
     try{
@@ -291,7 +195,7 @@ public final class GameUtilTest {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
     Entity userEntity = new Entity("User");
-    userEntity.setProperty("userId", "user1");
+    userEntity.setProperty("userID", "user1");
     Entity gameEntity = GameUtils.createGameEntity("game1", datastore);
 
     boolean actual = GameUtils.setGame(userEntity, datastore, gameEntity);

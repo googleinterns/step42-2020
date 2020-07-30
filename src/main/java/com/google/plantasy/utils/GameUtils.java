@@ -28,31 +28,6 @@ public final class GameUtils {
   private static final Logger log = Logger.getLogger(GameUtils.class.getName());
 
   /**
-  * Checks to see whether the user already has a game by the given name, and returns false if so
-  */
-  public static boolean IsValidGameName(String gameName, Entity userEntity) {
-    
-    if(userEntity == null){
-        log.severe("found null user entity when checking for valid game name");
-        return false;
-    }
-    if(gameName == ""){
-        return false;
-    }
-    
-    // list of game names for the given user
-    ArrayList<String> names = (ArrayList<String>) userEntity.getProperty("gameNames");
-
-    //compares game names to the prospective game name, and returns false if there's a match
-    for(String name : names){
-        if(name == gameName){
-            return false;
-        }
-    }
-    return true;
-  }
-
-  /**
   * Creates a game entity and returns the entity if successful
   */
   public static Entity createGameEntity(String gameName, DatastoreService datastore) {
@@ -132,7 +107,7 @@ public final class GameUtils {
   public static boolean setGame(Entity userEntity, DatastoreService datastore, Entity gameEntity) {
  
     // add user to game entity + vice versa
-    boolean userAdded = GameUtils.addUserToGame((String) userEntity.getProperty("userId"), gameEntity, datastore);
+    boolean userAdded = GameUtils.addUserToGame((String) userEntity.getProperty("userID"), gameEntity, datastore);
     if(!userAdded){
         log.severe("failed to add user to game " + (String) gameEntity.getProperty("gameName"));
         return false;
