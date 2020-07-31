@@ -4,7 +4,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.sps;
+package com.google.plantasy;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -15,7 +15,7 @@ import org.junit.runners.JUnit4;
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
-import com.google.sps.utils.CookieUtils;
+import com.google.plantasy.utils.CookieUtils; 
 import static org.mockito.Mockito.*;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;

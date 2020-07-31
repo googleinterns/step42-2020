@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
  
-package com.google.sps;
+package com.google.plantasy;
  
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
@@ -22,7 +22,7 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import com.google.sps.HttpRequestUtils;
+import com.google.plantasy.HttpRequestUtils;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import static org.mockito.Mockito.*;

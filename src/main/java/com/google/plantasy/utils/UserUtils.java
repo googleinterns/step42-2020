@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.sps.utils;
+package com.google.plantasy.utils;
 
 import java.io.*;
 import javax.servlet.*;
@@ -28,9 +28,9 @@ import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 import java.util.logging.Logger;
-import com.google.sps.utils.User;
+import com.google.plantasy.utils.User;
 import com.google.appengine.api.datastore.Query.SortDirection;
-import com.google.sps.utils.QuizTimingPropertiesUtils;
+import com.google.plantasy.utils.QuizTimingPropertiesUtils;
 import java.lang.IllegalArgumentException;
 
 public final class UserUtils {
