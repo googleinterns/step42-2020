@@ -52,17 +52,14 @@ public final class UserUtils {
 
 public static Entity initializeUser(String userId, String name, String sessionID){
         //these values are always empty upon initialization
-        int initialScore = 0;
-        long initialTime = 0L;
-        long initialUploadPoints = 0L;
         Entity userEntity = new Entity("user");
         userEntity.setProperty("username",name);
         userEntity.setProperty("userID",userId);
-        userEntity.setProperty("quiz_timing",initialTime);
+        userEntity.setProperty("quiz_timing", 0L);
         userEntity.setProperty("gameId", "");
         userEntity.setProperty("blobKey", null);
-        userEntity.setProperty("score", initialScore);
-        userEntity.setProperty("lastAwardedUploadPoints", initialUploadPoints);
+        userEntity.setProperty("score", 0);
+        userEntity.setProperty("lastAwardedUploadPoints", 0L);
         return userEntity;
   }
  
@@ -176,15 +173,14 @@ public static Entity initializeUser(String userId, String name, String sessionID
   /**
     adds a specified number of points to the user's points
   */
-  public static void addPoints(Entity userEntity, int numPoints, DatastoreService datastore){
-    User user = new User(userEntity);
+  public static void addPoints(User user, int numPoints, DatastoreService datastore){
 
     try {
       user.setScore(user.getScore() + numPoints);
     } catch (NullPointerException e) {
       user.setScore(numPoints);                
     }
-    datastore.put(userEntity);
+    datastore.put(user.getEntity());
   }
 
   /**
@@ -213,7 +209,7 @@ public static Entity initializeUser(String userId, String name, String sessionID
 
     User user = new User(userEntity);
     if(user.getLastAwardedUploadPoints() == 0L || QuizTimingPropertiesUtils.isTimestampOutdated(user.getLastAwardedUploadPoints())){
-        addPoints(userEntity, ADDED_POINTS, datastore);
+        addPoints(user, ADDED_POINTS, datastore);
         user.setLastAwardedUploadPoints(System.currentTimeMillis());
         datastore.put(user.getEntity());
     }
