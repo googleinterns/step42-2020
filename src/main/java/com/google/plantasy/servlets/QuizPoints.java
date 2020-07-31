@@ -1,4 +1,4 @@
-package com.google.sps.servlets;
+package com.google.plantasy.servlets;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -9,9 +9,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.sps.utils.QuizTimingPropertiesUtils;
-import com.google.sps.utils.UserUtils;
-import com.google.sps.HttpRequestUtils;
+import com.google.plantasy.utils.QuizTimingPropertiesUtils;
+import com.google.plantasy.utils.UserUtils;
+import com.google.plantasy.HttpRequestUtils;
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -25,7 +25,7 @@ public class QuizPoints extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
+ 
         Cookie cookies[] = request.getCookies();
         if(cookies == null){
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -38,7 +38,7 @@ public class QuizPoints extends HttpServlet {
         }
 
         //Adds points to the user who took the quiz
-        Long quiz_time = QuizTimingPropertiesUtils.getQuizTimestampProperty("Game", "gameID", userEntity.getProperty("currentGame").toString(), datastore);
+        Long quiz_time = QuizTimingPropertiesUtils.getQuizTimestampProperty("Game", "gameId", userEntity.getProperty("gameId").toString(), datastore);
         Long user_time = QuizTimingPropertiesUtils.getQuizTimestampProperty("user", "userID", userEntity.getProperty("userID").toString(), datastore);
         QuizTimingPropertiesUtils.giveUserQuizTakenPoints(QuizTimingPropertiesUtils.userTookQuiz(user_time, quiz_time), userEntity, datastore);        
 
@@ -47,6 +47,6 @@ public class QuizPoints extends HttpServlet {
         Entity user_clicked = UserUtils.getEntityFromDatastore("user", "userID", clicked_user_id, datastore);
         UserUtils.addPoints(user_clicked, 20, datastore);
 
-       response.sendRedirect("/gameBoard.html");
+       response.sendRedirect("/loggedin/gameBoard");
     }
 }

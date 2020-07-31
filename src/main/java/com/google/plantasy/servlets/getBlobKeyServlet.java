@@ -12,46 +12,41 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
  
-package com.google.sps.servlets;
+package com.google.plantasy.servlets;
  
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.gson.Gson;
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.sps.utils.GameUtils;
-import com.google.sps.utils.UserUtils;
+import com.google.appengine.api.datastore.FetchOptions;
+import com.google.plantasy.utils.UserUtils; 
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
-import java.io.PrintWriter;
  
-/** Create game entity and connect it to the user, then update the user entity to include the game id
-    and store both in datastore when the user creates a new game.
- */
-@WebServlet("/start-game")
-public class startGameServlet extends HttpServlet {
- 
+/** Retrieves blobkey from Datastore for the image of the logged in user */
+@WebServlet("/get-blob-key")
+public class getBlobKeyServlet extends HttpServlet {
+  
   DatastoreService datastore;
  
-  public startGameServlet(){
+  public getBlobKeyServlet(){
     datastore = DatastoreServiceFactory.getDatastoreService();
   }
  
   @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
  
-    String gameName = request.getParameter("game-name");
-
-    if(gameName.isEmpty()){
-        response.sendRedirect("/start.html");
-        return;
-    }
-    
-    // query user 
+    // get the user entity
     Cookie cookies[] = request.getCookies();
     if(cookies == null){
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -63,15 +58,15 @@ public class startGameServlet extends HttpServlet {
         return;
     }
  
-    Entity newGame = GameUtils.createGameEntity(gameName, datastore);
-    boolean gameSet = GameUtils.setGame(userEntity, datastore, newGame);
- 
-    if(gameSet == false){
-      response.sendRedirect("/index.html");
-      return;
-    }else{
-      response.sendRedirect("/gameBoard.html");
+    String blobKey = (String) userEntity.getProperty("blobKey");
+    if(blobKey == null){
+      // if the user hasn't uploaded a picture yet, nothing is printed
+      response.setStatus(HttpServletResponse.SC_NOT_FOUND);
       return;
     }
+ 
+    Gson gson = new Gson();
+    response.setContentType("application/json;");
+    response.getWriter().println(gson.toJson(blobKey));
   }
-}
+} 

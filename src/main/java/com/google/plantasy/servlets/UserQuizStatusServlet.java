@@ -1,4 +1,4 @@
-package com.google.sps.servlets;
+package com.google.plantasy.servlets;
  
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -12,20 +12,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.datastore.FetchOptions;
+import java.text.DateFormat;
+import java.util.Date;
 import com.google.appengine.api.datastore.Key;
-import com.google.sps.QuizTimingPropertiesUtils;
-import com.google.sps.utils.UserUtils;
-import java.io.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
+import com.google.plantasy.QuizTimingPropertiesUtils;
+import com.google.plantasy.UserUtils;
  
-//This servelet returns the quiz question of the day to the logged in user as a json string
-@WebServlet("/game-quiz-status-servlet")
-public class GameQuizStatusServlet extends HttpServlet {
+//This servlet checks to see if the user took the quiz that was available today
+//If they did take the quiz the true boolean value will be returned 
+@WebServlet("/user-quiz-status-servlet")
+public class UserQuizStatusServlet extends HttpServlet {
  
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
  
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+ 
         Cookie cookies[] = request.getCookies();
         if(cookies == null){
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -37,17 +38,14 @@ public class GameQuizStatusServlet extends HttpServlet {
             return;
         }
  
-        Long current_quiz_stamp = QuizTimingPropertiesUtils.getQuizTimestampProperty("Game", "currentGame", userEntity.getProperty("currentGame").toString(), datastore);
-        Entity current_game = UserUtils.getEntityFromDatastore("Game", "currentGame", userEntity.getProperty("currentGame").toString(), datastore);
-
+        QuizTimingPropertiesUtils timing_utils = new QuizTimingPropertiesUtils();
+        //These variables get the last time the user took a quiz and the latest time a quiz was created
+        Long time_quiz_was_made = timing_utils.getQuizTimestampProperty("Game", "currentGame", userEntity.getProperty("currentGame").toString(), datastore);
+        Long latest_time_user_took_quiz = timing_utils.getQuizTimestampProperty("user", "userID", userEntity.getProperty("userID").toString(), datastore);
+ 
         Gson gson = new Gson();
         response.setContentType("application/json;");
  
-        if(QuizTimingPropertiesUtils.isTimestampOutdated(current_quiz_stamp)) {
-            response.getWriter().println(gson.toJson(QuizTimingPropertiesUtils.getNewQuestion(current_game, datastore)));
-            return;
-        }
-        
-        response.getWriter().println(gson.toJson(current_game.getProperty("quizQuestion")));
+        response.getWriter().println(gson.toJson(timing_utils.userTookQuiz(latest_time_user_took_quiz, current_quiz_time)));
     }
 }

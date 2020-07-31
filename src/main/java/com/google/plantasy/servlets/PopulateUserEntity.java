@@ -1,5 +1,5 @@
 
-package com.google.sps.servlets;
+package com.google.plantasy.servlets;
 
 import java.io.*;
 import javax.servlet.*;

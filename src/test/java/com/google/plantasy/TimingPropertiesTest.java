@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.sps;
+package com.google.plantasy;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -25,8 +25,8 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import com.google.sps.utils.QuizTimingPropertiesUtils;
-import com.google.sps.utils.Game;
+import com.google.plantasy.utils.QuizTimingPropertiesUtils;
+import com.google.plantasy.utils.Game;
 
 @RunWith(JUnit4.class)
 public final class TimingPropertiesTest {

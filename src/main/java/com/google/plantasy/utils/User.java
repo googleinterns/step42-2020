@@ -1,4 +1,4 @@
-package com.google.sps.utils;
+package com.google.plantasy.utils;
 import com.google.appengine.api.datastore.Entity;
 import java.lang.IllegalArgumentException;
 import java.util.List;
