@@ -8,10 +8,10 @@ public final class Game {
     private Entity entity;
 
     public Game(Entity game_entity) {
-        if (!(game_entity.getKind().equals(GAME_KIND))) {
+        if (!game_entity.getKind().equals(GAME_KIND)) {
             throw new IllegalArgumentException("Attempted to interpret Entity of kind " + game_entity.getKind()+ " as a Game.");
         }
-    entity = game_entity;
+        entity = game_entity;
     }
 
     //Sets the individual game Id for a game entity

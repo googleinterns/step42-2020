@@ -97,6 +97,7 @@ public final class GameUtils {
 
     // add user to game entity
     userIds.add(userId);
+    datastore.put(game.getGameEntity());
     
     return true;
   }

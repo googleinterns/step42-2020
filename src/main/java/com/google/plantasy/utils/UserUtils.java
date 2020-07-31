@@ -143,6 +143,7 @@ public static Entity initializeUser(String userId, String name, String sessionID
 
     User user = new User(userEntity);
     user.setGame(gameId);
+    datastore.put(user.getEntity());
  
     return true;
   }
@@ -167,6 +168,7 @@ public static Entity initializeUser(String userId, String name, String sessionID
     
     User user = new User(userEntity);
     user.setBlobKey(blobKey);
+    datastore.put(user.getEntity());
 
     return true; 
   }
@@ -213,6 +215,7 @@ public static Entity initializeUser(String userId, String name, String sessionID
     if(user.getLastAwardedUploadPoints() == 0L || QuizTimingPropertiesUtils.isTimestampOutdated(user.getLastAwardedUploadPoints())){
         addPoints(userEntity, ADDED_POINTS, datastore);
         user.setLastAwardedUploadPoints(System.currentTimeMillis());
+        datastore.put(user.getEntity());
     }
   }
 }
