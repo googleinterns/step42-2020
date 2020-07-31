@@ -32,13 +32,22 @@ import com.google.plantasy.utils.User;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.plantasy.utils.QuizTimingPropertiesUtils;
 import java.lang.IllegalArgumentException;
+import java.util.Comparator;
+import java.util.Collection;
+import java.util.Collections;
 
 public final class UserUtils {
     public static final String SESSION_ID_COOKIE_NAME = "SessionID";
     public static final int ADDED_POINTS = 20;
     private static final Logger log = Logger.getLogger(UserUtils.class.getName());
  
-   
+    static final Comparator<User> RANK = new Comparator<User>() {
+        @Override
+        public int compare(User a, User b) {
+            return Long.compare(b.getScore(), a.getScore());
+        }
+    };
+
      /**
     * Takes user's information and creates an entity from it. 
     * This function inputs all the parameters, while also initializing
@@ -187,7 +196,7 @@ public static Entity initializeUser(String userId, String name, String sessionID
   public static ArrayList<User> userList(String gameId, DatastoreService datastore){
     //create and prepare a query
     Filter queryFilter = new FilterPredicate("gameId", FilterOperator.EQUAL, gameId);
-    Query query = new Query("user").setFilter(queryFilter).addSort("score", SortDirection.DESCENDING);
+    Query query = new Query("user").setFilter(queryFilter);
     PreparedQuery results = datastore.prepare(query);
     
     // stores each user in a User object 
@@ -197,6 +206,7 @@ public static Entity initializeUser(String userId, String name, String sessionID
         users.add(user);
     }
 
+    Collections.sort(users, RANK);
     return users;
   }
 
