@@ -18,8 +18,6 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.DatastoreService;
 import java.util.ArrayList;
 import com.google.appengine.api.datastore.EntityNotFoundException;
-import com.google.appengine.api.datastore.KeyFactory;
-import com.google.appengine.api.datastore.Key;
 import com.google.plantasy.utils.UserUtils;
 import com.google.plantasy.utils.Game;
 import java.util.logging.Logger;
@@ -47,17 +45,12 @@ public final class GameUtils {
     ArrayList<String> userIds = new ArrayList<String>();
     String quizQuestion = "";
     long quiz_timestamp = 0;
-    Key gameKey = gameEntity.getKey();
 
     game.setGameName(gameName);
     game.setUserIds(userIds);
     game.setQuizQuestion(quizQuestion);
     game.setQuizTimestamp(quiz_timestamp);
 
-    datastore.put(game.getGameEntity());
-
-    String key = KeyFactory.keyToString(gameKey);
-    game.setGameId(key);
     datastore.put(game.getGameEntity());
  
     return game;

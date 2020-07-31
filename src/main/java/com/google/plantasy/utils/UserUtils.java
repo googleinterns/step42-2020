@@ -37,7 +37,6 @@ public final class UserUtils {
     public static final String SESSION_ID_COOKIE_NAME = "SessionID";
     public static final int ADDED_POINTS = 20;
     private static final Logger log = Logger.getLogger(UserUtils.class.getName());
- 
    
      /**
     * Takes user's information and creates an entity from it. 
@@ -189,7 +188,7 @@ public static Entity initializeUser(String userId, String name, String sessionID
   public static ArrayList<User> userList(String gameId, DatastoreService datastore){
     //create and prepare a query
     Filter queryFilter = new FilterPredicate("gameId", FilterOperator.EQUAL, gameId);
-    Query query = new Query("user").setFilter(queryFilter).addSort("score", SortDirection.DESCENDING);
+    Query query = new Query("user").setFilter(queryFilter);
     PreparedQuery results = datastore.prepare(query);
     
     // stores each user in a User object 
