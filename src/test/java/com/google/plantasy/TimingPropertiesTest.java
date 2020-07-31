@@ -235,7 +235,6 @@ public final class TimingPropertiesTest {
         datastore.put(user);
 
         boolean actual = timing_properties_test.giveUserQuizTakenPoints(true, user, datastore);
-        user.setProperty("score", 20);
     }
 
     @Test
