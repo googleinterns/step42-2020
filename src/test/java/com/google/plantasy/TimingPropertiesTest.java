@@ -243,7 +243,7 @@ public final class TimingPropertiesTest {
     public void giveUserQuizTakenPoints_actuallyAddedPoints_notStartAtZero(){
         QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        
+
         Entity user = new Entity("user");
         user.setProperty("quiz_timestamp", 159430944365L);
         int score_value = 15;
@@ -260,7 +260,7 @@ public final class TimingPropertiesTest {
     public void giveUserQuizTakenPoints_actuallyAddedPoints(){
         QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        
+
         Entity user = new Entity("user");
         user.setProperty("quiz_timestamp", 159430944365L);
         int score_value = 0;
@@ -276,7 +276,7 @@ public final class TimingPropertiesTest {
     public void giveUserQuizTakenPoints_validParameters() {
         QuizTimingPropertiesUtils timing_properties_test = new QuizTimingPropertiesUtils();
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        
+
         Entity user = new Entity("user");
         user.setProperty("quiz_timestamp", 159430944365L);
         user.setProperty("score", 0);
