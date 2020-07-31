@@ -33,7 +33,6 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.plantasy.utils.QuizTimingPropertiesUtils;
 import java.lang.IllegalArgumentException;
 import java.util.Comparator;
-import java.util.Collection;
 import java.util.Collections;
 
 public final class UserUtils {
