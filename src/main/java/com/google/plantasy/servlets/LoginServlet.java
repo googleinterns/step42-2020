@@ -55,7 +55,7 @@ public class LoginServlet extends HttpServlet {
     HttpTransport transport = new NetHttpTransport(); 
 
     GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
-            .setAudience(Collections.singletonList("610251294652-9ojdhjhh8kpcdvdbmrvp9nkevgr2n2d8.apps.googleusercontent.com"))
+            .setAudience(Collections.singletonList(PasswordReaderUtils.getFirstLineFromFile("../APIKey.txt")))
             .build();
 
     String idTokenString = request.getHeaders("idtoken").nextElement(); 
