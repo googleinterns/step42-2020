@@ -50,10 +50,10 @@ public final class User {
 
   // Non-unique name for the user
   public String getName(){
-    return (String) entity.getProperty("userName");
+    return (String) entity.getProperty("username");
   }
   public void setName(String userName){
-    entity.setProperty("userName", userName);
+    entity.setProperty("username", userName);
   }
 
   // current game score

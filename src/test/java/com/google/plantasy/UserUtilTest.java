@@ -403,7 +403,7 @@ public final class UserUtilTest {
     user.setId("newUser1");
     datastore.put(user1);
 
-    UserUtils.addPoints(user1, 20, datastore);
+    UserUtils.addPoints(user, 20, datastore);
 
     Entity userEntity = UserUtils.getEntityFromDatastore("user", "userID", "newUser1", datastore);
     
@@ -419,7 +419,7 @@ public final class UserUtilTest {
     user.setId("newUser1");
     datastore.put(user1);
 
-    UserUtils.addPoints(user1, 20, datastore);
+    UserUtils.addPoints(user, 20, datastore);
 
     Entity userEntity = UserUtils.getEntityFromDatastore("user", "userID", "newUser1", datastore);
     

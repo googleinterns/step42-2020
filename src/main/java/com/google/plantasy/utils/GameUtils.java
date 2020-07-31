@@ -54,20 +54,13 @@ public final class GameUtils {
     game.setQuizQuestion(quizQuestion);
     game.setQuizTimestamp(quiz_timestamp);
 
-    datastore.put(gameEntity);
+    datastore.put(game.getGameEntity());
 
-    // getting the game id for the game id property
-    try{
-      gameEntity = datastore.get(gameKey);
-    }catch(EntityNotFoundException e){
-      log.severe("EntityNotFoundException; game entity not found when adding game id in create game");
-      return null;
-    }
     String key = KeyFactory.keyToString(gameKey);
     game.setGameId(key);
-    datastore.put(gameEntity);
+    datastore.put(game.getGameEntity());
  
-    return gameEntity;
+    return game.getGameEntity();
   }
 
   /**
