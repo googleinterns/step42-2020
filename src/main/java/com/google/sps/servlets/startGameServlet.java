@@ -46,7 +46,7 @@ public class startGameServlet extends HttpServlet {
  
     String gameName = request.getParameter("game-name");
 
-    if(gameName == ""){
+    if(gameName.isEmpty()){
         response.sendRedirect("/start.html");
         return;
     }

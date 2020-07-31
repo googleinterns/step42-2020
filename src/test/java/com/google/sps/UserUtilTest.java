@@ -27,6 +27,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.After;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import com.google.sps.utils.UserUtils;
@@ -178,12 +179,9 @@ public final class UserUtilTest {
 
     Entity userEntity = new Entity("user");
 
-    boolean actual = false;
-    try{
-        actual = UserUtils.addGameToUser(userEntity, null, "gameId");
-    }catch(NullPointerException e){
-        Assert.assertEquals(false, actual);
-    }
+    Assertions.assertThrows(NullPointerException.class, () -> {
+        boolean actual = UserUtils.addGameToUser(userEntity, null, "gameId");
+    });
   }
 
   // test a null for user entity
@@ -191,12 +189,9 @@ public final class UserUtilTest {
   public void addGameToUserNullUserEntity() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-    boolean actual = false;
-    try{
-        actual = UserUtils.addGameToUser(null, datastore, "gameId");
-    }catch(NullPointerException e){
-        Assert.assertEquals(false, actual);
-    }
+    Assertions.assertThrows(NullPointerException.class, () -> {
+        boolean actual = UserUtils.addGameToUser(null, datastore, "gameId");
+    });
   }
  
   // test given all correct valid parameters
@@ -229,12 +224,9 @@ public final class UserUtilTest {
 
     Entity userEntity = new Entity("user");
 
-    boolean actual = false;
-    try{
-        actual = UserUtils.addBlobKey("blobkey", userEntity, null);
-    }catch(NullPointerException e){
-        Assert.assertEquals(false, actual);
-    }
+    Assertions.assertThrows(NullPointerException.class, () -> {
+        boolean actual = UserUtils.addBlobKey("blobkey", userEntity, null);
+    });
   }
 
   // test null for user entity
@@ -242,12 +234,9 @@ public final class UserUtilTest {
   public void blobKeyNullUserEntityFails() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-    boolean actual = false;
-    try{
-        actual = UserUtils.addBlobKey("blobkey", null, datastore);
-    }catch(NullPointerException e){
-        Assert.assertEquals(false, actual);
-    }
+    Assertions.assertThrows(NullPointerException.class, () -> {
+        boolean actual = UserUtils.addBlobKey("blobkey", null, datastore);
+    });
   }
  
   // test a valid blobkey, datastore and user entity
