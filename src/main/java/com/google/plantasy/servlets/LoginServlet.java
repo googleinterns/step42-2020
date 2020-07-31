@@ -24,7 +24,7 @@ import com.google.sps.utils.CookieUtils;
 
      /**
     * Verifies that the Google token is legitimate. Then creates a 
-    * cookie storing the Session ID and stores the log in information in the user entity in datastore.
+    * cookie storing the Session ID and stores the login information in the user entity in datastore.
     *
     * User Entity:
     *    username      The user's full name (from their google account)
@@ -47,7 +47,7 @@ import com.google.sps.utils.CookieUtils;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+  DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
      
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -58,38 +58,40 @@ DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
             .setAudience(Collections.singletonList("610251294652-9ojdhjhh8kpcdvdbmrvp9nkevgr2n2d8.apps.googleusercontent.com"))
             .build();
 
-    Enumeration<String> headers = request.getHeaders("idtoken");
-    String idTokenString = null;
-    while(headers.hasMoreElements()){
-        idTokenString = headers.nextElement();
-    }
-
+    String idTokenString = request.getHeaders("idtoken").nextElement(); 
+       //request.getHeaders("idtoken") returns an Enumeration, but you only need the
+       //first (and only) value. By putting the "idtoken" parameter, it only returns 
+       //the value of the header with the name "idtoken".
+       
+    GoogleIdToken idToken;
     try{
-        GoogleIdToken idToken = verifier.verify(idTokenString); //line where it breaks
-        if (idToken != null) {
-        //create coookie w session ID
-        String sessionID = request.getSession(true).getId(); 
-        Cookie sessionIDcookie = CookieUtils.createSessionIDCookie(request.getSession(false), sessionID);
-        response.addCookie(sessionIDcookie);
-
-        Payload payload = idToken.getPayload();
-        //get user info for user entity
-        String userId = payload.getSubject();
-        String username = (String) payload.get("name");
-
-        //send user data to datastore
-        Entity userEntity = UserUtils.getEntityFromDatastore("user", "userID", userId, datastore);
-        if(userEntity == null){
-        //datastore.put(UserUtils.initializeUser(userId, username, sessionID));
-        } else {
-            userEntity.setProperty("SessionID",sessionID);
-            datastore.put(userEntity);
-        }
-        } else {
-          System.out.println("Invalid ID token.");
-       }
+         idToken = verifier.verify(idTokenString);
     } catch(Exception e){
-        e.printStackTrace();
+         e.printStackTrace();
+         return;
     }
+       
+    if (idToken != null) {
+          //create coookie w session ID
+          String sessionID = request.getSession(true).getId(); 
+          Cookie sessionIDcookie = CookieUtils.createSessionIDCookie(request.getSession(false), sessionID);
+          response.addCookie(sessionIDcookie);
+
+          Payload payload = idToken.getPayload();
+          //get user info for user entity
+          String userId = payload.getSubject();
+          String username = (String) payload.get("name");
+
+          //send user data to datastore
+          Entity userEntity = UserUtils.getEntityFromDatastore("user", "userID", userId, datastore);
+          if(userEntity == null){
+              datastore.put(UserUtils.initializeUser(userId, username, sessionID));
+          } else {
+              userEntity.setProperty("SessionID",sessionID);
+              datastore.put(userEntity);
+          }
+    } else {
+        System.out.println("Invalid ID token.");
     }
+ }
 }
