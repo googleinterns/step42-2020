@@ -53,7 +53,7 @@ public final class GameUtilTest {
   public void createGame_EmptyGameName() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-    Game actual = GameUtils.createGameEntity("", datastore);
+    Game actual = GameUtils.createGame("", datastore);
 
     Assert.assertEquals(null, actual);
   }
@@ -62,7 +62,7 @@ public final class GameUtilTest {
   @Test
   public void createGame_NullDatastore() {
 
-    Game actual = GameUtils.createGameEntity("game", null);
+    Game actual = GameUtils.createGame("game", null);
 
     Assert.assertEquals(null, actual);
   }
@@ -72,7 +72,7 @@ public final class GameUtilTest {
   public void createGame_AllValid() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-    Game game = GameUtils.createGameEntity("game", datastore);
+    Game game = GameUtils.createGame("game", datastore);
 
     long timestamp = 0;
 
@@ -203,7 +203,7 @@ public final class GameUtilTest {
 
     Entity userEntity = new Entity("user");
     userEntity.setProperty("userID", "user1");
-    Game game = GameUtils.createGameEntity("game1", datastore);
+    Game game = GameUtils.createGame("game1", datastore);
 
     boolean actual = GameUtils.setGame(userEntity, datastore, game);
 

@@ -31,7 +31,7 @@ public final class GameUtils {
   /**
   * Creates a game entity and returns the entity if successful
   */
-  public static Game createGameEntity(String gameName, DatastoreService datastore) {
+  public static Game createGame(String gameName, DatastoreService datastore) {
     
     if(gameName == ""){
         return null;

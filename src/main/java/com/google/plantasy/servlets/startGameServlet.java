@@ -59,7 +59,7 @@ public class startGameServlet extends HttpServlet {
         return;
     }
  
-    Game newGame = GameUtils.createGameEntity(gameName, datastore);
+    Game newGame = GameUtils.createGame(gameName, datastore);
     boolean gameSet = GameUtils.setGame(userEntity, datastore, newGame);
  
     if(gameSet == false){
