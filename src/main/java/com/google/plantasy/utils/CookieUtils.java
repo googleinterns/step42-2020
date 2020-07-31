@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.sps.utils;
+package com.google.plantasy.utils;
 
 import java.io.*;
 import javax.servlet.*;
@@ -53,4 +53,13 @@ public final class CookieUtils {
         }
         return null;
     }
+    public static Cookie createSessionIDCookie(HttpSession oldSession, String newSessionID){
+        if(oldSession != null){
+            oldSession.invalidate();
+        }
+        Cookie cookie = new Cookie(UserUtils.SESSION_ID_COOKIE_NAME, newSessionID);
+        
+        return cookie;
+    }
 }
+

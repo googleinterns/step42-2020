@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
  
-package com.google.sps.servlets;
+package com.google.plantasy.servlets;
  
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -22,8 +22,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.sps.utils.GameUtils;
-import com.google.sps.utils.UserUtils; 
+import com.google.plantasy.utils.GameUtils;
+import com.google.plantasy.utils.UserUtils; 
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -58,12 +58,6 @@ public class joinGameServlet extends HttpServlet {
     if(userEntity == null){
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         return;
-    }
-
-    // prevent users from joining more than one game
-    if(userEntity.getProperty("gameId") != null){
-      response.sendRedirect("/gameBoard.html");
-      return;
     }
 
     Entity gameEntity = UserUtils.getEntityFromDatastore("Game", "gameId", gameId, datastore);

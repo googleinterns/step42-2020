@@ -1,3 +1,40 @@
+//cant run multiple functions on load, so all functions that need to run are listed here.
+function runOnload(){
+    populateQuizPage();
+    getUserQuizStatus();
+}
+
+//adds the user's name, score, and picture uploaded to the quiz page.
+function populateQuizPage(){
+    var username_container = document.getElementById("users-name");
+    var score_container = document.getElementById("score");
+    var image_holder = document.getElementById("image-holder");
+    var gameId_container = document.getElementById("game-board-id")
+ 
+    fetch("/get-user-info").then(response => response.json()).then(data => {
+        username_container.innerHTML = data.propertyMap.username;
+        score_container.innerHTML = data.propertyMap.score;
+        gameId_container.innerHTML = ("Game Id: " + data.propertyMap.gameId);
+        if(data.propertyMap.blobKey != null){
+            makeImage(image_holder, data.propertyMap.blobKey);
+        }
+    }
+    )
+}
+
+
+//builds the user's image from their blobKey url
+function makeImage(image_holder, blobKey){
+    image_holder.innerHTML = "";
+    const user_image =  document.createElement("img");
+    fetch('/get-image?blobKey=' + blobKey).then((pic) => {
+        user_image.src = pic.url;
+        user_image.className = "user_img";
+    })
+    image_holder.appendChild(user_image);
+}
+
+
 function getUserQuizStatus() {
     fetch("/user-quiz-status-servlet").then(response => response.json()).then((user_has_taken_quiz) => {
         if(!user_has_taken_quiz){
@@ -10,7 +47,7 @@ function getUserQuizStatus() {
 * fetches users of the game from the server 
 * and adds score, id and name to the page
 */
-function loadUsers() {
+function loadLeaderboard() {
     fetch('/populate-leaderboard').then(response => response.json()).then((users) => {
         const userListElement = document.getElementById('leader-board');
         for(i = 0; i < users.length; i++){
