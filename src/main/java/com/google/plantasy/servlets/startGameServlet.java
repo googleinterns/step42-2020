@@ -28,6 +28,7 @@ import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.PrintWriter;
+import com.google.plantasy.utils.Game;
  
 /** Create game entity and connect it to the user, then update the user entity to include the game id
     and store both in datastore when the user creates a new game.
@@ -58,7 +59,7 @@ public class startGameServlet extends HttpServlet {
         return;
     }
  
-    Entity newGame = GameUtils.createGameEntity(gameName, datastore);
+    Game newGame = GameUtils.createGameEntity(gameName, datastore);
     boolean gameSet = GameUtils.setGame(userEntity, datastore, newGame);
  
     if(gameSet == false){

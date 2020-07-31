@@ -31,7 +31,7 @@ public final class GameUtils {
   /**
   * Creates a game entity and returns the entity if successful
   */
-  public static Entity createGameEntity(String gameName, DatastoreService datastore) {
+  public static Game createGameEntity(String gameName, DatastoreService datastore) {
     
     if(gameName == ""){
         return null;
@@ -60,7 +60,7 @@ public final class GameUtils {
     game.setGameId(key);
     datastore.put(game.getGameEntity());
  
-    return game.getGameEntity();
+    return game;
   }
 
   /**
@@ -99,17 +99,17 @@ public final class GameUtils {
     Connects the given game entity to the given user entity by calling the addUserToGame
     and addGameToUser functions
   */
-  public static boolean setGame(Entity userEntity, DatastoreService datastore, Entity gameEntity) {
+  public static boolean setGame(Entity userEntity, DatastoreService datastore, Game game) {
  
     // add user to game entity + vice versa
-    boolean userAdded = GameUtils.addUserToGame((String) userEntity.getProperty("userID"), gameEntity, datastore);
+    boolean userAdded = GameUtils.addUserToGame((String) userEntity.getProperty("userID"), game.getGameEntity(), datastore);
     if(!userAdded){
-        log.severe("failed to add user to game " + (String) gameEntity.getProperty("gameName"));
+        log.severe("failed to add user to game " + game.getGameName());
         return false;
     }
-    boolean gameAdded = UserUtils.addGameToUser(userEntity, datastore, (String) gameEntity.getProperty("gameId"));
+    boolean gameAdded = UserUtils.addGameToUser(userEntity, datastore, game.getGameId());
     if(!gameAdded){
-        log.severe("failed to add game "  + (String) gameEntity.getProperty("gameName") + " to user");
+        log.severe("failed to add game "  + game.getGameName() + " to user");
         return false;
     }
     

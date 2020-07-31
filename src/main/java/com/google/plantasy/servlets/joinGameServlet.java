@@ -28,6 +28,7 @@ import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.PrintWriter;
+import com.google.plantasy.utils.Game;
  
 /** When a user joins a game, check if the given game id exists
     if so, get the game entity and add the user,
@@ -66,7 +67,8 @@ public class joinGameServlet extends HttpServlet {
       out.println("<p>We couldn't find a game by that code, <a href = \"join.html\"><h3>press here</h3></a> and enter a different game code.</p>");
       return;
     }
-    boolean setGame = GameUtils.setGame(userEntity, datastore, gameEntity);
+    Game game = new Game(gameEntity);
+    boolean setGame = GameUtils.setGame(userEntity, datastore, game);
 
     if(!setGame){
       // connecting the game to the user failed because the user was not logged in, send back to login
