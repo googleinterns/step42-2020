@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.sps;
+package com.google.plantasy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +25,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.After;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import com.google.sps.utils.GameUtils;
+import com.google.plantasy.utils.GameUtils;
 
 /** tests the game util functions */
 @RunWith(JUnit4.class)
@@ -47,23 +48,13 @@ public final class GameUtilTest {
     helper.tearDown();
   }
 
-  // Test create game with an empty string for game name
-  @Test
-  public void createGame_EmptyGameName() {
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-
-    Entity actual = GameUtils.createGameEntity("", datastore);
-
-    Assert.assertEquals(null, actual);
-  }
-
   // Test create game with null for datastore instance
   @Test
   public void createGame_NullDatastore() {
 
-    Entity actual = GameUtils.createGameEntity("game", null);
-
-    Assert.assertEquals(null, actual);
+    Assertions.assertThrows(NullPointerException.class, () -> {
+        Entity actual = GameUtils.createGameEntity("game", null);
+    });
   }
 
   // Test create game with valid datastore and gamename
@@ -102,9 +93,9 @@ public final class GameUtilTest {
     ArrayList<String> userIds = new ArrayList<>();
     gameEntity.setProperty("userIds", userIds);
 
-    boolean actual = GameUtils.addUserToGame("user1", gameEntity, null);
-
-    Assert.assertEquals(false, actual);
+    Assertions.assertThrows(NullPointerException.class, () -> {
+        boolean actual = GameUtils.addUserToGame("user1", gameEntity, null);
+    });
   }
 
   // Test addUserToGame with a null for game entity
@@ -112,9 +103,9 @@ public final class GameUtilTest {
   public void addUserToGame_NullGameEntity() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-    boolean actual = GameUtils.addUserToGame("user1", null, datastore);
-
-    Assert.assertEquals(false, actual);
+    Assertions.assertThrows(NullPointerException.class, () -> {
+        boolean actual = GameUtils.addUserToGame("user1", null, datastore);
+    });
   }
 
   // Test addUserToGame with a game entity without an initialized username list
@@ -152,12 +143,9 @@ public final class GameUtilTest {
     userEntity.setProperty("userID", "user1");
     Entity gameEntity = new Entity("Game");
 
-    boolean actual = false;
-    try{
-        actual = GameUtils.setGame(userEntity, null, gameEntity);
-    }catch(NullPointerException e){
-        Assert.assertEquals(false, actual);
-    }
+    Assertions.assertThrows(NullPointerException.class, () -> {
+        boolean actual = GameUtils.setGame(userEntity, null, gameEntity);
+    });
   }
 
   // Test setGame with null user entity
@@ -166,12 +154,9 @@ public final class GameUtilTest {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Entity gameEntity = new Entity("Game");
 
-    boolean actual = false;
-    try{
-        actual = GameUtils.setGame(null, datastore, gameEntity);
-    }catch(NullPointerException e){
-        Assert.assertEquals(false, actual);
-    }
+    Assertions.assertThrows(NullPointerException.class, () -> {
+        boolean actual = GameUtils.setGame(null, datastore, gameEntity);
+    });
   }
 
   // Test setGame with null game Entity 
@@ -181,12 +166,9 @@ public final class GameUtilTest {
     Entity userEntity = new Entity("User");
     userEntity.setProperty("userID", "user1");
 
-    boolean actual = false;
-    try{
-        actual = GameUtils.setGame(userEntity, datastore, null);
-    }catch(NullPointerException e){
-        Assert.assertEquals(false, actual);
-    }
+    Assertions.assertThrows(NullPointerException.class, () -> {
+        boolean actual = GameUtils.setGame(userEntity, datastore, null);
+    });
   }
 
   // Test setGame with valid parameters 

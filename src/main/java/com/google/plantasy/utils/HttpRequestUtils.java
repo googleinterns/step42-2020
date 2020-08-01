@@ -10,7 +10,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
  
-package com.google.sps;
+package com.google.plantasy;
  
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

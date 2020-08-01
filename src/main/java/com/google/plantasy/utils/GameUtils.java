@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.sps.utils;
+package com.google.plantasy.utils;
 
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.DatastoreService;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Key;
-import com.google.sps.utils.UserUtils;
+import com.google.plantasy.utils.UserUtils;
 import java.util.logging.Logger;
 
 public final class GameUtils {
@@ -31,14 +31,6 @@ public final class GameUtils {
   * Creates a game entity and returns the entity if successful
   */
   public static Entity createGameEntity(String gameName, DatastoreService datastore) {
-    
-    if(gameName == ""){
-        return null;
-    }
-    if(datastore == null){
-        log.severe("found null datastore trying to create game " + gameName);
-        return null;
-    }
     
     // intializing game property values
     Entity gameEntity = new Entity("Game");
@@ -77,14 +69,6 @@ public final class GameUtils {
 
     if(userId == ""){
       return false;
-    }
-    if(gameEntity == null){
-        log.severe("found null game entity trying to user "+ userId +" to game");
-        return false;
-    }
-    if(datastore == null){
-        log.severe("found null datastore trying to game to user " + userId);
-        return false;
     }
  
     ArrayList<String> userIds = (ArrayList<String>) gameEntity.getProperty("userIds");

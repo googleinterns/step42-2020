@@ -12,48 +12,46 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
  
-package com.google.sps.servlets;
+package com.google.plantasy.servlets;
  
-import com.google.appengine.api.blobstore.BlobKey;
-import com.google.appengine.api.blobstore.BlobstoreService;
-import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import java.io.IOException;
-import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.sps.utils.UserUtils;
+import com.google.plantasy.utils.GameUtils;
+import com.google.plantasy.utils.UserUtils;
 import java.io.*;
 import javax.servlet.*;
-import javax.servlet.http.*; 
+import javax.servlet.http.*;
+import java.io.PrintWriter;
  
-/** Blobstore upload handler: gets blobkey (Blobstore rewrites the request to contain a blobkey) 
-    for an uploaded image and stores it in datastore 
-    (see https://cloud.google.com/appengine/docs/standard/java/blobstore#3_implement_upload_handler
-    for documentation of an upload handler)
+/** Create game entity and connect it to the user, then update the user entity to include the game id
+    and store both in datastore when the user creates a new game.
  */
-@WebServlet("/image-upload-handler-blobstore")
-public class UploadHandlerServlet extends HttpServlet {
+@WebServlet("/start-game")
+public class startGameServlet extends HttpServlet {
  
-  BlobstoreService blobstoreService;
   DatastoreService datastore;
  
-  public UploadHandlerServlet(){
-    blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+  public startGameServlet(){
     datastore = DatastoreServiceFactory.getDatastoreService();
   }
  
-  // TODO: Limit this so it can only be used as a blobstore upload handler; cut off end-user access
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+ 
+    String gameName = request.getParameter("game-name");
+
+    if(gameName.isEmpty()){
+        response.sendRedirect("/start.html");
+        return;
+    }
     
-    // get the user entity 
+    // query user 
     Cookie cookies[] = request.getCookies();
     if(cookies == null){
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -64,16 +62,16 @@ public class UploadHandlerServlet extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         return;
     }
-
-    UserUtils.addUploadPoints(userEntity, datastore);
-    
-    // getting the blobkey + making it part of the request
-    ImmutableMap<String, List<BlobKey>> blobs = ImmutableMap.copyOf(blobstoreService.getUploads(request));
-    ImmutableList<BlobKey> blobKeys = ImmutableList.copyOf(blobs.get("image"));
-    String blobKey = blobKeys.get(0).getKeyString();
  
-    UserUtils.addBlobKey(blobKey, userEntity, datastore);
-    
-    response.sendRedirect("/imageUpload.html"); 
+    Entity newGame = GameUtils.createGameEntity(gameName, datastore);
+    boolean gameSet = GameUtils.setGame(userEntity, datastore, newGame);
+ 
+    if(gameSet == false){
+      response.sendRedirect("/index.html");
+      return;
+    }else{
+      response.sendRedirect("/gameBoard.html");
+      return;
+    }
   }
 }

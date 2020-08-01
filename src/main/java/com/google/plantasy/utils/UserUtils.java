@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.sps.utils;
+package com.google.plantasy.utils;
 
 import java.io.*;
 import javax.servlet.*;
@@ -28,9 +28,9 @@ import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 import java.util.logging.Logger;
-import com.google.sps.utils.User;
+import com.google.plantasy.utils.User;
 import com.google.appengine.api.datastore.Query.SortDirection;
-import com.google.sps.utils.QuizTimingPropertiesUtils;
+import com.google.plantasy.utils.QuizTimingPropertiesUtils;
 import java.lang.IllegalArgumentException;
 
 public final class UserUtils {
@@ -125,15 +125,6 @@ public static Entity initializeUser(String userId, String name, String sessionID
   * Adds a game id to a user's list of games
   */
   public static boolean addGameToUser(Entity userEntity, DatastoreService datastore, String gameId) {
- 
-    if(userEntity == null){
-        log.severe("found null user entity trying to add game to user");
-        return false;
-    }
-    if(datastore == null){
-        log.severe("found null datastore trying to add game to user " + (String) userEntity.getProperty("userID"));
-        return false;
-    }
     if(gameId == ""){
         log.severe("found empty gameId trying to add game to user " + (String) userEntity.getProperty("userID"));
         return false;
@@ -149,15 +140,6 @@ public static Entity initializeUser(String userId, String name, String sessionID
   * adds a photo to the user entity
   */
   public static boolean addBlobKey(String blobKey, Entity userEntity, DatastoreService datastore) {
- 
-    if(userEntity == null){
-        log.severe("found null user entity trying to add blobkey to user");
-        return false;
-    }
-    if(datastore == null){
-        log.severe("found null datastore trying to add blobkey to user " + (String) userEntity.getProperty("userID"));
-        return false;
-    }
     if(blobKey == ""){
         log.severe("found empty blobkey trying to add blobkey to user " + (String) userEntity.getProperty("userID"));
         return false;

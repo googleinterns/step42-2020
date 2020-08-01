@@ -12,40 +12,41 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
  
-package com.google.sps.servlets;
+package com.google.plantasy.servlets;
  
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.gson.Gson;
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.gson.Gson;
-import java.util.ArrayList;
-import com.google.sps.utils.User;
-import com.google.sps.utils.UserUtils;
+import com.google.appengine.api.datastore.FetchOptions;
+import com.google.plantasy.utils.UserUtils; 
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
  
-@WebServlet("/populate-leaderboard")
-public class populateLeaderboardServlet extends HttpServlet {
- 
+/** Retrieves blobkey from Datastore for the image of the logged in user */
+@WebServlet("/get-blob-key")
+public class getBlobKeyServlet extends HttpServlet {
+  
   DatastoreService datastore;
  
-  public populateLeaderboardServlet(){
+  public getBlobKeyServlet(){
     datastore = DatastoreServiceFactory.getDatastoreService();
   }
-  
-  /**
-  * Gets a list of users (user objects with score, name, id) that are playing the same game 
-  */
+ 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
  
-    // get user entity
+    // get the user entity
     Cookie cookies[] = request.getCookies();
     if(cookies == null){
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -57,11 +58,15 @@ public class populateLeaderboardServlet extends HttpServlet {
         return;
     }
  
-    ArrayList<User> users = UserUtils.userList((String) userEntity.getProperty("gameId"), datastore);
+    String blobKey = (String) userEntity.getProperty("blobKey");
+    if(blobKey == null){
+      // if the user hasn't uploaded a picture yet, nothing is printed
+      response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+      return;
+    }
  
-    // translate to JSON for loadComments function
     Gson gson = new Gson();
     response.setContentType("application/json;");
-    response.getWriter().println(gson.toJson(users));
+    response.getWriter().println(gson.toJson(blobKey));
   }
-}
+} 

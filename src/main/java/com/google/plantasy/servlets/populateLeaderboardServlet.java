@@ -12,41 +12,42 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
  
-package com.google.sps.servlets;
+package com.google.plantasy.servlets;
  
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.Query.SortDirection;
-import com.google.gson.Gson;
 import java.io.IOException;
-import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.appengine.api.datastore.FetchOptions;
-import com.google.sps.utils.UserUtils; 
+import com.google.gson.Gson;
+import java.util.ArrayList;
+import com.google.plantasy.utils.User;
+import com.google.plantasy.utils.UserUtils;
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
  
-/** Retrieves blobkey from Datastore for the image of the logged in user */
-@WebServlet("/get-blob-key")
-public class getBlobKeyServlet extends HttpServlet {
-  
+@WebServlet("/populate-leaderboard")
+public class populateLeaderboardServlet extends HttpServlet {
+ 
   DatastoreService datastore;
  
-  public getBlobKeyServlet(){
+  public populateLeaderboardServlet(){
     datastore = DatastoreServiceFactory.getDatastoreService();
   }
- 
+  
+  /**
+  * Gets a list of users (user objects with score, name, id) that are playing the same game 
+  */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
  
-    // get the user entity
+    // get user entity
     Cookie cookies[] = request.getCookies();
     if(cookies == null){
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -58,15 +59,21 @@ public class getBlobKeyServlet extends HttpServlet {
         return;
     }
  
-    String blobKey = (String) userEntity.getProperty("blobKey");
-    if(blobKey == null){
-      // if the user hasn't uploaded a picture yet, nothing is printed
-      response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-      return;
+    ArrayList<User> userObjects = UserUtils.userList((String) userEntity.getProperty("gameId"), datastore);
+    
+    // translate to JSON for loadLeaderBoard function
+    JSONArray users = new JSONArray();
+    for(User user : userObjects){
+      JSONObject obj = new JSONObject();
+
+      obj.put("userName", user.getName());
+      obj.put("userID", user.getId());
+      obj.put("score", new Integer(user.getScore()));
+      users.add(obj);
     }
  
-    Gson gson = new Gson();
     response.setContentType("application/json;");
-    response.getWriter().println(gson.toJson(blobKey));
+    response.getWriter().println(users);
   }
-} 
+}
+

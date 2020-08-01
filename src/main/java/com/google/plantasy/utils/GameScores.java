@@ -1,5 +1,5 @@
 
-package com.google.sps;
+package com.google.plantasy.utils;
 
 //class used in userEntity to track a user's current games and their respective scores in each game.
 
