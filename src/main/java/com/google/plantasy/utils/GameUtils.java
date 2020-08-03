@@ -47,7 +47,6 @@ public final class GameUtils {
     ArrayList<String> userIds = new ArrayList<String>();
     String quizQuestion = "";
     long quiz_timestamp = 0;
-    Key gameKey = gameEntity.getKey();
 
     game.setGameName(gameName);
     game.setUserIds(userIds);
@@ -56,7 +55,7 @@ public final class GameUtils {
 
     datastore.put(game.getGameEntity());
 
-    String key = KeyFactory.keyToString(gameKey);
+    String key = KeyFactory.keyToString(game.getGameEntity().getKey());
     game.setGameId(key);
     datastore.put(game.getGameEntity());
  
