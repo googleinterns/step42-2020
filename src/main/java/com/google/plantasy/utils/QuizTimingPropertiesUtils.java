@@ -30,6 +30,7 @@ import java.util.TimeZone;
 import java.text.SimpleDateFormat;
 import com.google.plantasy.utils.UserUtils;
 import com.google.plantasy.utils.Game;
+import com.google.plantasy.utils.User;
 
 public final class QuizTimingPropertiesUtils {
 
@@ -105,7 +106,8 @@ public final class QuizTimingPropertiesUtils {
     //Gives the user 20 points if they have taken a quiz
     public static boolean giveUserQuizTakenPoints(boolean userQuizStatus, Entity currentUser, DatastoreService datastore) {
         if(userQuizStatus) {
-            UserUtils.addPoints(currentUser, 20, datastore);
+            User user = new User(currentUser);
+            UserUtils.addPoints(user, 20, datastore);
             currentUser.setProperty("quiz_timestamp", System.currentTimeMillis());
             datastore.put(currentUser);
             return true;

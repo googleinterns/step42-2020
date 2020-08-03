@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.google.plantasy.utils.QuizTimingPropertiesUtils;
 import com.google.plantasy.utils.UserUtils;
+import com.google.plantasy.utils.User;
 import com.google.plantasy.HttpRequestUtils;
 import java.io.*;
 import javax.servlet.*;
@@ -45,7 +46,8 @@ public class QuizPoints extends HttpServlet {
         //Adds points to the user who got voted for in the quiz 
         String clicked_user_id = HttpRequestUtils.getParameterWithDefault(request, "user_picture", "");
         Entity user_clicked = UserUtils.getEntityFromDatastore("user", "userID", clicked_user_id, datastore);
-        UserUtils.addPoints(user_clicked, 20, datastore);
+        User user = new User(user_clicked);
+        UserUtils.addPoints(user, 20, datastore);
 
        response.sendRedirect("/loggedin/gameBoard");
     }

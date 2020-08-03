@@ -200,9 +200,15 @@ public final class UserUtilTest {
  
     Entity userEntity = new Entity("user");
     User user = new User(userEntity);
+<<<<<<< HEAD
  
     boolean actual = UserUtils.addGameToUser(userEntity, datastore, "gameId");
  
+=======
+
+    boolean actual = UserUtils.addGameToUser(userEntity, datastore, "gameId");
+
+>>>>>>> eec8fda05e11b0eac74b4a022cb1a50dc6bf6939
     Assert.assertEquals("gameId", user.getGame());
     Assert.assertEquals(true, actual);
   }
@@ -247,6 +253,7 @@ public final class UserUtilTest {
  
     Entity userEntity = new Entity("user");
     User user = new User(userEntity);
+<<<<<<< HEAD
  
     boolean actual = UserUtils.addBlobKey("blobkey", userEntity, datastore);
  
@@ -254,6 +261,15 @@ public final class UserUtilTest {
     Assert.assertEquals(true, actual);
   }
  
+=======
+
+    boolean actual = UserUtils.addBlobKey("blobkey", userEntity, datastore);
+
+    Assert.assertEquals("blobkey", user.getBlobKey());
+    Assert.assertEquals(true, actual);
+  }
+
+>>>>>>> eec8fda05e11b0eac74b4a022cb1a50dc6bf6939
   //Test given a list of entities, and a list of cookies
   @Test
   public void findEntityByCookie(){
@@ -402,9 +418,9 @@ public final class UserUtilTest {
     user.setScore(10);
     user.setId("newUser1");
     datastore.put(user1);
- 
+
     UserUtils.addPoints(user, 20, datastore);
- 
+
     Entity userEntity = UserUtils.getEntityFromDatastore("user", "userID", "newUser1", datastore);
     
     Assert.assertEquals(30L, user.getScore());
@@ -418,9 +434,9 @@ public final class UserUtilTest {
     User user = new User(user1);
     user.setId("newUser1");
     datastore.put(user1);
- 
+
     UserUtils.addPoints(user, 20, datastore);
- 
+
     Entity userEntity = UserUtils.getEntityFromDatastore("user", "userID", "newUser1", datastore);
     
     Assert.assertEquals(20L, user.getScore());

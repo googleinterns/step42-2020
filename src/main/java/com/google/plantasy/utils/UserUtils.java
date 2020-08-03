@@ -32,13 +32,25 @@ import com.google.plantasy.utils.User;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.plantasy.utils.QuizTimingPropertiesUtils;
 import java.lang.IllegalArgumentException;
- 
+import java.util.Comparator;
+import java.util.Collections;
+
 public final class UserUtils {
     public static final String SESSION_ID_COOKIE_NAME = "SessionID";
     public static final int ADDED_POINTS = 20;
     private static final Logger log = Logger.getLogger(UserUtils.class.getName());
-   
-     /**
+ 
+    /**
+      This comparator sorts users by score in descending order
+    */
+    static final Comparator<User> RANK = new Comparator<User>() {
+        @Override
+        public int compare(User a, User b) {
+            return Long.compare(b.getScore(), a.getScore());
+        }
+    };
+
+    /**
     * Takes user's information and creates an entity from it. 
     * This function inputs all the parameters, while also initializing
     * some parameters to null values. The entity returned can be stored in the
@@ -136,7 +148,7 @@ public static Entity initializeUser(String userId, String name, String sessionID
         log.severe("found empty gameId trying to add game to user " + (String) userEntity.getProperty("userID"));
         return false;
     }
- 
+
     User user = new User(userEntity);
     user.setGame(gameId);
     datastore.put(user.getEntity());
@@ -165,7 +177,7 @@ public static Entity initializeUser(String userId, String name, String sessionID
     User user = new User(userEntity);
     user.setBlobKey(blobKey);
     datastore.put(user.getEntity());
- 
+
     return true; 
   }
  
@@ -173,7 +185,7 @@ public static Entity initializeUser(String userId, String name, String sessionID
     adds a specified number of points to the user's points
   */
   public static void addPoints(User user, int numPoints, DatastoreService datastore){
- 
+
     try {
       user.setScore(user.getScore() + numPoints);
     } catch (NullPointerException e) {
@@ -197,7 +209,8 @@ public static Entity initializeUser(String userId, String name, String sessionID
         User user = new User(entity);
         users.add(user);
     }
- 
+
+    Collections.sort(users, RANK);
     return users;
   }
  
@@ -205,7 +218,7 @@ public static Entity initializeUser(String userId, String name, String sessionID
     Adds 20 points to a user for uploading if it has been more than a day since they last uploaded
   */
   public static void addUploadPoints(Entity userEntity, DatastoreService datastore){
- 
+
     User user = new User(userEntity);
     if(user.getLastAwardedUploadPoints() == 0L || QuizTimingPropertiesUtils.isTimestampOutdated(user.getLastAwardedUploadPoints())){
         addPoints(user, ADDED_POINTS, datastore);

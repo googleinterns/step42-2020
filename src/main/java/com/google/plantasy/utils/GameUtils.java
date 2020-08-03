@@ -31,28 +31,19 @@ public final class GameUtils {
   */
   public static Game createGame(String gameName, DatastoreService datastore) {
     
-    if(gameName == ""){
-        return null;
-    }
-    if(datastore == null){
-        log.severe("found null datastore trying to create game " + gameName);
-        return null;
-    }
-    
     // intializing game property values
     Entity gameEntity = new Entity("Game");
     Game game = new Game(gameEntity);
     ArrayList<String> userIds = new ArrayList<String>();
     String quizQuestion = "";
     long quiz_timestamp = 0;
- 
+
     game.setGameName(gameName);
     game.setUserIds(userIds);
     game.setQuizQuestion(quizQuestion);
     game.setQuizTimestamp(quiz_timestamp);
- 
+
     datastore.put(game.getGameEntity());
- 
     return game;
   }
  
@@ -64,17 +55,9 @@ public final class GameUtils {
     if(userId == ""){
       return false;
     }
-    if(gameEntity == null){
-        log.severe("found null game entity trying to user "+ userId +" to game");
-        return false;
-    }
-    if(datastore == null){
-        log.severe("found null datastore trying to game to user " + userId);
-        return false;
-    }
- 
+
     Game game = new Game(gameEntity);
- 
+
     ArrayList<String> userIds = game.getUserIds();
     if(userIds == null){
       userIds = new ArrayList<String>();

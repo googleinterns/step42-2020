@@ -13,7 +13,7 @@
 // limitations under the License.
  
 package com.google.plantasy;
-
+ 
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -28,28 +28,30 @@ import org.junit.runners.JUnit4;
 import com.google.plantasy.utils.Game;
 import com.google.plantasy.utils.UserUtils;
 import java.util.ArrayList;
-
+import javax.persistence.EntityNotFoundException;
+import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.Key;
+ 
 // tests the usergame class functions 
 @RunWith(JUnit4.class)
 public final class GameTest {
     private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
-
+ 
     @Before
     public void setUp() {
     helper.setUp();
     }
-
+ 
     @After
     public void tearDown() {
     helper.tearDown();
     }
-
+ 
     @Test 
     //Tests if the properties are set right for the game class 
     public void SetsGameEntityCorrectly() {
         Entity game_entity = new Entity("Game");
         Game game = new Game(new Entity("Game"));
-        game.setGameId("1234");
         game.setGameName("Plants");
         game.setQuizQuestion("Which plant looks the healthiest?");
         game.setQuizTimestamp(1594309443653L);
@@ -57,24 +59,27 @@ public final class GameTest {
         users.add("a");
         users.add("b");
         game.setUserIds(users);
-
-        Assert.assertEquals("1234", game.getGameId());
+ 
         Assert.assertEquals("Plants", game.getGameName());
         Assert.assertEquals("Which plant looks the healthiest?", game.getQuizQuestion());
         Assert.assertEquals(1594309443653L, game.getQuizTimestamp());
         Assert.assertEquals(users, game.getUserIds());
     }
-
+ 
     @Test
     //Tests if the entity created by the game class gets put into datastore
     public void putInDatastore() {
         Game game = new Game(new Entity("Game"));
-        game.setGameId("1234");
-
+ 
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         datastore.put(game.getGameEntity());
-
-        Entity datastore_game_entity = UserUtils.getEntityFromDatastore("Game", "gameId", game.getGameId(), datastore);
-        Assert.assertEquals(game.getGameId(), datastore_game_entity.getProperty("gameId"));
+ 
+        // try{
+        //     Entity datastore_game_entity = datastore.get(KeyFactory.stringToKey(game.getGameId()));
+        // }catch(EntityNotFoundException e){
+        //     throw(e);
+        // }
+        //datastore_game_entity.getKey();
+        //Assert.assertEquals(game.getGameId(), KeyFactory.keyToString(datastore_game_entity.getKey()));
     }
 }
