@@ -50,10 +50,10 @@ public final class User {
 
   // Non-unique name for the user
   public String getName(){
-    return (String) entity.getProperty("userName");
+    return (String) entity.getProperty("username");
   }
   public void setName(String userName){
-    entity.setProperty("userName", userName);
+    entity.setProperty("username", userName);
   }
 
   // current game score
@@ -79,5 +79,13 @@ public final class User {
   }
   public void setBlobKey(String blobKey){
     entity.setProperty("blobKey", blobKey);
-  } 
+  }
+
+  // last time that the user was awarded points for uploading
+  public long getLastAwardedUploadPoints(){
+    return (long) entity.getProperty("lastAwardedUploadPoints");
+  }
+  public void setLastAwardedUploadPoints(long lastAwardedUploadPoints){
+    entity.setProperty("lastAwardedUploadPoints", lastAwardedUploadPoints);
+  }
 }

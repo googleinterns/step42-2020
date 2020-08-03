@@ -29,6 +29,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import com.google.plantasy.utils.GameUtils;
+import com.google.plantasy.utils.Game;
 
 /** tests the game util functions */
 @RunWith(JUnit4.class)
@@ -51,9 +52,8 @@ public final class GameUtilTest {
   // Test create game with null for datastore instance
   @Test
   public void createGame_NullDatastore() {
-
     Assertions.assertThrows(NullPointerException.class, () -> {
-        Entity actual = GameUtils.createGameEntity("game", null);
+        Game actual = GameUtils.createGame("game", null);
     });
   }
 
@@ -62,13 +62,13 @@ public final class GameUtilTest {
   public void createGame_AllValid() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-    Entity actual = GameUtils.createGameEntity("game", datastore);
+    Game game = GameUtils.createGame("game", datastore);
 
     long timestamp = 0;
 
-    Assert.assertEquals("game", actual.getProperty("gameName"));
-    Assert.assertEquals("", actual.getProperty("quizQuestion"));
-    Assert.assertEquals(timestamp, actual.getProperty("quiz_timestamp"));
+    Assert.assertEquals("game", game.getGameName());
+    Assert.assertEquals("", game.getQuizQuestion());
+    Assert.assertEquals(timestamp, game.getQuizTimestamp());
   }
 
   // Test addUserToGame with an empty string for user id
@@ -115,9 +115,11 @@ public final class GameUtilTest {
 
     Entity gameEntity = new Entity("Game");
     gameEntity.setProperty("gameName", "game1");
+    Game game = new Game(gameEntity);
 
     boolean actual = GameUtils.addUserToGame("user1", gameEntity, datastore);
 
+    Assert.assertEquals("user1", game.getUserIds().get(0));
     Assert.assertEquals(true, actual);
   }
  
@@ -129,9 +131,11 @@ public final class GameUtilTest {
     Entity gameEntity = new Entity("Game");
     ArrayList<String> userIds = new ArrayList<>();
     gameEntity.setProperty("userIds", userIds);
+    Game game = new Game(gameEntity);
 
     boolean actual = GameUtils.addUserToGame("user1", gameEntity, datastore);
 
+    Assert.assertEquals("user1", game.getUserIds().get(0));
     Assert.assertEquals(true, actual);
   }
 
@@ -139,12 +143,13 @@ public final class GameUtilTest {
   @Test
   public void setGame_NullDatastore() {
 
-    Entity userEntity = new Entity("User");
+    Entity userEntity = new Entity("user");
     userEntity.setProperty("userID", "user1");
     Entity gameEntity = new Entity("Game");
+    Game game = new Game(gameEntity);
 
     Assertions.assertThrows(NullPointerException.class, () -> {
-        boolean actual = GameUtils.setGame(userEntity, null, gameEntity);
+        boolean actual = GameUtils.setGame(userEntity, null, game);
     });
   }
 
@@ -153,9 +158,10 @@ public final class GameUtilTest {
   public void joinGame_NullUserEntity() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Entity gameEntity = new Entity("Game");
+    Game game = new Game(gameEntity);
 
     Assertions.assertThrows(NullPointerException.class, () -> {
-        boolean actual = GameUtils.setGame(null, datastore, gameEntity);
+        boolean actual = GameUtils.setGame(null, datastore, game);
     });
   }
 
@@ -163,7 +169,7 @@ public final class GameUtilTest {
   @Test
   public void setGame_NullGameEntity() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    Entity userEntity = new Entity("User");
+    Entity userEntity = new Entity("user");
     userEntity.setProperty("userID", "user1");
 
     Assertions.assertThrows(NullPointerException.class, () -> {
@@ -176,11 +182,11 @@ public final class GameUtilTest {
   public void setGame_NewGameSuccess() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-    Entity userEntity = new Entity("User");
+    Entity userEntity = new Entity("user");
     userEntity.setProperty("userID", "user1");
-    Entity gameEntity = GameUtils.createGameEntity("game1", datastore);
+    Game game = GameUtils.createGame("game1", datastore);
 
-    boolean actual = GameUtils.setGame(userEntity, datastore, gameEntity);
+    boolean actual = GameUtils.setGame(userEntity, datastore, game);
 
     Assert.assertEquals(true, actual);
   }

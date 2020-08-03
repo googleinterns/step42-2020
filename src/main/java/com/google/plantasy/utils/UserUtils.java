@@ -63,15 +63,14 @@ public final class UserUtils {
 
 public static Entity initializeUser(String userId, String name, String sessionID){
         //these values are always empty upon initialization
-        int initialScore = 0;
-        long initialTime = 0L;
         Entity userEntity = new Entity("user");
         userEntity.setProperty("username",name);
         userEntity.setProperty("userID",userId);
-        userEntity.setProperty("quiz_timing",initialTime);
+        userEntity.setProperty("quiz_timing", 0L);
         userEntity.setProperty("gameId", "");
         userEntity.setProperty("blobKey", null);
-        userEntity.setProperty("score", initialScore);
+        userEntity.setProperty("score", 0);
+        userEntity.setProperty("lastAwardedUploadPoints", 0L);
         return userEntity;
   }
  
@@ -140,9 +139,10 @@ public static Entity initializeUser(String userId, String name, String sessionID
         log.severe("found empty gameId trying to add game to user " + (String) userEntity.getProperty("userID"));
         return false;
     }
- 
-    userEntity.setProperty("gameId", gameId);
-    datastore.put(userEntity);
+
+    User user = new User(userEntity);
+    user.setGame(gameId);
+    datastore.put(user.getEntity());
  
     return true;
   }
@@ -156,22 +156,24 @@ public static Entity initializeUser(String userId, String name, String sessionID
         return false;
     }
     
-    userEntity.setProperty("blobKey", blobKey);
-    datastore.put(userEntity);
- 
+    User user = new User(userEntity);
+    user.setBlobKey(blobKey);
+    datastore.put(user.getEntity());
+
     return true; 
   }
  
   /**
     adds a specified number of points to the user's points
   */
-  public static void addPoints(Entity userEntity, int numPoints, DatastoreService datastore){
+  public static void addPoints(User user, int numPoints, DatastoreService datastore){
+
     try {
-      userEntity.setProperty("score", ((Number) userEntity.getProperty("score")).intValue() + numPoints);
+      user.setScore(user.getScore() + numPoints);
     } catch (NullPointerException e) {
-      userEntity.setProperty("score", numPoints);                
+      user.setScore(numPoints);                
     }
-    datastore.put(userEntity);
+    datastore.put(user.getEntity());
   }
 
   /**
@@ -199,11 +201,11 @@ public static Entity initializeUser(String userId, String name, String sessionID
   */
   public static void addUploadPoints(Entity userEntity, DatastoreService datastore){
 
-    QuizTimingPropertiesUtils utils = new QuizTimingPropertiesUtils();
-    if(userEntity.getProperty("lastAwardedUploadPoints") == null || utils.isTimestampOutdated((long) userEntity.getProperty("lastAwardedUploadPoints"))){
-        addPoints(userEntity, ADDED_POINTS, datastore);
-        userEntity.setProperty("lastAwardedUploadPoints", System.currentTimeMillis());
-        datastore.put(userEntity);
+    User user = new User(userEntity);
+    if(user.getLastAwardedUploadPoints() == 0L || QuizTimingPropertiesUtils.isTimestampOutdated(user.getLastAwardedUploadPoints())){
+        addPoints(user, ADDED_POINTS, datastore);
+        user.setLastAwardedUploadPoints(System.currentTimeMillis());
+        datastore.put(user.getEntity());
     }
   }
 }

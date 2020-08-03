@@ -200,9 +200,11 @@ public final class UserUtilTest {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
     Entity userEntity = new Entity("user");
+    User user = new User(userEntity);
 
     boolean actual = UserUtils.addGameToUser(userEntity, datastore, "gameId");
 
+    Assert.assertEquals("gameId", user.getGame());
     Assert.assertEquals(true, actual);
   }
 
@@ -245,12 +247,14 @@ public final class UserUtilTest {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
     Entity userEntity = new Entity("user");
+    User user = new User(userEntity);
 
     boolean actual = UserUtils.addBlobKey("blobkey", userEntity, datastore);
 
+    Assert.assertEquals("blobkey", user.getBlobKey());
     Assert.assertEquals(true, actual);
   }
-  
+
   //Test given a list of entities, and a list of cookies
   @Test
   public void findEntityByCookie(){
@@ -395,15 +399,16 @@ public final class UserUtilTest {
   public void addPoints_additionalPoints(){
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Entity user1 = new Entity("user");
-    user1.setProperty("score", 10);
-    user1.setProperty("userID", "newUser1");
+    User user = new User(user1);
+    user.setScore(10);
+    user.setId("newUser1");
     datastore.put(user1);
 
-    UserUtils.addPoints(user1, 20, datastore);
+    UserUtils.addPoints(user, 20, datastore);
 
     Entity userEntity = UserUtils.getEntityFromDatastore("user", "userID", "newUser1", datastore);
     
-    Assert.assertEquals(30L, userEntity.getProperty("score"));
+    Assert.assertEquals(30L, user.getScore());
   }
 
   // addPoints where user doesn't have points
@@ -411,14 +416,15 @@ public final class UserUtilTest {
   public void addPoints_firstPoints(){
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Entity user1 = new Entity("user");
-    user1.setProperty("userID", "newUser1");
+    User user = new User(user1);
+    user.setId("newUser1");
     datastore.put(user1);
 
-    UserUtils.addPoints(user1, 20, datastore);
+    UserUtils.addPoints(user, 20, datastore);
 
     Entity userEntity = UserUtils.getEntityFromDatastore("user", "userID", "newUser1", datastore);
     
-    Assert.assertEquals(20L, userEntity.getProperty("score"));
+    Assert.assertEquals(20L, user.getScore());
   }
 
   // addUploadPoints when the user hasn't uploaded yet
@@ -426,14 +432,16 @@ public final class UserUtilTest {
   public void addUploadPoints_firstPoints(){
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Entity user1 = new Entity("user");
-    user1.setProperty("userID", "newUser1");
+    User user = new User(user1);
+    user.setId("newUser1");
+    user.setLastAwardedUploadPoints(0L); 
     datastore.put(user1);
  
     UserUtils.addUploadPoints(user1, datastore);
  
     Entity userEntity = UserUtils.getEntityFromDatastore("user", "userID", "newUser1", datastore);
     
-    Assert.assertEquals(UserUtils.ADDED_POINTS, ((Number) userEntity.getProperty("score")).intValue());
+    Assert.assertEquals(UserUtils.ADDED_POINTS, user.getScore());
   }
  
   // addUploadPoints when the user has uploaded recently
@@ -441,9 +449,10 @@ public final class UserUtilTest {
   public void addUploadPoints_uploadRecent(){
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Entity user1 = new Entity("user");
-    user1.setProperty("userID", "newUser1");
-    user1.setProperty("score", 0);
-    user1.setProperty("lastAwardedUploadPoints", System.currentTimeMillis()); 
+    User user = new User(user1);
+    user.setId("newUser1");
+    user.setScore(0);
+    user.setLastAwardedUploadPoints(System.currentTimeMillis()); 
     datastore.put(user1);
  
     UserUtils.addUploadPoints(user1, datastore);
@@ -451,7 +460,7 @@ public final class UserUtilTest {
     Entity userEntity = UserUtils.getEntityFromDatastore("user", "userID", "newUser1", datastore);
     int expected = 0;
     
-    Assert.assertEquals(expected, ((Number) userEntity.getProperty("score")).intValue());
+    Assert.assertEquals(expected, user.getScore());
   }
  
   // addUploadPoints when the user hasn't uploaded recently
@@ -459,16 +468,17 @@ public final class UserUtilTest {
   public void addUploadPoints_noRecentUpload(){
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Entity user1 = new Entity("user");
-    user1.setProperty("userID", "newUser1");
-    user1.setProperty("score", 0);
-    user1.setProperty("lastAwardedUploadPoints", 159430944365L); 
+    User user = new User(user1);
+    user.setId("newUser1");
+    user.setScore(0);
+    user.setLastAwardedUploadPoints(159430944365L); 
     datastore.put(user1);
  
     UserUtils.addUploadPoints(user1, datastore);
  
     Entity userEntity = UserUtils.getEntityFromDatastore("user", "userID", "newUser1", datastore);
     
-    Assert.assertEquals(UserUtils.ADDED_POINTS, ((Number) userEntity.getProperty("score")).intValue());
+    Assert.assertEquals(UserUtils.ADDED_POINTS, user.getScore());
   }
 
   // create a list of users with all valid inputs
@@ -476,24 +486,27 @@ public final class UserUtilTest {
   public void userList_validInputs(){
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Entity user1 = new Entity("user");
-    user1.setProperty("userID", "user1");
-    user1.setProperty("username", "username1");
-    user1.setProperty("score", 30);
-    user1.setProperty("gameId", "game1");
+    User userObj1 = new User(user1);
+    userObj1.setId("user1");
+    userObj1.setName("username1");
+    userObj1.setScore(30);
+    userObj1.setGame("game1");
     datastore.put(user1);
 
     Entity user2 = new Entity("user");
-    user2.setProperty("userID", "user2");
-    user2.setProperty("username", "username2");
-    user2.setProperty("score", 10);
-    user2.setProperty("gameId", "game1");
+    User userObj2 = new User(user2);
+    userObj2.setId("user2");
+    userObj2.setName("username2");
+    userObj2.setScore(10);
+    userObj2.setGame("game1");
     datastore.put(user2);
 
     Entity user3 = new Entity("user");
-    user3.setProperty("userID", "user3");
-    user3.setProperty("username", "username3");
-    user3.setProperty("score", 20);
-    user3.setProperty("gameId", "game1");
+    User userObj3 = new User(user3);
+    userObj3.setId("user3");
+    userObj3.setName("username3");
+    userObj3.setScore(20);
+    userObj3.setGame("game1");
     datastore.put(user3);
 
     ArrayList<User> users = UserUtils.userList("game1", datastore);
