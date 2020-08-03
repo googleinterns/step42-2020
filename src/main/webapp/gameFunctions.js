@@ -67,8 +67,7 @@ function populateQuizPage(){
             makeImage(image_holder, data.propertyMap.blobKey);
         }
     }
-    )
-}
+    )}
  
 function makeImage(image_holder, blobKey){
     image_holder.innerHTML = "";
