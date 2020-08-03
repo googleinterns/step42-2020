@@ -40,6 +40,9 @@ public final class UserUtils {
     public static final int ADDED_POINTS = 20;
     private static final Logger log = Logger.getLogger(UserUtils.class.getName());
  
+    /**
+      This comparator sorts users by score in descending order
+    */
     static final Comparator<User> RANK = new Comparator<User>() {
         @Override
         public int compare(User a, User b) {
