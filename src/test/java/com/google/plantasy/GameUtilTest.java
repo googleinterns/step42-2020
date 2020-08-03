@@ -53,7 +53,7 @@ public final class GameUtilTest {
   @Test
   public void createGame_NullDatastore() {
     Assertions.assertThrows(NullPointerException.class, () -> {
-        Entity actual = GameUtils.createGameEntity("game", null);
+        Game actual = GameUtils.createGame("game", null);
     });
   }
 
@@ -149,7 +149,7 @@ public final class GameUtilTest {
     Game game = new Game(gameEntity);
 
     Assertions.assertThrows(NullPointerException.class, () -> {
-        boolean actual = GameUtils.setGame(userEntity, null, gameEntity);
+        boolean actual = GameUtils.setGame(userEntity, null, game);
     });
   }
 
@@ -161,7 +161,7 @@ public final class GameUtilTest {
     Game game = new Game(gameEntity);
 
     Assertions.assertThrows(NullPointerException.class, () -> {
-        boolean actual = GameUtils.setGame(null, datastore, gameEntity);
+        boolean actual = GameUtils.setGame(null, datastore, game);
     });
   }
 

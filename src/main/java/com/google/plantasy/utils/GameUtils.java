@@ -62,7 +62,8 @@ public final class GameUtils {
     if(userId == ""){
       return false;
     }
- 
+
+    Game game = new Game(gameEntity);
     ArrayList<String> userIds = game.getUserIds();
     if(userIds == null){
       userIds = new ArrayList<String>();
