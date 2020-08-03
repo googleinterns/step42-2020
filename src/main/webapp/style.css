@@ -37,16 +37,16 @@ a{
     background-color: #ffebd9;
     box-shadow: 5px 10px 8px #888888;
 }
- 
+
 .logo{
     width:150px;
 }
- 
+
 .card{
     background-color:transparent;
     font-family: 'PT Mono', monospace;
 }
- 
+
 /* -- INDEX.HTML -- */
 .body-logo{
     padding-top:20px;
@@ -55,16 +55,16 @@ a{
     margin: auto;
     display: block;
 }
- 
+
 /* --JOIN.HTML-- */
- 
+
 #join_game{
     background-color: #ffebd9;
     font-family: 'PT Mono', monospace;
     width: 500px;
     margin-top:200px;
 }
- 
+
 #game-id{
     background-color:#d4c3b4;
     border-bottom:0;
@@ -129,8 +129,6 @@ a{
     width: 40%;
 }
  
- 
- 
 /* Quiz Page */
  
 #questions{
@@ -138,7 +136,6 @@ a{
     text-align: center;
     font-size: 3vh;
 }
- 
 #photo_answers{
     border: 2px solid #235952;
     border-radius: 5px;
@@ -150,16 +147,13 @@ a{
     padding-left:5px;
     font-size:30px;
 }
- 
 button{
     color:white;
     background-color: #235952;
 }
- 
 button:hover{
     opacity:80%;
 }
- 
 .user_img{
     max-width:100%;
     max-height:100%;
@@ -173,7 +167,6 @@ button:hover{
     display:block;
     margin-left:auto;
 }
- 
 #image-holder{
     max-width:100%;
     max-height:100%;
@@ -217,35 +210,35 @@ button:hover{
     font-size:20px;
     text-align:left;
 }
- 
+
 .leaderboardImgContainer{
     flex-grow: 1;
     display:flex;
     justify-content:flex-end;
 }
- 
+
 #leader-board{
-    width:98%
+    width:98%;
 }
- 
+
 footer{
     background-color: #ffebd9;
     display:flex;
     padding-top: 5px;
 }
- 
+
 .gameButton{
-    height:5vh;
-    width:10vw;
-    font-size:25px;
+    height:7vh;
+    width:12vw;
+    font-size:2vh;
 }
+
 #QuizButton{
     margin-left:5px;
 }
- 
+
 .button-container{
     display:flex;
    flex-direction: row;
    justify-content: center;
 }
-
