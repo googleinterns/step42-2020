@@ -46,6 +46,11 @@ public class startGameServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
  
     String gameName = request.getParameter("game-name");
+
+    if(gameName.isEmpty()){
+        response.sendRedirect("/start.html");
+        return;
+    }
     
     // query user 
     Cookie cookies[] = request.getCookies();

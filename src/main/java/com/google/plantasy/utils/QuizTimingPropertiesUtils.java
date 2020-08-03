@@ -11,9 +11,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
- 
+
 package com.google.plantasy.utils;
- 
+
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.PreparedQuery;
@@ -27,14 +27,14 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 import java.util.TimeZone;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
+import com.google.plantasy.utils.UserUtils;
+import com.google.plantasy.utils.Game;
 
 public final class QuizTimingPropertiesUtils {
 
     private static final Logger log = Logger.getLogger(QuizTimingPropertiesUtils.class.getName());
 
     static final List<String> quiz_questions = Arrays.asList(
-        "Which plant has the most food growing from it?",
         "Which plant has the most food growing from it?",
         "Which plant has the prettiest colors?",
         "Which plant is likely to grow the fastest?",
@@ -52,17 +52,14 @@ public final class QuizTimingPropertiesUtils {
         "Which plant will most likely impress your friends and family?",
         "Which plant would look the best inside as a houseplant?",
         "Which plant would look the best outside in a garden?",
-        "Which plant would you give as a gift?");
+        "Which plant would you give as a gift?"
+    );
+
     //This function gets the the "quiz_timestamp" property of the entity that is fed into the function
     public static Long getQuizTimestampProperty(String entity, String id_of_entity, String id_of_entity_value, DatastoreService datastore) {
         Query query = new Query(entity);
-        PreparedQuery pq;
-        try {
-            pq = datastore.prepare(query);
-        } catch(NullPointerException e) {
-            log.log(Level.SEVERE, "Null result for parameter {0}", datastore);
-            return null;
-        }
+        PreparedQuery pq = datastore.prepare(query);
+
         for(Entity query_entity : pq.asIterable()){
             if(query_entity.getProperty(id_of_entity).equals(id_of_entity_value)) {
                 return (Long) query_entity.getProperty("quiz_timestamp");
@@ -71,77 +68,43 @@ public final class QuizTimingPropertiesUtils {
         log.log(Level.SEVERE, "No results for query {0}", entity);
         return null;
     }
- 
+
     //This function checks if the user has taken the quiz yet by comparing their timestamp with the quiz's timestamp
     public static boolean userTookQuiz(Long usersQuizTime, Long currentQuizTime) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        String users_quiz_time;
-        String current_quiz_time;
+        String users_quiz_time = sdf.format(usersQuizTime);
+        String current_quiz_time = sdf.format(currentQuizTime);
 
-        try {
-            users_quiz_time = sdf.format(usersQuizTime);
-            current_quiz_time = sdf.format(currentQuizTime);
-        } catch(IllegalArgumentException e ) {
-            log.log(Level.SEVERE, "Null result for parameter");
-            return false;
-        }  
-        
-        return (users_quiz_time.compareTo(current_quiz_time) > 0);
+        return(users_quiz_time.compareTo(current_quiz_time) > 0);
     }
 
     //This function checks to see if the quiz is outdated
     public static boolean isTimestampOutdated(Long current_quiz_time) {  
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        String quiz_date;
-
-        try {
-            quiz_date = sdf.format(current_quiz_time);
-        } catch(IllegalArgumentException e) {
-            log.log(Level.SEVERE, "Given a null Parameter for {0}", current_quiz_time);
-            return false;
-        }
-
+        String quiz_date = sdf.format(current_quiz_time);
         String today_date = sdf.format(new Date());
+
         return today_date.compareTo(quiz_date) > 0;
     }
-    
+
     //This function gets a new quiz question if the quiz is outdated
     public static String getNewQuestion(Entity game_entity, DatastoreService datastore) {
         Random rand = new Random();
         int rand_number = rand.nextInt(quiz_questions.size());
-
-        try {
-            game_entity.setProperty("quiz_timestamp", System.currentTimeMillis());
-        } catch(NullPointerException e) {
-            log.log(Level.SEVERE, "Null value given for parameter {0}", game_entity);
-            return null;
-        } 
-
-        game_entity.setProperty("quizQuestion", quiz_questions.get(rand_number));
+        Game game = new Game(game_entity);
+        game.setQuizTimestamp(System.currentTimeMillis());
+        game.setQuizQuestion(quiz_questions.get(rand_number));
         datastore.put(game_entity);
-        return (game_entity.getProperty("quizQuestion")).toString();
+
+        return game.getQuizQuestion();
     }
 
     //Gives the user 20 points if they have taken a quiz
     public static boolean giveUserQuizTakenPoints(boolean userQuizStatus, Entity currentUser, DatastoreService datastore) {
-        if(currentUser == null) {
-            log.log(Level.SEVERE, "Given a null {0}", currentUser);
-            return false;
-        }
-
-        if(datastore == null) {
-            log.log(Level.SEVERE, "Given a null {0}", datastore);
-            return false;
-        }
-
         if(userQuizStatus) {
-            try {
-                currentUser.setProperty("score", ((Number) currentUser.getProperty("score")).intValue() + 20);
-            } catch (NullPointerException e) {
-                currentUser.setProperty("score", 20);                
-            }
+            UserUtils.addPoints(currentUser, 20, datastore);
             currentUser.setProperty("quiz_timestamp", System.currentTimeMillis());
             datastore.put(currentUser);
             return true;

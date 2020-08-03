@@ -27,6 +27,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.After;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import com.google.plantasy.utils.UserUtils;
@@ -178,9 +179,9 @@ public final class UserUtilTest {
 
     Entity userEntity = new Entity("user");
 
-    boolean actual = UserUtils.addGameToUser(userEntity, null, "gameId");
-
-    Assert.assertEquals(false, actual);
+    Assertions.assertThrows(NullPointerException.class, () -> {
+        boolean actual = UserUtils.addGameToUser(userEntity, null, "gameId");
+    });
   }
 
   // test a null for user entity
@@ -188,9 +189,9 @@ public final class UserUtilTest {
   public void addGameToUserNullUserEntity() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-    boolean actual = UserUtils.addGameToUser(null, datastore, "gameId");
-
-    Assert.assertEquals(false, actual);
+    Assertions.assertThrows(NullPointerException.class, () -> {
+        boolean actual = UserUtils.addGameToUser(null, datastore, "gameId");
+    });
   }
  
   // test given all correct valid parameters
@@ -225,9 +226,9 @@ public final class UserUtilTest {
 
     Entity userEntity = new Entity("user");
 
-    boolean actual = UserUtils.addBlobKey("blobkey", userEntity, null);
-
-    Assert.assertEquals(false, actual);
+    Assertions.assertThrows(NullPointerException.class, () -> {
+        boolean actual = UserUtils.addBlobKey("blobkey", userEntity, null);
+    });
   }
 
   // test null for user entity
@@ -235,9 +236,9 @@ public final class UserUtilTest {
   public void blobKeyNullUserEntityFails() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-    boolean actual = UserUtils.addBlobKey("blobkey", null, datastore);
-
-    Assert.assertEquals(false, actual);
+    Assertions.assertThrows(NullPointerException.class, () -> {
+        boolean actual = UserUtils.addBlobKey("blobkey", null, datastore);
+    });
   }
  
   // test a valid blobkey, datastore and user entity
