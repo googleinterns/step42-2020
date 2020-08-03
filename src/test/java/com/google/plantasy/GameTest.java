@@ -72,8 +72,10 @@ public final class GameTest {
 
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         datastore.put(game.getGameEntity());
+        game.getGameId()
 
-        Entity datastore_game_entity = UserUtils.getEntityFromDatastore("Game", "gameId", game.getGameId(), datastore);
-        Assert.assertEquals(game.getGameId(), KeyFactory.keyToString(datastore_game_entity.getKey()));
+        Entity datastore_game_entity = datastore.get();
+        datastore_game_entity.getKey();
+        //Assert.assertEquals(game.getGameId(), KeyFactory.keyToString(datastore_game_entity.getKey()));
     }
 }
