@@ -11,9 +11,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
- 
+
 package com.google.plantasy.utils;
- 
+
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -60,7 +60,7 @@ public final class UserUtils {
     * @param  sessionID     the user's current session id (should match with a cookie client-side)
     * @return               a single entity that has contains all the parameters passed in. 
     */
- 
+
 public static Entity initializeUser(String userId, String name, String sessionID){
         //these values are always empty upon initialization
         Entity userEntity = new Entity("user");
@@ -90,7 +90,7 @@ public static Entity initializeUser(String userId, String name, String sessionID
     */
     
   public static Entity getEntityFromDatastore(String entityName, String entityPropertyTitle, String entityPropertyValue, DatastoreService datastore) {
- 
+
     if(entityPropertyValue == "" || entityName == "" || entityPropertyTitle == "" || datastore == null){
         return null;
     }
@@ -117,7 +117,7 @@ public static Entity initializeUser(String userId, String name, String sessionID
     * @param  datastore  the database where entities are stored
     * @return            a single entity that has the cookie name/value pair as a property
     */
- 
+
   public static Entity getUserFromCookie(Cookie cookies[], DatastoreService datastore){
       if(datastore == null){
           log.severe("Error in function getUserFromCookie(): Datastore passed in was null");
@@ -130,20 +130,12 @@ public static Entity initializeUser(String userId, String name, String sessionID
     }
     return getEntityFromDatastore("user", SESSION_ID_COOKIE_NAME, cookie.getValue(), datastore); //returns null if it doesn't exist
   }
- 
+
   /**
   * Adds a game id to a user's list of games
   */
   public static boolean addGameToUser(Entity userEntity, DatastoreService datastore, String gameId) {
- 
-    if(userEntity == null){
-        log.severe("found null user entity trying to add game to user");
-        return false;
-    }
-    if(datastore == null){
-        log.severe("found null datastore trying to add game to user " + (String) userEntity.getProperty("userID"));
-        return false;
-    }
+
     if(gameId == ""){
         log.severe("found empty gameId trying to add game to user " + (String) userEntity.getProperty("userID"));
         return false;
@@ -155,20 +147,12 @@ public static Entity initializeUser(String userId, String name, String sessionID
  
     return true;
   }
- 
+
   /**
   * adds a photo to the user entity
   */
   public static boolean addBlobKey(String blobKey, Entity userEntity, DatastoreService datastore) {
- 
-    if(userEntity == null){
-        log.severe("found null user entity trying to add blobkey to user");
-        return false;
-    }
-    if(datastore == null){
-        log.severe("found null datastore trying to add blobkey to user " + (String) userEntity.getProperty("userID"));
-        return false;
-    }
+    
     if(blobKey == ""){
         log.severe("found empty blobkey trying to add blobkey to user " + (String) userEntity.getProperty("userID"));
         return false;
@@ -180,7 +164,7 @@ public static Entity initializeUser(String userId, String name, String sessionID
 
     return true; 
   }
- 
+
   /**
     adds a specified number of points to the user's points
   */
@@ -193,7 +177,7 @@ public static Entity initializeUser(String userId, String name, String sessionID
     }
     datastore.put(user.getEntity());
   }
- 
+
   /**
     gets the users of a particular game to populate the leaderboard
   */
@@ -213,7 +197,7 @@ public static Entity initializeUser(String userId, String name, String sessionID
     Collections.sort(users, RANK);
     return users;
   }
- 
+
   /**
     Adds 20 points to a user for uploading if it has been more than a day since they last uploaded
   */

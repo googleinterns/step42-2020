@@ -13,7 +13,7 @@
 // limitations under the License.
  
 package com.google.plantasy;
- 
+
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -28,10 +28,8 @@ import org.junit.runners.JUnit4;
 import com.google.plantasy.utils.Game;
 import com.google.plantasy.utils.UserUtils;
 import java.util.ArrayList;
-import javax.persistence.EntityNotFoundException;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.google.appengine.api.datastore.Key;
- 
+
 // tests the usergame class functions 
 @RunWith(JUnit4.class)
 public final class GameTest {
@@ -73,13 +71,13 @@ public final class GameTest {
  
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         datastore.put(game.getGameEntity());
- 
-        // try{
-        //     Entity datastore_game_entity = datastore.get(KeyFactory.stringToKey(game.getGameId()));
-        // }catch(EntityNotFoundException e){
-        //     throw(e);
-        // }
-        //datastore_game_entity.getKey();
-        //Assert.assertEquals(game.getGameId(), KeyFactory.keyToString(datastore_game_entity.getKey()));
+
+        Entity datastore_game_entity = null;
+        try{
+            datastore_game_entity = datastore.get(KeyFactory.stringToKey(game.getGameId()));
+        }catch(Exception e){
+            Assert.assertEquals(game.getGameId(), KeyFactory.keyToString(datastore_game_entity.getKey()));
+        }
+        Assert.assertEquals(game.getGameId(), KeyFactory.keyToString(datastore_game_entity.getKey()));
     }
 }

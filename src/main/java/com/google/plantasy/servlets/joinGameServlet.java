@@ -30,7 +30,6 @@ import javax.servlet.http.*;
 import java.io.PrintWriter;
 import com.google.plantasy.utils.Game;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.google.appengine.api.datastore.Key;
  
 /** When a user joins a game, check if the given game id exists
     if so, get the game entity and add the user,
@@ -69,7 +68,7 @@ public class joinGameServlet extends HttpServlet {
     }catch(Exception e){
       PrintWriter out = response.getWriter();
       out.println("<p>We couldn't find a game by that code, <a href = \"join.html\"><h3>press here</h3></a> and enter a different game code.</p>");
-      return; 
+      return;
     }
     
     Game game = new Game(gameEntity);
