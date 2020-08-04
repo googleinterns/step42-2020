@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.plantasy.utils.User;
 import com.google.plantasy.utils.UserUtils;
 import com.google.plantasy.utils.CookieUtils;
 
@@ -20,9 +21,9 @@ DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
       Cookie[] cookies = request.getCookies();
-      Entity userEntity = UserUtils.getUserFromCookie(cookies, datastore);
-      userEntity.setProperty("SessionID", "");
-      datastore.put(userEntity);
+      User user = new User(UserUtils.getUserFromCookie(cookies, datastore));
+      user.setSessionID("");
+      datastore.put(user.getEntity());
 
       HttpSession session = request.getSession(false);
       if(session != null){
