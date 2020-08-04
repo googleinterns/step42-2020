@@ -71,14 +71,22 @@ public final class QuizTimingPropertiesUtils {
         return null;
     }
 
-    //This function checks if the user has taken the quiz yet by comparing their timestamp with the quiz's timestamp
-    public static boolean userTookQuiz(Long usersQuizTime, Long currentQuizTime) {
+    //This function checks if the user has taken the quiz yet by comparing their timestamp with today's timestamp
+    public static boolean userTookQuiz(Long usersQuizTime) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        String users_quiz_time = sdf.format(usersQuizTime);
-        String current_quiz_time = sdf.format(currentQuizTime);
+        String users_quiz_time;
+        String today_time;
 
-        return(users_quiz_time.compareTo(current_quiz_time) > 0);
+        try {
+            users_quiz_time = sdf.format(usersQuizTime);
+            today_time = sdf.format(new Date());
+        } catch(IllegalArgumentException e ) {
+            log.log(Level.SEVERE, "Null result for parameter");
+            return false;
+        }  
+
+        return (users_quiz_time.equals(today_time));
     }
 
     //This function checks to see if the quiz is outdated
