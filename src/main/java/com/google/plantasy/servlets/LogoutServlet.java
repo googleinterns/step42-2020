@@ -1,8 +1,9 @@
-package com.google.sps.servlets;
+package com.google.plantasy.servlets;
 
-import java.io.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
+import java.io.IOException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpSession;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,7 +28,7 @@ DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       if(session != null){
           session.invalidate();
       }
-
+      //set the cookie lifetime to 0 sec, removing it from the front end
       Cookie cookie = CookieUtils.getCookieFromName(cookies,"SessionID");
       cookie.setMaxAge(0); 
       response.addCookie(cookie);
