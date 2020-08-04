@@ -26,15 +26,15 @@ public final class PasswordReaderUtils {
     public static String getFirstLineFromFile(String fileLocation) throws IOException, FileNotFoundException{
         
         File file;
+        String apiKey = "noKey";
         try{
             file = new File(fileLocation);
         } catch(Exception e){
             log.severe("Could not find file at location: " + fileLocation);
-            return "noKey";
+            return apiKey;
         }
         FileReader fileReader = new FileReader(file);
         BufferedReader br = new BufferedReader(fileReader); 
-        String apiKey = "noKey";
  
         apiKey = br.readLine();
         fileReader.close();
