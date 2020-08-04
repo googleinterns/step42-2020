@@ -76,7 +76,7 @@ public final class GameTest {
         try{
             datastore_game_entity = datastore.get(KeyFactory.stringToKey(game.getGameId()));
         }catch(Exception e){
-            Assert.assertEquals(game.getGameId(), KeyFactory.keyToString(datastore_game_entity.getKey()));
+            Assert.fail("Entity not found error thrown unexpectedly");
         }
         Assert.assertEquals(game.getGameId(), KeyFactory.keyToString(datastore_game_entity.getKey()));
     }
