@@ -200,15 +200,9 @@ public final class UserUtilTest {
  
     Entity userEntity = new Entity("user");
     User user = new User(userEntity);
-<<<<<<< HEAD
- 
-    boolean actual = UserUtils.addGameToUser(userEntity, datastore, "gameId");
- 
-=======
 
     boolean actual = UserUtils.addGameToUser(userEntity, datastore, "gameId");
 
->>>>>>> eec8fda05e11b0eac74b4a022cb1a50dc6bf6939
     Assert.assertEquals("gameId", user.getGame());
     Assert.assertEquals(true, actual);
   }
@@ -253,15 +247,6 @@ public final class UserUtilTest {
  
     Entity userEntity = new Entity("user");
     User user = new User(userEntity);
-<<<<<<< HEAD
- 
-    boolean actual = UserUtils.addBlobKey("blobkey", userEntity, datastore);
- 
-    Assert.assertEquals("blobkey", user.getBlobKey());
-    Assert.assertEquals(true, actual);
-  }
- 
-=======
 
     boolean actual = UserUtils.addBlobKey("blobkey", userEntity, datastore);
 
@@ -269,7 +254,6 @@ public final class UserUtilTest {
     Assert.assertEquals(true, actual);
   }
 
->>>>>>> eec8fda05e11b0eac74b4a022cb1a50dc6bf6939
   //Test given a list of entities, and a list of cookies
   @Test
   public void findEntityByCookie(){
@@ -544,7 +528,7 @@ public final class UserUtilTest {
       expected.setProperty("username",name);
       expected.setProperty("userID",userId);
       expected.setProperty("quiz_timing",initialTime);
-      expected.setProperty("currentGame", "");
+      expected.setProperty("gameId", "");
       expected.setProperty("blobkey", null);
       expected.setProperty("score", initialScore);
       expected.setProperty("SessionID", sessionID);
@@ -554,7 +538,7 @@ public final class UserUtilTest {
       Assert.assertEquals(expected.getProperty("username"),actual.getProperty("username"));
       Assert.assertEquals(expected.getProperty("userID"),actual.getProperty("userID"));
       Assert.assertEquals(expected.getProperty("quiz_timing"),actual.getProperty("quiz_timing"));
-      Assert.assertEquals(expected.getProperty("currentGame"),actual.getProperty("currentGame"));
+      Assert.assertEquals(expected.getProperty("gameId"),actual.getProperty("gameId"));
       Assert.assertEquals(expected.getProperty("blobkey"),actual.getProperty("blobkey"));
       Assert.assertEquals(expected.getProperty("score"),actual.getProperty("score"));
       Assert.assertEquals(expected.getProperty("SessionID"),actual.getProperty("SessionID"));

@@ -27,6 +27,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import com.google.plantasy.utils.QuizTimingPropertiesUtils;
 import com.google.plantasy.utils.Game;
+import com.google.appengine.api.datastore.KeyFactory;
 
 @RunWith(JUnit4.class)
 public final class TimingPropertiesTest {
@@ -133,7 +134,6 @@ public final class TimingPropertiesTest {
         datastore.put(user);
 
         game.setQuizTimestamp(1594309443660L);
-        game.setGameId("67890");
         datastore.put(game.getGameEntity());
 
         Long user_quiz_time = timing_properties_test.getQuizTimestampProperty("user", "userID", user.getProperty("userID").toString(), datastore);
