@@ -11,9 +11,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
- 
+
 package com.google.plantasy.utils;
- 
+
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.DatastoreService;
 import java.util.ArrayList;
@@ -21,11 +21,11 @@ import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.plantasy.utils.UserUtils;
 import com.google.plantasy.utils.Game;
 import java.util.logging.Logger;
- 
+
 public final class GameUtils {
- 
+
   private static final Logger log = Logger.getLogger(GameUtils.class.getName());
- 
+
   /**
   * Creates a game entity and returns the entity if successful
   */
@@ -46,12 +46,12 @@ public final class GameUtils {
     datastore.put(game.getGameEntity());
     return game;
   }
- 
+
   /**
   * add user to user list in game entity, and creates a score entity for the given user and game
   */
   public static boolean addUserToGame(String userId, Entity gameEntity, DatastoreService datastore) {
- 
+
     if(userId == ""){
       return false;
     }
@@ -63,14 +63,14 @@ public final class GameUtils {
       userIds = new ArrayList<String>();
       game.setUserIds(userIds);
     }
- 
+
     // add user to game entity
     userIds.add(userId);
     datastore.put(game.getGameEntity());
     
     return true;
   }
- 
+
   /**
     Connects the given game entity to the given user entity by calling the addUserToGame
     and addGameToUser functions

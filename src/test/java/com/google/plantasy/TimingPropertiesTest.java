@@ -27,7 +27,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import com.google.plantasy.utils.QuizTimingPropertiesUtils;
 import com.google.plantasy.utils.Game;
-import com.google.appengine.api.datastore.KeyFactory;
 
 @RunWith(JUnit4.class)
 public final class TimingPropertiesTest {

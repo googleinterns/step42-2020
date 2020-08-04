@@ -34,17 +34,17 @@ import com.google.appengine.api.datastore.KeyFactory;
 @RunWith(JUnit4.class)
 public final class GameTest {
     private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
- 
+
     @Before
     public void setUp() {
     helper.setUp();
     }
- 
+
     @After
     public void tearDown() {
     helper.tearDown();
     }
- 
+
     @Test 
     //Tests if the properties are set right for the game class 
     public void SetsGameEntityCorrectly() {
@@ -63,7 +63,7 @@ public final class GameTest {
         Assert.assertEquals(1594309443653L, game.getQuizTimestamp());
         Assert.assertEquals(users, game.getUserIds());
     }
- 
+
     @Test
     //Tests if the entity created by the game class gets put into datastore
     public void putInDatastore() {
