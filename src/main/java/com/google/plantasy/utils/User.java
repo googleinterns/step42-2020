@@ -65,11 +65,11 @@ public final class User {
   }
 
   // time the last quiz was taken
-  public long getQuizTiming(){
-    return (long) entity.getProperty("quiz_timing");
+  public long getQuizTimestamp(){
+    return (long) entity.getProperty("quiz_timestamp");
   }
-  public void setQuizTiming(long quiz_timing){
-    entity.setProperty("quiz_timing", quiz_timing);
+  public void setQuizTimestamp(long quiz_timestamp){
+    entity.setProperty("quiz_timestamp", quiz_timestamp);
   }
 
   // image blobKey -- used to create an image url
