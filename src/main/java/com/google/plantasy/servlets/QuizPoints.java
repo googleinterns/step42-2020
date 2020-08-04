@@ -16,14 +16,14 @@ import com.google.plantasy.utils.User;
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
- 
+
 //This servlet's request comes from the quiz.html page; the request is the ID of the user who was voted for in a quiz
 //This servelt's functionality adds points the user who took a quiz and adds points the person who is voted for in a quiz
 @WebServlet("/quiz-points")
 public class QuizPoints extends HttpServlet {
- 
+
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
- 
+
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
  
@@ -50,7 +50,7 @@ public class QuizPoints extends HttpServlet {
         Entity user_clicked = UserUtils.getEntityFromDatastore("user", "userID", clicked_user_id, datastore);
         User user_click = new User(user_clicked); 
         UserUtils.addPoints(user_click, 20, datastore);
- 
+
        response.sendRedirect("/loggedin/gameBoard");
     }
 }
