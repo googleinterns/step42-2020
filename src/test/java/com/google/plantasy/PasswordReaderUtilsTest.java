@@ -20,6 +20,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.After;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import com.google.sps.HttpRequestUtils;
@@ -61,4 +62,12 @@ public final class PasswordReaderUtilsTest{
  
         Assert.assertEquals(expected, actual);
     }
+
+   //Test where the .txt file does not exist
+   @Test
+     public void getFirstLineFromFile_noFile() throws IOException{
+         Assertions.assertThrows(IOException.class, () ->{
+             String actual = PasswordReaderUtils.getFirstLineFromFile("src/test/testData/passwordTextDNE.txt");
+         });
+     }
 }
