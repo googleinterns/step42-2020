@@ -60,8 +60,17 @@ public final class User {
   public int getScore(){
     return ((Number) entity.getProperty("score")).intValue();
   }
+
   public void setScore(int score){
     entity.setProperty("score", score);
+  }
+
+  public String getSessionID(){
+      return ((String) entity.getProperty("SessionID"));
+  }
+
+  public void setSessionID(String SessionID){
+      entity.setProperty("SessionID", SessionID);
   }
 
   // time the last quiz was taken
