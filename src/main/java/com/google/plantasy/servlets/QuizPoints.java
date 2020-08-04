@@ -44,7 +44,6 @@ public class QuizPoints extends HttpServlet {
         current_user.setQuizTiming(System.currentTimeMillis());
         datastore.put(current_user.getEntity());
         
- 
         //Adds points to the user who got voted for in the quiz 
         String clicked_user_id = HttpRequestUtils.getParameterWithDefault(request, "user_picture", "");
         Entity user_clicked = UserUtils.getEntityFromDatastore("user", "userID", clicked_user_id, datastore);
