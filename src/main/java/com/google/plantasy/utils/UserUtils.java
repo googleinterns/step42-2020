@@ -66,7 +66,7 @@ public static Entity initializeUser(String userId, String name, String sessionID
         Entity userEntity = new Entity("user");
         userEntity.setProperty("username",name);
         userEntity.setProperty("userID",userId);
-        userEntity.setProperty("quiz_timing", 0L);
+        userEntity.setProperty("quiz_timestamp", 0L);
         userEntity.setProperty("gameId", "");
         userEntity.setProperty("blobKey", null);
         userEntity.setProperty("score", 0);

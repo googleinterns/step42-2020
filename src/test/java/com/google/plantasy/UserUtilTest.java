@@ -528,7 +528,7 @@ public final class UserUtilTest {
       Entity expected = new Entity("user");
       expected.setProperty("username",name);
       expected.setProperty("userID",userId);
-      expected.setProperty("quiz_timing",initialTime);
+      expected.setProperty("quiz_timestamp",initialTime);
       expected.setProperty("gameId", "");
       expected.setProperty("blobkey", null);
       expected.setProperty("score", initialScore);
@@ -538,7 +538,7 @@ public final class UserUtilTest {
 
       Assert.assertEquals(expected.getProperty("username"),actual.getProperty("username"));
       Assert.assertEquals(expected.getProperty("userID"),actual.getProperty("userID"));
-      Assert.assertEquals(expected.getProperty("quiz_timing"),actual.getProperty("quiz_timing"));
+      Assert.assertEquals(expected.getProperty("quiz_timestamp"),actual.getProperty("quiz_timestamp"));
       Assert.assertEquals(expected.getProperty("gameId"),actual.getProperty("gameId"));
       Assert.assertEquals(expected.getProperty("blobkey"),actual.getProperty("blobkey"));
       Assert.assertEquals(expected.getProperty("score"),actual.getProperty("score"));
