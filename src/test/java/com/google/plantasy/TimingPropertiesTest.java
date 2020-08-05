@@ -132,6 +132,7 @@ public final class TimingPropertiesTest {
         Entity user = new Entity("user");
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
+        //Don't Change! The current system time will be converted to today's date
         user.setProperty("quiz_timestamp", System.currentTimeMillis());
         user.setProperty("userID", "abc");
         datastore.put(user);
