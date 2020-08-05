@@ -60,16 +60,25 @@ public final class User {
   public int getScore(){
     return ((Number) entity.getProperty("score")).intValue();
   }
+
   public void setScore(int score){
     entity.setProperty("score", score);
   }
 
-  // time the last quiz was taken
-  public long getQuizTiming(){
-    return (long) entity.getProperty("quiz_timing");
+  public String getSessionID(){
+      return ((String) entity.getProperty("SessionID"));
   }
-  public void setQuizTiming(long quiz_timing){
-    entity.setProperty("quiz_timing", quiz_timing);
+
+  public void setSessionID(String SessionID){
+      entity.setProperty("SessionID", SessionID);
+  }
+
+  // time the last quiz was taken
+  public long getQuizTimestamp(){
+    return (long) entity.getProperty("quiz_timestamp");
+  }
+  public void setQuizTimestamp(long quiz_timestamp){
+    entity.setProperty("quiz_timestamp", quiz_timestamp);
   }
 
   // image blobKey -- used to create an image url

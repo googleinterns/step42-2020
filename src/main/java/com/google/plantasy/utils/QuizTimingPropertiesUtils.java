@@ -31,6 +31,7 @@ import java.text.SimpleDateFormat;
 import com.google.plantasy.utils.UserUtils;
 import com.google.plantasy.utils.Game;
 import com.google.plantasy.utils.User;
+import com.google.appengine.api.datastore.KeyFactory;
 
 public final class QuizTimingPropertiesUtils {
 
@@ -59,6 +60,15 @@ public final class QuizTimingPropertiesUtils {
 
     //This function gets the the "quiz_timestamp" property of the entity that is fed into the function
     public static Long getQuizTimestampProperty(String entity, String id_of_entity, String id_of_entity_value, DatastoreService datastore) {
+        if(entity == "Game"){
+            Entity gameEntity = null;
+            try{
+                gameEntity = datastore.get(KeyFactory.stringToKey(id_of_entity_value));
+            }catch(Exception e){
+                log.log(Level.SEVERE, "No results for query {0}", entity);
+            }
+            return (Long) gameEntity.getProperty("quiz_timestamp");
+        }
         Query query = new Query(entity);
         PreparedQuery pq = datastore.prepare(query);
 
@@ -71,14 +81,23 @@ public final class QuizTimingPropertiesUtils {
         return null;
     }
 
-    //This function checks if the user has taken the quiz yet by comparing their timestamp with the quiz's timestamp
-    public static boolean userTookQuiz(Long usersQuizTime, Long currentQuizTime) {
+    //This function checks if the user has taken the quiz yet by comparing their timestamp with today's timestamp
+    public static boolean userTookQuiz(Long usersQuizTime) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        String users_quiz_time = sdf.format(usersQuizTime);
-        String current_quiz_time = sdf.format(currentQuizTime);
+        String today_time = sdf.format(new Date());
+        String users_quiz_time;
 
-        return(users_quiz_time.compareTo(current_quiz_time) > 0);
+        try {
+            users_quiz_time = sdf.format(usersQuizTime);
+        } catch(IllegalArgumentException e ) {
+            log.log(Level.SEVERE, "Null result for parameter");
+            return false;
+        }  
+
+        //Both variables, today_time & users_quiz_time, will return a date 
+        //So if the dates are equal the user has taken the quiz
+        return users_quiz_time.equals(today_time);
     }
 
     //This function checks to see if the quiz is outdated

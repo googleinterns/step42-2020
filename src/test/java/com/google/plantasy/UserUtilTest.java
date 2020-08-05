@@ -55,7 +55,7 @@ public final class UserUtilTest {
   @Test
   public void findEntityByUserId() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
- 
+
     Entity userEntity = new Entity("Game");
     userEntity.setProperty("userID", "123");
     datastore.put(userEntity);
@@ -78,7 +78,7 @@ public final class UserUtilTest {
   @Test
   public void findEntityWithEmptyDatastore() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    
+
     Entity actual = UserUtils.getEntityFromDatastore("Game","userID","123", datastore);
     Entity expected = null;
 
@@ -89,7 +89,7 @@ public final class UserUtilTest {
   @Test
   public void findEntityWithUserIdNotInDatastore() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    
+
     Entity userEntity = new Entity("Game");
     userEntity.setProperty("userID", "123");
     datastore.put(userEntity);
@@ -112,7 +112,7 @@ public final class UserUtilTest {
   @Test
   public void findEntityWithEmptyStringUserId() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    
+
     Entity userEntity = new Entity("Game");
     userEntity.setProperty("userID", "123");
     datastore.put(userEntity);
@@ -134,18 +134,18 @@ public final class UserUtilTest {
   // Test null instance of datastore
   @Test
   public void findEntityWithNullDatastore() {
-    
+
     Entity actual = UserUtils.getEntityFromDatastore("Game","userID","123", null);
     Entity expected = null;
 
     Assert.assertEquals(expected, actual);
   }
-  
+
   // test without an entity class
   @Test
   public void findEntityWithNullUserEntity(){
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    
+
       Entity actual = UserUtils.getEntityFromDatastore("","userID","123", datastore);
       Entity expected = null;
       Assert.assertEquals(expected, actual);
@@ -155,7 +155,7 @@ public final class UserUtilTest {
   @Test
   public void findEntityWithNullUserEntityTitle(){
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    
+
       Entity actual = UserUtils.getEntityFromDatastore("Game","","123", datastore);
       Entity expected = null;
       Assert.assertEquals(expected, actual);
@@ -193,7 +193,7 @@ public final class UserUtilTest {
         boolean actual = UserUtils.addGameToUser(null, datastore, "gameId");
     });
   }
- 
+
   // test given all correct valid parameters
   @Test
   public void addGameToUserSuccess() {
@@ -240,7 +240,7 @@ public final class UserUtilTest {
         boolean actual = UserUtils.addBlobKey("blobkey", null, datastore);
     });
   }
- 
+
   // test a valid blobkey, datastore and user entity
   @Test
   public void addBlobKeySucess() {
@@ -270,7 +270,7 @@ public final class UserUtilTest {
       Entity user3 = new Entity("user");
       user3.setProperty(UserUtils.SESSION_ID_COOKIE_NAME, "value3");
       datastore.put(user3);
-      
+
       Cookie cookie1 = new Cookie(UserUtils.SESSION_ID_COOKIE_NAME, "value1");
       Cookie cookie2 = new Cookie("name2", "value2");
       Cookie cookie3 = new Cookie("name3", "value3");
@@ -344,7 +344,7 @@ public final class UserUtilTest {
 
     Entity actual = UserUtils.getUserFromCookie(cookies,datastore);
     Entity expected = user1;
-    
+
     Assert.assertEquals(expected, actual);
   }
 
@@ -361,7 +361,7 @@ public final class UserUtilTest {
 
     Entity actual = UserUtils.getUserFromCookie(cookies, null);
     Entity expected = null;
-    
+
     Assert.assertEquals(expected, actual);
   }
 
@@ -374,7 +374,7 @@ public final class UserUtilTest {
 
     Entity actual = UserUtils.getUserFromCookie(cookies, datastore);
     Entity expected = null;
-    
+
     Assert.assertEquals(expected, actual);
   }
 
@@ -390,7 +390,7 @@ public final class UserUtilTest {
 
     Entity actual = UserUtils.getUserFromCookie(cookies, null);
     Entity expected = null;
-    
+
     Assert.assertEquals(expected, actual);
   }
 
@@ -407,7 +407,7 @@ public final class UserUtilTest {
     UserUtils.addPoints(user, 20, datastore);
 
     Entity userEntity = UserUtils.getEntityFromDatastore("user", "userID", "newUser1", datastore);
-    
+
     Assert.assertEquals(30L, user.getScore());
   }
 
@@ -436,14 +436,14 @@ public final class UserUtilTest {
     user.setId("newUser1");
     user.setLastAwardedUploadPoints(0L); 
     datastore.put(user1);
- 
+
     UserUtils.addUploadPoints(user1, datastore);
- 
+
     Entity userEntity = UserUtils.getEntityFromDatastore("user", "userID", "newUser1", datastore);
     
     Assert.assertEquals(UserUtils.ADDED_POINTS, user.getScore());
   }
- 
+
   // addUploadPoints when the user has uploaded recently
   @Test
   public void addUploadPoints_uploadRecent(){
@@ -454,15 +454,15 @@ public final class UserUtilTest {
     user.setScore(0);
     user.setLastAwardedUploadPoints(System.currentTimeMillis()); 
     datastore.put(user1);
- 
+
     UserUtils.addUploadPoints(user1, datastore);
- 
+
     Entity userEntity = UserUtils.getEntityFromDatastore("user", "userID", "newUser1", datastore);
     int expected = 0;
     
     Assert.assertEquals(expected, user.getScore());
   }
- 
+
   // addUploadPoints when the user hasn't uploaded recently
   @Test
   public void addUploadPoints_noRecentUpload(){
@@ -473,9 +473,9 @@ public final class UserUtilTest {
     user.setScore(0);
     user.setLastAwardedUploadPoints(159430944365L); 
     datastore.put(user1);
- 
+
     UserUtils.addUploadPoints(user1, datastore);
- 
+
     Entity userEntity = UserUtils.getEntityFromDatastore("user", "userID", "newUser1", datastore);
     
     Assert.assertEquals(UserUtils.ADDED_POINTS, user.getScore());
@@ -510,7 +510,7 @@ public final class UserUtilTest {
     datastore.put(user3);
 
     ArrayList<User> users = UserUtils.userList("game1", datastore);
-    
+
     Assert.assertEquals("user1", users.get(0).getId()); 
     Assert.assertEquals("user3", users.get(1).getId()); 
     Assert.assertEquals("user2", users.get(2).getId()); 
@@ -528,8 +528,8 @@ public final class UserUtilTest {
       Entity expected = new Entity("user");
       expected.setProperty("username",name);
       expected.setProperty("userID",userId);
-      expected.setProperty("quiz_timing",initialTime);
-      expected.setProperty("currentGame", "");
+      expected.setProperty("quiz_timestamp",initialTime);
+      expected.setProperty("gameId", "");
       expected.setProperty("blobkey", null);
       expected.setProperty("score", initialScore);
       expected.setProperty("SessionID", sessionID);
@@ -538,11 +538,10 @@ public final class UserUtilTest {
 
       Assert.assertEquals(expected.getProperty("username"),actual.getProperty("username"));
       Assert.assertEquals(expected.getProperty("userID"),actual.getProperty("userID"));
-      Assert.assertEquals(expected.getProperty("quiz_timing"),actual.getProperty("quiz_timing"));
-      Assert.assertEquals(expected.getProperty("currentGame"),actual.getProperty("currentGame"));
+      Assert.assertEquals(expected.getProperty("quiz_timestamp"),actual.getProperty("quiz_timestamp"));
+      Assert.assertEquals(expected.getProperty("gameId"),actual.getProperty("gameId"));
       Assert.assertEquals(expected.getProperty("blobkey"),actual.getProperty("blobkey"));
       Assert.assertEquals(expected.getProperty("score"),actual.getProperty("score"));
       Assert.assertEquals(expected.getProperty("SessionID"),actual.getProperty("SessionID"));
   }
-
 }

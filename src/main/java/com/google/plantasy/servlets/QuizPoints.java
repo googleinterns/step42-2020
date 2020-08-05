@@ -11,11 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.google.plantasy.utils.QuizTimingPropertiesUtils;
 import com.google.plantasy.utils.UserUtils;
-import com.google.plantasy.utils.User;
 import com.google.plantasy.HttpRequestUtils;
-import java.io.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
+import com.google.plantasy.utils.User;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServlet;
 
 //This servlet's request comes from the quiz.html page; the request is the ID of the user who was voted for in a quiz
 //This servelt's functionality adds points the user who took a quiz and adds points the person who is voted for in a quiz
@@ -37,17 +37,18 @@ public class QuizPoints extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-
-        //Adds points to the user who took the quiz
-        Long quiz_time = QuizTimingPropertiesUtils.getQuizTimestampProperty("Game", "gameId", userEntity.getProperty("gameId").toString(), datastore);
-        Long user_time = QuizTimingPropertiesUtils.getQuizTimestampProperty("user", "userID", userEntity.getProperty("userID").toString(), datastore);
-        QuizTimingPropertiesUtils.giveUserQuizTakenPoints(QuizTimingPropertiesUtils.userTookQuiz(user_time, quiz_time), userEntity, datastore);        
-
+ 
+        //Adds points to the user who took the quiz & update their timestamp
+        User current_user = new User(userEntity);
+        UserUtils.addPoints(current_user, 20, datastore);
+        current_user.setQuizTiming(System.currentTimeMillis());
+        datastore.put(current_user.getEntity());
+        
         //Adds points to the user who got voted for in the quiz 
         String clicked_user_id = HttpRequestUtils.getParameterWithDefault(request, "user_picture", "");
         Entity user_clicked = UserUtils.getEntityFromDatastore("user", "userID", clicked_user_id, datastore);
-        User user = new User(user_clicked);
-        UserUtils.addPoints(user, 20, datastore);
+        User selected_user = new User(user_clicked); 
+        UserUtils.addPoints(selected_user, 20, datastore);
 
        response.sendRedirect("/loggedin/gameBoard");
     }
