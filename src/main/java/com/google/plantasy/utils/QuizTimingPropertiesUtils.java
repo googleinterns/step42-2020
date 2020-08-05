@@ -75,18 +75,19 @@ public final class QuizTimingPropertiesUtils {
     public static boolean userTookQuiz(Long usersQuizTime) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String today_time = sdf.format(new Date());
         String users_quiz_time;
-        String today_time;
 
         try {
             users_quiz_time = sdf.format(usersQuizTime);
-            today_time = sdf.format(new Date());
         } catch(IllegalArgumentException e ) {
             log.log(Level.SEVERE, "Null result for parameter");
             return false;
         }  
 
-        return (users_quiz_time.equals(today_time));
+        //Both variables, today_time & users_quiz_time, will return a date 
+        //So if the dates are equal the user has taken the quiz
+        return users_quiz_time.equals(today_time);
     }
 
     //This function checks to see if the quiz is outdated
