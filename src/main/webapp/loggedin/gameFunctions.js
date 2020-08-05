@@ -5,12 +5,6 @@ function onloadFunctions(){
     populateQuizPage();
     loadLeaderboard();
 }
- 
-//cant run multiple functions on load, so all functions that need to run are listed here.
-function runOnload(){
-    populateQuizPage();
-    getUserQuizStatus();
-}
 
 //adds the user's name, score, and picture uploaded to the quiz page.
 function populateQuizPage(){
