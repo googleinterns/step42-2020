@@ -26,7 +26,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import com.google.sps.QuizTimingPropertiesUtils;
-import com.google.sps.User;
+//import com.google.sps.User;
 import com.google.sps.utils.Game;
  
 @RunWith(JUnit4.class)
