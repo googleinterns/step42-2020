@@ -53,14 +53,14 @@ public final class UserTest {
     user.setId("id");
     user.setName("name");
     user.setScore(20);
-    user.setQuizTiming(0);
+    user.setQuizTimestamp(0);
     user.setBlobKey("blob");
 
     Assert.assertEquals("game", user.getGame());
     Assert.assertEquals("id", user.getId());
     Assert.assertEquals("name", user.getName());
     Assert.assertEquals(20, user.getScore());
-    Assert.assertEquals(0, user.getQuizTiming());
+    Assert.assertEquals(0, user.getQuizTimestamp());
     Assert.assertEquals("blob", user.getBlobKey());
   }
 

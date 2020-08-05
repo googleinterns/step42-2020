@@ -29,6 +29,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.PrintWriter;
 import com.google.plantasy.utils.Game;
+import com.google.appengine.api.datastore.KeyFactory;
  
 /** When a user joins a game, check if the given game id exists
     if so, get the game entity and add the user,
@@ -61,12 +62,15 @@ public class joinGameServlet extends HttpServlet {
         return;
     }
 
-    Entity gameEntity = UserUtils.getEntityFromDatastore("Game", "gameId", gameId, datastore);
-    if(gameEntity == null){
+    Entity gameEntity = null;
+    try{
+      gameEntity = datastore.get(KeyFactory.stringToKey(gameId));
+    }catch(Exception e){
       PrintWriter out = response.getWriter();
       out.println("<p>We couldn't find a game by that code, <a href = \"join.html\"><h3>press here</h3></a> and enter a different game code.</p>");
       return;
     }
+    
     Game game = new Game(gameEntity);
     boolean setGame = GameUtils.setGame(userEntity, datastore, game);
 

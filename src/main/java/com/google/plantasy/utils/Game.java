@@ -2,7 +2,8 @@ package com.google.plantasy.utils;
 import com.google.appengine.api.datastore.Entity;
 import java.lang.IllegalArgumentException;
 import java.util.ArrayList;
-
+import com.google.appengine.api.datastore.KeyFactory;
+ 
 public final class Game {
     public final static String GAME_KIND = "Game";
     private Entity entity;
@@ -12,11 +13,6 @@ public final class Game {
             throw new IllegalArgumentException("Attempted to interpret Entity of kind " + game_entity.getKind()+ " as a Game.");
         }
         entity = game_entity;
-    }
-
-    //Sets the individual game Id for a game entity
-    public void setGameId(String gameId) {
-        entity.setProperty("gameId", gameId);
     }
 
     //Sets the game name for the game entity
@@ -44,7 +40,8 @@ public final class Game {
     }
 
     public String getGameId() {
-        return (String) entity.getProperty("gameId");
+ 
+        return KeyFactory.keyToString(entity.getKey());
     }
 
     public String getGameName() {
