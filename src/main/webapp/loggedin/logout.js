@@ -8,12 +8,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
  
 //signs out of the page
 function signOut() {
-    var api_token = getToken();
- 
     //log out google
   gapi.load('auth2', function() {
        gapi.auth2.init({
-         client_id: api_token
+         client_id: getToken();
     }).then(function(auth2){
         auth2.signOut();
         localStorage.removeItem("username");
