@@ -115,7 +115,7 @@ public final class TimingPropertiesTest {
     public void userTookQuiz_validParametersFalse() {        
         Entity user = new Entity("user");
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
- 
+
         user.setProperty("quiz_timestamp", 1594309443653L);
         user.setProperty("userID", "abc");
         datastore.put(user);
