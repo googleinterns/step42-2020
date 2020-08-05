@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
  
 //signs out of the page
 function signOut() {
-    //log out page --> DOESNT RUN FOR SOME REASON??
  
     //log out google
   gapi.load('auth2', function() {
