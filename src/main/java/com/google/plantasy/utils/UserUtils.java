@@ -50,7 +50,7 @@ public final class UserUtils {
         }
     };
 
-     /**
+    /**
     * Takes user's information and creates an entity from it. 
     * This function inputs all the parameters, while also initializing
     * some parameters to null values. The entity returned can be stored in the
@@ -117,7 +117,7 @@ public static Entity initializeUser(String userId, String name, String sessionID
     * @param  datastore  the database where entities are stored
     * @return            a single entity that has the cookie name/value pair as a property
     */
- 
+
   public static Entity getUserFromCookie(Cookie cookies[], DatastoreService datastore){
       if(datastore == null){
           log.severe("Error in function getUserFromCookie(): Datastore passed in was null");
@@ -130,11 +130,12 @@ public static Entity initializeUser(String userId, String name, String sessionID
     }
     return getEntityFromDatastore("user", SESSION_ID_COOKIE_NAME, cookie.getValue(), datastore); //returns null if it doesn't exist
   }
- 
+
   /**
   * Adds a game id to a user's list of games
   */
   public static boolean addGameToUser(Entity userEntity, DatastoreService datastore, String gameId) {
+
     if(gameId == ""){
         log.severe("found empty gameId trying to add game to user " + (String) userEntity.getProperty("userID"));
         return false;
@@ -146,11 +147,12 @@ public static Entity initializeUser(String userId, String name, String sessionID
  
     return true;
   }
- 
+
   /**
   * adds a photo to the user entity
   */
   public static boolean addBlobKey(String blobKey, Entity userEntity, DatastoreService datastore) {
+    
     if(blobKey == ""){
         log.severe("found empty blobkey trying to add blobkey to user " + (String) userEntity.getProperty("userID"));
         return false;
@@ -162,7 +164,7 @@ public static Entity initializeUser(String userId, String name, String sessionID
 
     return true; 
   }
- 
+
   /**
     adds a specified number of points to the user's points
   */
@@ -209,3 +211,4 @@ public static Entity initializeUser(String userId, String name, String sessionID
     }
   }
 }
+ 

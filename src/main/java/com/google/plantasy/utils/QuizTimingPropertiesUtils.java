@@ -31,6 +31,7 @@ import java.text.SimpleDateFormat;
 import com.google.plantasy.utils.UserUtils;
 import com.google.plantasy.utils.Game;
 import com.google.plantasy.utils.User;
+import com.google.appengine.api.datastore.KeyFactory;
 
 public final class QuizTimingPropertiesUtils {
 
@@ -59,6 +60,15 @@ public final class QuizTimingPropertiesUtils {
 
     //This function gets the the "quiz_timestamp" property of the entity that is fed into the function
     public static Long getQuizTimestampProperty(String entity, String id_of_entity, String id_of_entity_value, DatastoreService datastore) {
+        if(entity == "Game"){
+            Entity gameEntity = null;
+            try{
+                gameEntity = datastore.get(KeyFactory.stringToKey(id_of_entity_value));
+            }catch(Exception e){
+                log.log(Level.SEVERE, "No results for query {0}", entity);
+            }
+            return (Long) gameEntity.getProperty("quiz_timestamp");
+        }
         Query query = new Query(entity);
         PreparedQuery pq = datastore.prepare(query);
 

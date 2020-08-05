@@ -18,8 +18,6 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.DatastoreService;
 import java.util.ArrayList;
 import com.google.appengine.api.datastore.EntityNotFoundException;
-import com.google.appengine.api.datastore.KeyFactory;
-import com.google.appengine.api.datastore.Key;
 import com.google.plantasy.utils.UserUtils;
 import com.google.plantasy.utils.Game;
 import java.util.logging.Logger;
@@ -46,11 +44,6 @@ public final class GameUtils {
     game.setQuizTimestamp(quiz_timestamp);
 
     datastore.put(game.getGameEntity());
-
-    String key = KeyFactory.keyToString(game.getGameEntity().getKey());
-    game.setGameId(key);
-    datastore.put(game.getGameEntity());
- 
     return game;
   }
 
@@ -64,6 +57,7 @@ public final class GameUtils {
     }
 
     Game game = new Game(gameEntity);
+
     ArrayList<String> userIds = game.getUserIds();
     if(userIds == null){
       userIds = new ArrayList<String>();
@@ -76,7 +70,7 @@ public final class GameUtils {
     
     return true;
   }
- 
+
   /**
     Connects the given game entity to the given user entity by calling the addUserToGame
     and addGameToUser functions
@@ -99,5 +93,3 @@ public final class GameUtils {
   }
  
 }
- 
- 
