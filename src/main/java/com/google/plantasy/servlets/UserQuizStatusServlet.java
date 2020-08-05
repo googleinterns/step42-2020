@@ -11,9 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.google.plantasy.utils.QuizTimingPropertiesUtils;
 import com.google.plantasy.utils.UserUtils;
-import java.io.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServlet;
 
 //This servlet checks to see if the user took the quiz that was available today
 //If they did take the quiz the true boolean value will be returned 

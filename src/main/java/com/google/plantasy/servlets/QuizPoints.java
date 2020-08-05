@@ -13,9 +13,9 @@ import com.google.plantasy.utils.QuizTimingPropertiesUtils;
 import com.google.plantasy.utils.UserUtils;
 import com.google.plantasy.HttpRequestUtils;
 import com.google.plantasy.utils.User;
-import java.io.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServlet;
 
 //This servlet's request comes from the quiz.html page; the request is the ID of the user who was voted for in a quiz
 //This servelt's functionality adds points the user who took a quiz and adds points the person who is voted for in a quiz
