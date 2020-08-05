@@ -60,15 +60,6 @@ public final class QuizTimingPropertiesUtils {
 
     //This function gets the the "quiz_timestamp" property of the entity that is fed into the function
     public static Long getQuizTimestampProperty(String entity, String id_of_entity, String id_of_entity_value, DatastoreService datastore) {
-        if(entity == "Game"){
-            Entity gameEntity = null;
-            try{
-                gameEntity = datastore.get(KeyFactory.stringToKey(id_of_entity_value));
-            }catch(Exception e){
-                log.log(Level.SEVERE, "No results for query {0}", entity);
-            }
-            return (Long) gameEntity.getProperty("quiz_timestamp");
-        }
         Query query = new Query(entity);
         PreparedQuery pq = datastore.prepare(query);
 
@@ -81,19 +72,12 @@ public final class QuizTimingPropertiesUtils {
         return null;
     }
 
-    //This function checks if the user has taken the quiz yet by comparing their timestamp with today's timestamp
+    //This function checks if the user has taken the quiz yet by comparing their timestamp with the quiz's timestamp
     public static boolean userTookQuiz(Long usersQuizTime) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String users_quiz_time = sdf.format(usersQuizTime);
         String today_time = sdf.format(new Date());
-        String users_quiz_time;
-
-        try {
-            users_quiz_time = sdf.format(usersQuizTime);
-        } catch(IllegalArgumentException e ) {
-            log.log(Level.SEVERE, "Null result for parameter");
-            return false;
-        }  
 
         //Both variables, today_time & users_quiz_time, will return a date 
         //So if the dates are equal the user has taken the quiz
