@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
-import com.google.sps.utils.UserUtils;
+import com.google.plantasy.utils.UserUtils;
  
 public class AuthenticationFilter implements Filter {
     private ServletContext context;

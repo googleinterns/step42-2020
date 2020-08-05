@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
-import com.google.plantasy.QuizTimingPropertiesUtils;
+import com.google.plantasy.utils.QuizTimingPropertiesUtils;
 import com.google.plantasy.utils.UserUtils;
 import java.io.*;
 import javax.servlet.*;

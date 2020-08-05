@@ -1,4 +1,4 @@
-package com.google.sps.servlets;
+package com.google.plantasy.servlets;
 
 import java.io.IOException;
 import javax.servlet.http.Cookie;
@@ -19,8 +19,9 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import java.util.Collections;
 import java.util.Enumeration;
-import com.google.sps.utils.UserUtils;
-import com.google.sps.utils.CookieUtils;
+import com.google.plantasy.utils.PasswordReaderUtils;
+import com.google.plantasy.utils.UserUtils;
+import com.google.plantasy.utils.CookieUtils;
 
      /**
     * Verifies that the Google token is legitimate. Then creates a 
