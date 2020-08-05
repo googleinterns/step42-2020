@@ -7,17 +7,15 @@
   <artifactId>plantbattles</artifactId>
   <version>1</version>
   <packaging>war</packaging>
- 
 
-  <properties>
+ <properties>
     <!-- This project uses Java 8 -->
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <failOnMissingWebXml>false</failOnMissingWebXml>
 
-  </properties>
- 
+</properties>
   <dependencies>
     <dependency>
         <groupId>javax.servlet</groupId>
@@ -54,42 +52,46 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>com.google.appengine</groupId>
+      <artifactId>appengine-tools-sdk</artifactId>
+      <version>1.9.59</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.12</version>
       <scope>test</scope>
     </dependency>
- 
+
     <dependency>
         <groupId>javax.activation</groupId>
         <artifactId>activation</artifactId>
         <version>1.1.1</version>
     </dependency>
- 
+
     <dependency>
-        <groupId>com.google.guava</groupId>
-        <artifactId>guava</artifactId>
-        <version>r05</version>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>r05</version>
     </dependency>
      <dependency>
         <groupId>com.google.api-client</groupId>
         <artifactId>google-api-client</artifactId>
         <version>1.20.0</version>
-    </dependency>
- 
     <dependency>
         <groupId>com.google.oauth-client</groupId>
         <artifactId>google-oauth-client</artifactId>
         <version>1.22.0</version>
     </dependency>
- 
+
     <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-core</artifactId>
         <version>2.23.4</version>
         <scope>test</scope>
     </dependency>
- 
+
     <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-core</artifactId>
@@ -111,8 +113,6 @@
         <artifactId>json-simple</artifactId>
         <version>1.1</version>
     </dependency>
-    
-
   </dependencies>
  
   <build>
