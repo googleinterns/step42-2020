@@ -8,12 +8,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
  
 //signs out of the page
 function signOut() {
-    //log out page --> DOESNT RUN FOR SOME REASON??
+    var api_token = getToken();
  
     //log out google
   gapi.load('auth2', function() {
        gapi.auth2.init({
-         client_id: '610251294652-9ojdhjhh8kpcdvdbmrvp9nkevgr2n2d8.apps.googleusercontent.com'
+         client_id: api_token
     }).then(function(auth2){
         auth2.signOut();
         localStorage.removeItem("username");
@@ -27,4 +27,13 @@ function signOut() {
         
     });
   });
+}
+
+function getToken(){
+    var init = { method: 'POST' };
+    var request = new Request('/get-token',init);
+    
+    fetch(request).then(response => response.json()).then(api_key => {
+        return api_key;
+    })
 }
