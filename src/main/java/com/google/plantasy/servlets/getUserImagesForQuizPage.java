@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.google.plantasy.utils.QuizTimingPropertiesUtils;
+import com.google.plantasy.utils.User;
 import com.google.plantasy.utils.UserUtils;
 import java.io.*;
 import javax.servlet.*;
@@ -39,10 +40,13 @@ public class getUserImagesForQuizPage extends HttpServlet {
         HashMap<String,String> user_ids_and_pictures = new HashMap<String, String>();
 
         Entity current_game = UserUtils.getEntityFromDatastore("Game", "gameId", (userEntity.getProperty("gameId")).toString(), datastore);
-        for(String player : (ArrayList<String>) current_game.getProperty("userIds")) {
-            if(!userEntity.getProperty("userID").equals(player)) {
-                Entity playerEntity = UserUtils.getEntityFromDatastore("user","userID", player, datastore);
-                user_ids_and_pictures.put(player, (playerEntity.getProperty("blobKey")).toString());
+        for(String player_name : (ArrayList<String>) current_game.getProperty("userIds")) {
+            if(!userEntity.getProperty("userID").equals(player_name)) {
+                User player = new User(UserUtils.getEntityFromDatastore("user","userID", player_name, datastore));
+                String blobkey = player.getBlobKey()
+                if (blobkey != null) {
+                    user_ids_and_pictures.put(player.getName(), blobkey);
+                }
             }
         }
 
