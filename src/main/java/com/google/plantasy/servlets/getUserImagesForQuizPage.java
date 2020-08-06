@@ -43,11 +43,9 @@ public class getUserImagesForQuizPage extends HttpServlet {
         for(String player_name : (ArrayList<String>) current_game.getProperty("userIds")) {
             if(!userEntity.getProperty("userID").equals(player_name)) {
                 User player = new User(UserUtils.getEntityFromDatastore("user","userID", player_name, datastore));
-                try {
-                    user_ids_and_pictures.put(player.getName(), player.getBlobKey());
-                } catch (Exception e){
-                    // If player.getBlobKey() causes a NPE, we can skip that user.
-                    continue;
+                String blobkey = player.getBlobKey()
+                if (blobkey != null) {
+                    user_ids_and_pictures.put(player.getName(), blobkey);
                 }
             }
         }
